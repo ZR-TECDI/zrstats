@@ -1,14 +1,21 @@
-language: python
-python:
-  - '3.4'
-before_install:
-  - pip3 install django
 jobs:
   include:
     - stage: test
+      language: python
+      python:
+        - '3.7'
+      services: 
+        - mysql
+      env:
+        -DJANGO=2.2.5 DB=mysql
+      install:
+      - pip install -r requirements.txt
+      before_script:
+      - mysql -e 'create database zrstats;' -u root
       script:
-      - python3 asistencia/tests.py
+      - python3 manage.py test
     - stage: release
+      language: bash
       script:
       - nvm install lts/*
       - npm install @semantic-release/changelog -D
