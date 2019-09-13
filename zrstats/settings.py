@@ -125,5 +125,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = 'asistencia/ArmaStats/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'asistencia/ArmaStats/')
+MEDIA_URL = 'upload/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')

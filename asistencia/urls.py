@@ -8,6 +8,7 @@ app_name = 'asistencia'
 urlpatterns = [
     path('', views.index_view, name='index'),
     path('upload', views.upload_file, name='upload'),
+    path('lista', views.AsistenciaListView.as_view(), name='asistencia-list'),
 ]
 
 if settings.DEBUG:

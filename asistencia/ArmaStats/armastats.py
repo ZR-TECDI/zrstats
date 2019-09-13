@@ -26,7 +26,7 @@ Retorna un diccionario de formato: {jugador: [[fecha, hora, conectado/desconecta
 
     data = uploadfile
     rpt_total = []
-    with open(settings.BASE_DIR+'\\asistencia\\ArmaStats\\'+data, 'r') as f:
+    with open(data, 'r') as f:
         s = "\n"
         l = s.join((f.readlines()))   
         rpt = re.findall('^.*"ZRASISTENCIA.*$', l, re.M)
@@ -154,7 +154,7 @@ Retorna un diccionario de formato tt = {jugador: [calculo_tiempo, asistencia, at
             print("\n"+ x + " no tiene suficiente tiempo de juego para considerarlo asistencia...")
             print("¿Quizás " + x + " tuvo falla de conexión?\n")
         
-        tt.setdefault(x, []).append("tiempo de sesión: "+ str(total_time))
+        tt.setdefault(x, []).append(str(total_time))
         tt.setdefault(x, []).append(asistencia)
         
         if atrasado:
