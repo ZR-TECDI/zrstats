@@ -1,3 +1,17 @@
+# [0.2.0](https://github.com/ZR-TECDI/zrstats/compare/v0.1.0...v0.2.0) (2019-09-13)
+
+
+### Bug Fixes
+
+* **migrations:** reparado el cagazo (quizás) ([f98cc21](https://github.com/ZR-TECDI/zrstats/commit/f98cc21))
+* **tests:** corregida configuración de travis ([33b0688](https://github.com/ZR-TECDI/zrstats/commit/33b0688))
+* **tests:** corregido script de tests en travis ([cf3ed84](https://github.com/ZR-TECDI/zrstats/commit/cf3ed84))
+
+
+### Features
+
+* **tests:** WIP agregados archivos de tests ([324b52a](https://github.com/ZR-TECDI/zrstats/commit/324b52a))
+
 # 0.1.0 (2019-09-13)
 
 
