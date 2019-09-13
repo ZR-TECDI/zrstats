@@ -1,0 +1,16 @@
+language: python
+python:
+  - '3.4'
+before_install:
+  - pip3 install django
+jobs:
+  include:
+    - stage: test
+      script:
+      - python3 asistencia/tests.py
+    - stage: release
+      script:
+      - nvm install lts/*
+      - npm install @semantic-release/changelog -D
+      - npm install @semantic-release/git -D
+      - npx semantic-release
