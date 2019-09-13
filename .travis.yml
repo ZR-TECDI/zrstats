@@ -7,7 +7,7 @@ jobs:
       install:
       - pip install -r requirements.txt
       script:
-      - python3 asistencia/tests.py
+      - python3 manage.py test asistencia
     - stage: release
       language: bash
       script:
