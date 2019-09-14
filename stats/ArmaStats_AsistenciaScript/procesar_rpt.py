@@ -113,9 +113,9 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     # Tomando datos de misión desde el reporte
     dic_mision['fecha'] = fecha_rpt
     # TODO leer esta data desde el reporte/generar data en el reporte con KDM
-    dic_mision['tipo_mision'] = 'OFICIAL'
-    dic_mision['nombre_mision'] = 'templateZR'
-    dic_mision['campana'] = 'Campaña de la nieve'
+    dic_mision['tipo_mision'] = 'OTROS'
+    dic_mision['nombre_mision'] = 'test'
+    dic_mision['nombre_campa'] = 'Campaña de la nieve'
     dic_mision['editor'] = 'ZR TECDI'
     resultado_reporte.append(dic_mision)
 
