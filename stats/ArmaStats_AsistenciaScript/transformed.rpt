@@ -49917,8 +49917,6 @@ if (VCM_FFEARTILLERY) then {nul = [] execVM >
 2019/02/05, 20:11:09 Server: Object 18:117 not found (message Type_121)
 2019/02/05, 20:11:09 Server: Object 25:97 not found (message Type_121)
 2019/02/05, 20:11:09 Server: Object 46:25 not found (message Type_121)
-2019/02/05, 20:11:10 OPD DATA [2,"","__SERVER__",false,2]
-2019/02/05, 20:11:10 "ZRASISTENCIA: __SERVER__ desconectado"
 2019/02/05, 20:11:10 OPD DATA [6.52172e+008,"76561198012558391","Asp.Zlidus",true,6]
 2019/02/05, 20:11:10 "ZRASISTENCIA: Asp.Zlidus desconectado"
 2019/02/05, 20:11:10 OPD DATA [2.83051e+008,"76561198351678090","Asp.Freddy",true,7]

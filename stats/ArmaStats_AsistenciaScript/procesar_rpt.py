@@ -11,7 +11,7 @@ from collections import defaultdict
 import datetime
 import os
 import sys
-from django.conf import settings
+# from django.conf import settings
 
 #globals
 fecha_rpt = []
@@ -183,3 +183,13 @@ def main(upload):
     resultado_asistencia = calculo_tiempo(rptdata)
 
     return resultado_asistencia
+
+def local_debug():
+    archivo_prueba = os.path.dirname(os.path.realpath(__file__)) + '\\transformed.rpt'
+    rptdata = leer_rpt(archivo_prueba)
+    resultado_asistencia = calculo_tiempo(rptdata)
+
+    print(resultado_asistencia)
+
+if __name__ == '__main__':
+    local_debug()
