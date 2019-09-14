@@ -1,8 +1,8 @@
 #/usr/bin/env python3
 # -*. coding: utf-8 -*-
 
-"""ZRAsistencia es un módulo de ZRStats, su función es leer un archivo RPT y entregar un reporte de stats
-que posteriormente será comparado con una base de datos en ZRStats."""
+"""Lector es un script, componente de ZR_Stats cuyo fin es meramente leer y procesar los archivos rpt generados por Arma 3
+y escupir un diccionario con la información de asistencia y estadísticas que capture"""
 
 
 #imports
@@ -11,18 +11,10 @@ from collections import defaultdict
 import datetime
 import os
 import sys
-# descomentar en caso de web app
-#from django.conf import settings
+from django.conf import settings
 
-# variables globales
-global debug
-debug = False
-
-global ruta
-if debug:
-    ruta = "rutastrix"
-else:
-    ruta = "data4.rpt"
+#globals
+fecha_rpt = []
 
 # funciones
 def leer_rpt(data):
@@ -185,12 +177,9 @@ Retorna un diccionario de formato tt = {jugador: [rango, stats, requiere atencio
             
     return tt
 
-def main():
+def main(upload):
     """Launcher."""
-    rptdata    = leer_rpt(ruta)
+    rptdata    = leer_rpt(upload)
     resultado_asistencia = calculo_tiempo(rptdata)
-    print (fecha_rpt)
-    print(resultado_asistencia)
 
-if __name__ == "__main__":
-    main()
+    return resultado_asistencia
