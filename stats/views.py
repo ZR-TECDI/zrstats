@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
-from .ArmaStats import armastats, zrasistencia
+from .ArmaStats_AsistenciaScript import armastats, zrasistencia
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from .models import Miembro, Asistencia, Mision
@@ -10,7 +10,7 @@ from django.views.generic.list import ListView
 
 
 def index_view(request):
-    return render(request, 'asistencia/index.html', {})
+    return render(request, 'stats/index.html', {})
 
 
 def upload_file(request):
@@ -54,11 +54,11 @@ def upload_file(request):
             return HttpResponseRedirect('/success/url/')
     else:
         form = UploadReporteForm()
-    return render(request, 'asistencia/upload.html', {'form': form})
+    return render(request, 'stats/upload.html', {'form': form})
 
 
 class AsistenciaListView(ListView):
-    template_name = 'asistencia/tabla_asistencia.html'
+    template_name = 'stats/tabla_asistencia.html'
     model = Asistencia
     paginate_by = 100  # if pagination is desired
 

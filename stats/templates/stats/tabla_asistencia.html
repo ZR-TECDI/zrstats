@@ -1,9 +1,9 @@
-{% extends 'asistencia/base.html' %}
+{% extends 'stats/base.html' %}
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'asistencia/octopus/assets/vendor/select2/select2.css'%}" />
-    <link rel="stylesheet" href="{% static 'asistencia/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css'%}" />
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/select2/select2.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/jquery-datatables-bs3/assets/css/datatables.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -45,7 +45,7 @@
                                         <td class="danger" data-toggle="tooltip" data-placement="top" title="Sesión: {{ a.tiempo_de_sesion }}">{{ a.asistencia }}</td>
                                     {% elif a.asistencia == 'asiste'%}
                                         <td class="success" data-toggle="tooltip" data-placement="top" title="Sesión: {{ a.tiempo_de_sesion }}">{{ a.asistencia }}</td>
-                                    {% elif a.asistencia == 'media asistencia'%}
+                                    {% elif a.asistencia == 'media stats'%}
                                         <td class="warning" data-toggle="tooltip" data-placement="top" title="Sesión: {{ a.tiempo_de_sesion }}">{{ a.asistencia }}</td>
                                     {% else %}
                                         <td data-toggle="tooltip" data-placement="top" title="Sesión: {{ a.tiempo_de_sesion }}">{{ a.asistencia }}</td>
@@ -69,10 +69,10 @@
 
 {% block extra_scripts %}
     <!-- Specific Page Vendor -->
-    <script src="{% static 'asistencia/octopus/assets/vendor/select2/select2.js'%}"></script>
-    <script src="{% static 'asistencia/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js'%}"></script>
-    <script src="{% static 'asistencia/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js'%}"></script>
-    <script src="{% static 'asistencia/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js'%}"></script>
+    <script src="{% static 'stats/octopus/assets/vendor/select2/select2.js' %}"></script>
+    <script src="{% static 'stats/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js' %}"></script>
+    <script src="{% static 'stats/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js' %}"></script>
 
     <script>
     $(function () {

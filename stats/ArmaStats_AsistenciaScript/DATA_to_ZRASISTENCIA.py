@@ -6,7 +6,7 @@ from django.conf import settings
 
 def leer_archivo(data):
     
-    with open(settings.BASE_DIR+'\\asistencia\\ArmaStats\\'+data, 'r') as f:
+    with open(settings.BASE_DIR+'\\stats\\ArmaStats_AsistenciaScript\\'+data, 'r') as f:
         raw_data = f.readlines()
 
 

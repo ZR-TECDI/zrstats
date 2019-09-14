@@ -1,6 +1,6 @@
 """Agrega los datos iniciales de forma automática"""
 
-from asistencia.models import *
+from stats.models import *
 from collections import defaultdict
 import os
 

@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from asistencia.models import Clase, Rango, Nacionalidad, Rol, \
+from stats.models import Clase, Rango, Nacionalidad, Rol, \
      Unidad, Miembro, Mision, Asistencia
 import json
 import os
@@ -11,18 +11,18 @@ class TestViews(TestCase):
     def test_index_GET(self):
         client = Client()
 
-        response = client.get(reverse('asistencia:index'))
+        response = client.get(reverse('stats:index'))
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'asistencia/index.html')
+        self.assertTemplateUsed(response, 'stats/index.html')
 
     def test_lista_GET(self):
         client = Client()
 
-        response = client.get(reverse('asistencia:asistencia-list'))
+        response = client.get(reverse('stats:stats-list'))
 
         self.assertAlmostEquals(response.status_code, 200)
-        self.assertTemplateUsed((response, 'asistencia/tabla_asistencia.html'))
+        self.assertTemplateUsed((response, 'stats/tabla_asistencia.html'))
 
     # def test_upload_POST(self):
 #TODO necesitamos testear este método, qué data recibe el post?
@@ -34,5 +34,5 @@ class TestViews(TestCase):
     #     with open(test_file) as t:
     #         reporte = t.readlines()
 
-    #     response = client.post('asistencia/upload.html', reporte)
+    #     response = client.post('stats/upload.html', reporte)
     #     self.assertAlmostEquals(response.status_code, 302)

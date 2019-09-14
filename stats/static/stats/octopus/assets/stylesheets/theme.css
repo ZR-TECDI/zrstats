@@ -11269,7 +11269,7 @@ ul.simple-post-list li:after {
 	clear: both;
 }
 
-ul.simple-post-list li:last-child {
+ul.simple-post-list li::last-child {
 	border-bottom: 0;
 }
 

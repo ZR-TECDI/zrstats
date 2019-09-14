@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
  
-"""Recolecta información desde el archivo RPT para validar o invalidar asistencia y luego pasarlo a una tabla."""
+"""Recolecta información desde el archivo RPT para validar o invalidar stats y luego pasarlo a una tabla."""
  
 # imports
 import re
 from collections import defaultdict
 import datetime
-import asistencia.ArmaStats.DATA_to_ZRASISTENCIA as cdata
+import stats.ArmaStats_AsistenciaScript.DATA_to_ZRASISTENCIA as cdata
 from django.conf import settings
 
 # global variables
@@ -86,9 +86,9 @@ Retorna un diccionario de formato: {jugador: [[fecha, hora, conectado/desconecta
 
 def calculo_tiempo(data_total):
     """Lee en todas las sesiones de juego que registra el RPT y suma el tiempo total de juego, luego lo compara con el tiempo que debería haber estado activo y 
-    revela si su asistencia es válida o no, además de haber atraso lo acusa al final.
+    revela si su stats es válida o no, además de haber atraso lo acusa al final.
 
-Retorna un diccionario de formato tt = {jugador: [calculo_tiempo, asistencia, atraso]}"""
+Retorna un diccionario de formato tt = {jugador: [calculo_tiempo, stats, atraso]}"""
     
     tt = {}
     for x, y in data_total.items():
@@ -148,10 +148,10 @@ Retorna un diccionario de formato tt = {jugador: [calculo_tiempo, asistencia, at
         if total_time >= tiempo_asistencia:
             asistencia = "asiste"
         elif total_time <= tiempo_asistencia and total_time > tiempo_minimo:
-            asistencia = "media asistencia"
+            asistencia = "media stats"
         else:
             asistencia = "falta"
-            print("\n"+ x + " no tiene suficiente tiempo de juego para considerarlo asistencia...")
+            print("\n"+ x + " no tiene suficiente tiempo de juego para considerarlo stats...")
             print("¿Quizás " + x + " tuvo falla de conexión?\n")
         
         tt.setdefault(x, []).append(str(total_time))
@@ -173,14 +173,14 @@ Retorna una lista con todos los jugadores actualmente conectados"""
 
 
 def generaReporte(asistenciaDict):
-    """" Lee el .txt con la lista de miembros activos y la compara con el diccionario de asistencia generado.
+    """" Lee el .txt con la lista de miembros activos y la compara con el diccionario de stats generado.
     Crea un .txt reportando los resultados en un formato humano legible """
 
     # genera la lista de miembros a partir del .txt, quito el caracter newline y le pongo FALTA como valor default
-    with open(settings.BASE_DIR+'\\asistencia\\ArmaStats\\'+"listaZR.txt", "r") as f:
+    with open(settings.BASE_DIR+'\\stats\\ArmaStats_AsistenciaScript\\'+"listaZR.txt", "r") as f:
         listaZR = []
         for line in f:
-            jugador = {'nombre': line.strip('\n'), 'asistencia': "falta", 'tiempo': "---"}
+            jugador = {'nombre': line.strip('\n'), 'stats': "falta", 'tiempo': "---"}
             listaZR.append(jugador)
 
     server = asistenciaDict.pop("__SERVER__") #quito el server de la lista de jugadores
@@ -190,15 +190,15 @@ def generaReporte(asistenciaDict):
             j1 = jugador.split('.', 1)[1]  # toma solo el nombre sin el rango, en el if se pasa a UPPER
             j2 = jugadorLista['nombre'].upper().split(' ', 1)  # toma solo el nombre sin la unidad y lo pasa a UPPER
             if j1.upper() == j2[1]:  # si figura en ambos archivos, es que se conectó al server.
-                jugadorLista['asistencia'] = asistencia[1]  # Reemplazo la Falta por la asistencia en ListaZR
+                jugadorLista['stats'] = asistencia[1]  # Reemplazo la Falta por la stats en ListaZR
                 jugadorLista['tiempo'] = asistencia[0]
 
     # escribo el reporte linea por linea
     i = 1
     today = datetime.datetime.today().strftime('%Y-%m-%d')
-    with open(settings.BASE_DIR+'\\asistencia\\ArmaStats\\'+'reporte ('+today+').txt', 'w') as reporte:
+    with open(settings.BASE_DIR+'\\stats\\ArmaStats_AsistenciaScript\\'+'reporte ('+today+').txt', 'w') as reporte:
         for jugadorLista in listaZR:
-            reporte.write(str(i) + ") " + jugadorLista['nombre'] + "  " + jugadorLista['asistencia'] + " " + jugadorLista['tiempo']+"\n")
+            reporte.write(str(i) + ") " + jugadorLista['nombre'] + "  " + jugadorLista['stats'] + " " + jugadorLista['tiempo']+"\n")
             i += 1
 
 
@@ -219,7 +219,7 @@ def main(uploadFile):
     else:
         print("No hay jugadores conectados\n\n")
     
-    print("\nDetalle de asistencia: ")
+    print("\nDetalle de stats: ")
     for x, y in asistencia.items():
         print(x, y)
 

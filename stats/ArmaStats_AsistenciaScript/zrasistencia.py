@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 # -*. coding: utf-8 -*-
 
-"""ZRAsistencia es un módulo de ZRStats, su función es leer un archivo RPT y entregar un reporte de asistencia 
+"""ZRAsistencia es un módulo de ZRStats, su función es leer un archivo RPT y entregar un reporte de stats
 que posteriormente será comparado con una base de datos en ZRStats."""
 
 
@@ -46,7 +46,7 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
 # Error y matar proceso en caso de que no existan resultados en el RPT
         if not rpt:
             print("No se encontraron eventos en el archivo RPT,")
-            print("probablemente no está presente el EH para registrar asistencia.")
+            print("probablemente no está presente el EH para registrar stats.")
             print("Procure instalar el archivo initServer que proveemos en nuestro repo.")
             os.system("pause")
             sys.exit()
@@ -103,9 +103,9 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
 
 def calculo_tiempo(data_total):
     """Lee en todas las sesiones de juego que registra el RPT y suma el tiempo total de juego, luego lo compara con el tiempo que debería haber estado activo y 
-    revela si su asistencia es válida o no, además de haber atraso lo acusa al final.
+    revela si su stats es válida o no, además de haber atraso lo acusa al final.
 
-Retorna un diccionario de formato tt = {jugador: [rango, asistencia, requiere atencion, tiempo de sesion]}"""
+Retorna un diccionario de formato tt = {jugador: [rango, stats, requiere atencion, tiempo de sesion]}"""
 
     tt = {}
     
