@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 def index_view(request):
     return render(request, 'stats/index.html', {})
 
-
+# TODO hacer esta función más linda
 def upload_file(request):
     if request.method == 'POST':
         form = UploadReporteForm(request.POST, request.FILES)

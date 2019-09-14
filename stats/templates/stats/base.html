@@ -1,3 +1,5 @@
+{% load static %}
+
 <!doctype html>
 <html class="fixed sidebar-left-collapsed">
 	<head>
@@ -5,13 +7,12 @@
 		<!-- Basic -->
 		<meta charset="UTF-8">
 
-        {% load staticfiles %}
-
-		<title>{% block head_title %}{% endblock %}</title>
-
-        {% block extra_css %}
+        {% block head_title %}
+		<title>TITULO</title>
         {% endblock %}
-
+		<meta name="keywords" content="ZR Stats" />
+		<meta name="description" content="Backend de Estadísticas ZR Army">
+		<meta name="author" content="Strix">
 
 		<!-- Mobile Metas -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -37,47 +38,211 @@
 		<!-- Head Libs -->
 		<script src="{% static 'stats/octopus/assets/vendor/modernizr/modernizr.js' %}"></script>
 
+        {% block head_extra %}
+        {% endblock %}
+
 
 	</head>
 	<body>
 		<section class="body">
 
-            {% block header %}
 			<!-- start: header -->
 			<header class="header">
 				<div class="logo-container">
 					<a href="../" class="logo">
-						<img src="{% static 'stats/octopus/assets/images/logo.png' %}" height="35" alt="Porto Admin"/>
+						<img src="{% static 'stats/img/zr_stats_logo.png' %}" height="40px" alt="Logo"/>
 					</a>
-					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened" >
+					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
 						<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
 					</div>
 				</div>
 
+                {% block user_top_bar %}
 				<!-- start: search & user box -->
 				<div class="header-right">
 
+					<form action="" class="search nav-form">
+						<div class="input-group input-search">
+							<input type="text" class="form-control" name="q" id="q" placeholder="Search...">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
+					</form>
+
 					<span class="separator"></span>
 
-                    {% block userbox %}
+					<ul class="notifications">
+						<li>
+							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+								<i class="fa fa-tasks"></i>
+								<span class="badge">3</span>
+							</a>
+
+							<div class="dropdown-menu notification-menu large">
+								<div class="notification-title">
+									<span class="pull-right label label-default">3</span>
+									Tasks
+								</div>
+
+								<div class="content">
+									<ul>
+										<li>
+											<p class="clearfix mb-xs">
+												<span class="message pull-left">Generating Sales Report</span>
+												<span class="message pull-right text-dark">60%</span>
+											</p>
+											<div class="progress progress-xs light">
+												<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
+											</div>
+										</li>
+
+										<li>
+											<p class="clearfix mb-xs">
+												<span class="message pull-left">Importing Contacts</span>
+												<span class="message pull-right text-dark">98%</span>
+											</p>
+											<div class="progress progress-xs light">
+												<div class="progress-bar" role="progressbar" aria-valuenow="98" aria-valuemin="0" aria-valuemax="100" style="width: 98%;"></div>
+											</div>
+										</li>
+
+										<li>
+											<p class="clearfix mb-xs">
+												<span class="message pull-left">Uploading something big</span>
+												<span class="message pull-right text-dark">33%</span>
+											</p>
+											<div class="progress progress-xs light mb-xs">
+												<div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%;"></div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+								<i class="fa fa-envelope"></i>
+								<span class="badge">4</span>
+							</a>
+
+							<div class="dropdown-menu notification-menu">
+								<div class="notification-title">
+									<span class="pull-right label label-default">230</span>
+									Messages
+								</div>
+
+								<div class="content">
+									<ul>
+										<li>
+											<a href="#" class="clearfix">
+												<figure class="image">
+													<img src="" alt="" />
+												</figure>
+												<span class="title">Joseph Doe</span>
+												<span class="message">Lorem ipsum dolor sit.</span>
+											</a>
+										</li>
+										<li>
+											<a href="#" class="clearfix">
+												<figure class="image">
+													<img src="" alt="" />
+												</figure>
+												<span class="title">Joseph Junior</span>
+												<span class="message truncate">Truncated message. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam, nec venenatis risus. Vestibulum blandit faucibus est et malesuada. Sed interdum cursus dui nec venenatis. Pellentesque non nisi lobortis, rutrum eros ut, convallis nisi. Sed tellus turpis, dignissim sit amet tristique quis, pretium id est. Sed aliquam diam diam, sit amet faucibus tellus ultricies eu. Aliquam lacinia nibh a metus bibendum, eu commodo eros commodo. Sed commodo molestie elit, a molestie lacus porttitor id. Donec facilisis varius sapien, ac fringilla velit porttitor et. Nam tincidunt gravida dui, sed pharetra odio pharetra nec. Duis consectetur venenatis pharetra. Vestibulum egestas nisi quis elementum elementum.</span>
+											</a>
+										</li>
+										<li>
+											<a href="#" class="clearfix">
+												<figure class="image">
+													<img src="" alt="" />
+												</figure>
+												<span class="title">Joe Junior</span>
+												<span class="message">Lorem ipsum dolor sit.</span>
+											</a>
+										</li>
+										<li>
+											<a href="#" class="clearfix">
+												<figure class="image">
+													<img src="" alt="" />
+												</figure>
+												<span class="title">Joseph Junior</span>
+												<span class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet lacinia orci. Proin vestibulum eget risus non luctus. Nunc cursus lacinia lacinia. Nulla molestie malesuada est ac tincidunt. Quisque eget convallis diam.</span>
+											</a>
+										</li>
+									</ul>
+
+									<hr />
+
+									<div class="text-right">
+										<a href="#" class="view-more">View All</a>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<a href="#" class="dropdown-toggle notification-icon" data-toggle="dropdown">
+								<i class="fa fa-bell"></i>
+								<span class="badge">3</span>
+							</a>
+
+							<div class="dropdown-menu notification-menu">
+								<div class="notification-title">
+									<span class="pull-right label label-default">3</span>
+									Alerts
+								</div>
+
+								<div class="content">
+									<ul>
+										<li>
+											<a href="#" class="clearfix">
+												<div class="image">
+													<i class="fa fa-thumbs-down bg-danger"></i>
+												</div>
+												<span class="title">Server is Down!</span>
+												<span class="message">Just now</span>
+											</a>
+										</li>
+										<li>
+											<a href="#" class="clearfix">
+												<div class="image">
+													<i class="fa fa-lock bg-warning"></i>
+												</div>
+												<span class="title">User Locked</span>
+												<span class="message">15 minutes ago</span>
+											</a>
+										</li>
+										<li>
+											<a href="#" class="clearfix">
+												<div class="image">
+													<i class="fa fa-signal bg-success"></i>
+												</div>
+												<span class="title">Connection Restaured</span>
+												<span class="message">10/10/2014</span>
+											</a>
+										</li>
+									</ul>
+
+									<hr />
+
+									<div class="text-right">
+										<a href="#" class="view-more">View All</a>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+
+					<span class="separator"></span>
+
 					<div id="userbox" class="userbox">
 						<a href="#" data-toggle="dropdown">
-                                {% if user.is_authenticated %}
-                                    <figure class="profile-picture">
-								    <img src="{{ user.socio.image_url|default_if_none:'#' }}" alt="Joseph Doe" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
-							        </figure>
-							        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-                                    <span class="name">{{ user.socio.first_name }} {{ user.socio.last_name }}</span>
-								    <span class="role">{{ user.username }}</span>
-                                {% else %}
-                                    <figure class="profile-picture">
-								    <img src="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
-							        </figure>
-							        <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-                                    <span class="name">John Doe Junior</span>
-								    <span class="role">administrator</span>
-                                {% endif %}
-
+							<figure class="profile-picture">
+								<img src="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+							</figure>
+							<div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+								<span class="name">John Doe Junior</span>
+								<span class="role">administrator</span>
 							</div>
 
 							<i class="fa custom-caret"></i>
@@ -87,102 +252,87 @@
 							<ul class="list-unstyled">
 								<li class="divider"></li>
 								<li>
-{#									<a role="menuitem" tabindex="-1" href="{% url 'stats:socio-detail' user.id %}"><i class="fa fa-user"></i> My Profile</a>#}
-								</li>
-                                <li>
-{#									<a role="menuitem" tabindex="-1" href="{% url 'stats:socio-edit' user.id %}"><i class="fa fa-user"></i> Edit Profile</a>#}
+									<a role="menuitem" tabindex="-1" href=""><i class="fa fa-user"></i> My Profile</a>
 								</li>
 								<li>
-{#									<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>#}
+									<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
 								</li>
 								<li>
-									<a role="menuitem" tabindex="-1" href="{% static 'stats/octopus/pages-signin.html' %}"><i class="fa fa-power-off"></i> Logout</a>
+									<a role="menuitem" tabindex="-1" href=""><i class="fa fa-power-off"></i> Logout</a>
 								</li>
 							</ul>
 						</div>
 					</div>
-                    {% endblock %}
 				</div>
 				<!-- end: search & user box -->
+                {% endblock %}
 			</header>
-            {% endblock %}
 			<!-- end: header -->
 
-            {% block sidebar %}
 			<div class="inner-wrapper">
+
 				<!-- start: sidebar -->
 				<aside id="sidebar-left" class="sidebar-left">
 
-					<div class="sidebar-header" >
+					<div class="sidebar-header">
 						<div class="sidebar-title">
-							Navigation
+							--
 						</div>
 						<div class="sidebar-toggle hidden-xs" data-toggle-class="sidebar-left-collapsed" data-target="html" data-fire-event="sidebar-left-toggle">
 							<i class="fa fa-bars" aria-label="Toggle sidebar"></i>
 						</div>
 					</div>
 
-					<div class="nano" >
+					<div class="nano">
 						<div class="nano-content">
-							<nav id="menu" class="nav-asistencia" role="navigation">
-								<ul class="nav nav-asistencia">
-                                    <li>
-										<a href="index.html">
+							<nav id="menu" class="nav-main" role="navigation">
+								<ul class="nav nav-main">
+									<li>
+										<a href="{% url 'stats:index' %}">
 											<i class="fa fa-home" aria-hidden="true"></i>
-											<span>Dashboard</span>
+											<span>Home</span>
 										</a>
 									</li>
-                                    {% block sidebar_navigation_extra %}
-                                    {% endblock %}
-                                </ul>
+								</ul>
 							</nav>
 
 							<hr class="separator" />
-
-                            {% block sidebar_widgets %}
-                            {% endblock %}
-
-						</div><!-- end: nano-content -->
-					</div><!-- end: nano -->
-
+						</div>
+					</div>
 				</aside>
 				<!-- end: sidebar -->
-                {% endblock %}
-
-				<section role="asistencia" class="content-body">
-					<header class="page-header" style="background-image: url({% static 'stats/img/mc-black2.png' %});background-repeat: repeat-x; background-size:40%">
-
-						<h2>{% block page_title %}Blank Page{% endblock %}</h2>
 
 
+				<section role="main" class="content-body">
+					<header class="page-header">
+						<h2>{% block titulo_pagina %}TITULO{% endblock %}</h2>
+
+                        {% block breadcrumbs %}
 						<div class="right-wrapper pull-right">
 							<ol class="breadcrumbs">
-                                {% block breadcrumbs %}
 								<li>
-									<a href="index.html">
+									<a href="{% url 'stats:index' %}">
 										<i class="fa fa-home"></i>
 									</a>
 								</li>
-								<li><span>Pages</span></li>
-								<li><span>Blank Page</span></li>
-                                {% endblock %}
+								<li><span>Inicio</span></li>
 							</ol>
-
-							{% block right_sidebar_toggle %}
-                            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
                             {% endblock %}
+
+                            {% block sidebar_right_open_button %}
+							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
 						</div>
+                        {% endblock %}
 					</header>
 
 					<!-- start: page -->
-                    {% block content %}
+                    {% block page_content %}
                     {% endblock %}
 					<!-- end: page -->
 				</section>
 			</div>
 
-
-            {% block right_sidebar %}
+            {% block sidebar_right %}
 			<aside id="sidebar-right" class="sidebar-right">
 				<div class="nano">
 					<div class="nano-content">
@@ -209,7 +359,7 @@
 								<ul>
 									<li class="status-online">
 										<figure class="profile-picture">
-											<img src="{% static 'stats/octopus/assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle' %}">
+											<img src="" alt="">
 										</figure>
 										<div class="profile-info">
 											<span class="name">Joseph Doe Junior</span>
@@ -218,7 +368,7 @@
 									</li>
 									<li class="status-online">
 										<figure class="profile-picture">
-											<img src="{% static 'stats/octopus/assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle' %}">
+											<img src="" alt="">
 										</figure>
 										<div class="profile-info">
 											<span class="name">Joseph Doe Junior</span>
@@ -227,7 +377,7 @@
 									</li>
 									<li class="status-offline">
 										<figure class="profile-picture">
-											<img src="{% static 'stats/octopus/assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle' %}">
+											<img src="" alt="">
 										</figure>
 										<div class="profile-info">
 											<span class="name">Joseph Doe Junior</span>
@@ -236,7 +386,7 @@
 									</li>
 									<li class="status-offline">
 										<figure class="profile-picture">
-											<img src="{% static 'stats/octopus/assets/images/!sample-user.jpg" alt="Joseph Doe" class="img-circle' %}">
+											<img src="" alt="">
 										</figure>
 										<div class="profile-info">
 											<span class="name">Joseph Doe Junior</span>
@@ -252,7 +402,6 @@
 			</aside>
             {% endblock %}
 		</section>
-
 
 		<!-- Vendor -->
 		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js' %}"></script>
@@ -271,12 +420,8 @@
 
 		<!-- Theme Initialization Files -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js' %}"></script>
-
         {% block extra_scripts %}
         {% endblock %}
-
-
-
 
 	</body>
 </html>
