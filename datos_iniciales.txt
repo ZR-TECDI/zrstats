@@ -52,11 +52,11 @@ Dis Enin MG MC PE R ECHO 1 1 --
 Dis Rivero MC FL VE A CAB 1 1 --
 Sgt Alberto MC MG MX A CAB 1 1 CMDA2
 Sgt1 Ghaos AT GL JP A CAB 1 1 CMDA3
-Cbo Felipe FL -- CL CAB 1 1 CMDA4
+Cbo Felipe FL -- CL A CAB 1 1 CMDA4
 Sgt1 Tano AT MG VE A CAB 1 1 CMD
 Dis Matos FL -- PE R CAB 1 1 --
 Inf Walter FL -- CL R CAB 1 1 --
-Inf Bajastar FL -- MX A CAB A
+Inf Bajastar FL -- MX A CAB -- A --
 Cbo1 Nikquitu MC RO ARG A FAZR -- 1 --
 Inf Kratos FL -- ARG A IMZR 1 1 A
 Inf Zlidus FL -- VE A CAB 1 1 --
@@ -64,5 +64,3 @@ Dis Perea MG AT VE R IMZR 1 1 --
 Inf Fhantom FL -- VE A FAZR -- 1 --
 Cbo Matako MC RO ARG R IMZR 1 2 --
 Cbo Toxic -- -- ARG A IMZR 1 2 --
-
-

@@ -4,7 +4,7 @@ from asistencia.models import *
 from collections import defaultdict
 import os
 
-lista = [Unidad, Rango, Rol, Clase, Nacionalidad, Miembro]
+lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase]
 for item in lista:
     item.objects.all().delete()
 
@@ -139,41 +139,38 @@ def agregar_miembros():
     with open(datos_iniciales) as txt:
         for line in txt.readlines():
             array = line.replace('\n', '').split(' ')
-
-            blabla = Rango.objects.get(abreviatura__iexact= array[0])
-            print (blabla)
-
             print(array)
-            miembro = Miembro.objects.create()
+
+            miembro = Miembro()
             miembro.nombre = array[1]
             print(miembro.nombre)
-            # miembro.rango = Rango.objects.get(abreviatura__iexact= array[0])
-            miembro.rango = Rango.objects.get(abreviatura = 'Cap')
+            miembro.rango = Rango.objects.get(abreviatura = array[0])
             print(miembro.rango)
             miembro.clase1 = Clase.objects.get(abreviatura = array[2])
             print(miembro.clase1)
             miembro.clase2 = Clase.objects.get(abreviatura = array[3])
             print(miembro.clase2)
             miembro.nacionalidad = Nacionalidad.objects.get(abreviatura = array[4])
+            print(miembro.nacionalidad)
 
-            ESTADO_CHOICES = (
-            ('Activo', 'Activo'),
-            ('Reserva', 'Reserva'),
-            ('Licencia', 'Licencia'),
-            ('No Miembro', 'No Miembro'),
-            )
             if array[5] == 'A':
-                el_estado = ESTADO_CHOICES[0]
+                el_estado = 'Activo'
             elif array[5] == 'R':
-                el_estado = ESTADO_CHOICES[1]
+                el_estado = 'Reserva'
             miembro.estado = el_estado
+            print(miembro.estado)
 
             miembro.unidad = Unidad.objects.get(abreviatura = array[6])
+            print(miembro.unidad)
             miembro.peloton = array[7]
+            print(miembro.peloton)
             miembro.escuadra = array[8]
+            print(miembro.escuadra)
             miembro.rol = Rol.objects.get(abreviatura = array[9])
+            print(miembro.rol)
 
             miembro.save()
+            print(miembro)
 
 def main():
     crear_unidades()
