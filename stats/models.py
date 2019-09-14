@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.timezone import now
 
 
@@ -55,6 +58,7 @@ class MiembroManager(models.Manager):
 
 
 class Miembro(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Usuario")
     rango = models.ForeignKey(Rango, verbose_name="Rango", on_delete=models.DO_NOTHING, null=False)
     nombre = models.CharField(max_length=20, verbose_name="Nombre", blank=False, null=False)
     clase1 = models.ForeignKey(Clase, verbose_name="Clase 1", on_delete=models.DO_NOTHING,
@@ -89,6 +93,16 @@ class Miembro(models.Model):
     def porcentaje_asistencia(self):
         cantidad_misiones = Mision.objects.all().count()
         cantidad_asistencias = self.asistencia_set.count()
+
+    # Estas dos funciones crean automáticamente el Miembro cuando un nuevo User se registra
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Miembro.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.socio.save()
 
 
 class Mision(models.Model):

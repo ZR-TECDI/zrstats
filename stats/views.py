@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
-from .ArmaStats_AsistenciaScript import armastats, zrasistencia
+from .ArmaStats_AsistenciaScript import armastats, zrasistencia, procesar_rpt
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from .models import Miembro, Asistencia, Mision
@@ -17,19 +17,23 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadReporteForm(request.POST, request.FILES)
         if form.is_valid():
-            reporte = Mision(reporte=request.FILES['file'])
-            reporte.fecha = datetime.today().strftime('%Y-%m-%d')
-            reporte.save()
+            mision = Mision(reporte=request.FILES['file'])
+            mision.nombre = "Test"
+            mision.tipo = "Otros"
+            mision.nombre_campa = "Campaña"
+            mision.fecha = datetime.today().strftime('%Y-%m-%d')
+            mision.save()
             #file = request.FILES['file']
-            #path = default_storage.save(str(reporte.reporte), ContentFile(reporte.reporte.read()))
-            #dict = zrasistencia.main_django(reporte.reporte.path)
-            dict = armastats.main(reporte.reporte.path)
+            #path = default_storage.save(str(mision.mision), ContentFile(mision.mision.read()))
+            #dict = zrasistencia.main_django(mision.mision.path)
+            #dict = armastats.main(mision.mision.path)
+            dict = procesar_rpt.main(mision.reporte.path)
             miembros = Miembro.objects.all()
 
             print("Comienza analisis-----")
             for miembro in miembros:  # miembro de la lista de la DB
                 asiste = Asistencia()
-                asiste.mision = reporte
+                asiste.mision = mision
                 asiste.miembro = miembro
                 asiste.fecha = datetime.today().strftime('%Y-%m-%d')
                 asiste.asistencia = 'Falta'

@@ -1,7 +1,13 @@
 {% extends 'stats/base.html' %}
 {% load static %}
 
-{% block content %}
+{% block head_title %}Upload{% endblock %}
+
+{% block titulo_pagina %}
+    Upload
+{% endblock %}
+
+{% block page_content %}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %} {{form.as_p}}
     <input type="submit" value="Upload" />
