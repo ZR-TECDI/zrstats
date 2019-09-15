@@ -6,10 +6,7 @@
 
 		<!-- Basic -->
 		<meta charset="UTF-8">
-
-        {% block head_title %}
-		<title>TITULO</title>
-        {% endblock %}
+        <title>{% block head_title %}TITULO{% endblock %}</title>
 		<meta name="keywords" content="ZR Stats" />
 		<meta name="description" content="Backend de Estadísticas ZR Army">
 		<meta name="author" content="Strix">
@@ -352,8 +349,8 @@
 					<header class="page-header">
 						<h2>{% block titulo_pagina %}TITULO{% endblock %}</h2>
 
+                        <div class="right-wrapper pull-right">
                         {% block breadcrumbs %}
-						<div class="right-wrapper pull-right">
 							<ol class="breadcrumbs">
 								<li>
 									<a href="{% url 'stats:index' %}">
@@ -363,15 +360,13 @@
 								<li><span>Inicio</span></li>
 							</ol>
                             {% endblock %}
-
-                            {% block sidebar_right_open_button %}
-							<a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
+                            <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
 						</div>
-                        {% endblock %}
 					</header>
 
 					<!-- start: page -->
                     {% block content %}
+                        Hey, no deberías ver esto!
                     {% endblock %}
 					<!-- end: page -->
 				</section>
