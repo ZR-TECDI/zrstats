@@ -1,17 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
-from .ArmaStats_AsistenciaScript import armastats, zrasistencia, procesar_rpt
+from .logics import procesar_rpt
+from .logics import procesar_resultado
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from .models import Miembro, Asistencia, Mision
 from datetime import datetime, timedelta
 from django.views.generic.list import ListView
 
+
 def index_view(request):
     return render(request, 'stats/index.html', {})
 
 # TODO hacer esta función más linda
+
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadReporteForm(request.POST, request.FILES)
@@ -28,8 +32,11 @@ def upload_file(request):
             #dict = armastats.main(mision.mision.path)
 
             print("Comienza analisis-----")
-########################################## te hice de una vez que lea datos de misión desde lo que le reportan ###################################
             mision = Mision(reporte=request.FILES['file'])
+            procesar_resultado(mision)
+            #####################################################
+            # - - - - - - - - - - - - - - - - - - cortar aquí
+            #####################################################
             resultado_rpt = procesar_rpt.main(mision.reporte.path)
             dict_mision = resultado_rpt[0]
             fecha = dict_mision['fecha']
@@ -49,7 +56,8 @@ def upload_file(request):
                 asiste.fecha = fecha
                 asiste.asistencia = 'Falta'
                 t = datetime.strptime("0:0:0", '%H:%M:%S')
-                delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+                delta = timedelta(
+                    hours=t.hour, minutes=t.minute, seconds=t.second)
                 asiste.tiempo_de_sesion = delta
                 asiste.save()
                 #print("Estoy en miembro: "+miembro.nombre)
@@ -71,16 +79,22 @@ def upload_file(request):
                     dict_jugador = resultado_rpt[index]
                     j1 = dict_jugador['nombre']
                     j2 = miembro.nombre.upper()
-                    if j1.upper() == j2: #si coinciden es que se conectó al server y debo crear un Asistencia
-                        asiste = Asistencia.objects.get(miembro=miembro, fecha=fecha)
+                    if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
+                        asiste = Asistencia.objects.get(
+                            miembro=miembro, fecha=fecha)
                         print("ENCONTRE A "+j1+" LE PONGO ASISTENCIA")
                         asiste.asistencia = dict_jugador['asistencia']
-                        t = datetime.strptime(dict_jugador['tiempo_sesion'], '%H:%M:%S')
-                        delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+                        t = datetime.strptime(
+                            dict_jugador['tiempo_sesion'], '%H:%M:%S')
+                        delta = timedelta(
+                            hours=t.hour, minutes=t.minute, seconds=t.second)
                         asiste.tiempo_de_sesion = delta
                         asiste.requiere_atencion = dict_jugador['requiere_atencion']
-                        #TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
+                        # TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
                         asiste.save()
+            #####################################################
+            # - - - - - - - - - - - - - - - - - - cortar aquí
+            #####################################################
 
             return HttpResponseRedirect('/success/url/')
     else:
