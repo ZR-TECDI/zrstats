@@ -78,7 +78,7 @@ class Rol(models.Model):
     abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
 
     def __str__(self):
-        return self.abreviatura
+        return self.rol
 
     class Meta:
         ordering = ('-pk',)
@@ -138,6 +138,7 @@ class Miembro(models.Model):
     peloton = models.CharField(max_length=20, verbose_name="Pelotón",  blank=True, null=True)
     escuadra = models.CharField(max_length=20, verbose_name="Escuadra",  blank=True, null=True)
     rol = models.ForeignKey(Rol, verbose_name="Rol", on_delete=models.DO_NOTHING,  blank=True, null=True)
+    avatar = models.ImageField(upload_to='avatar/', blank=True, null=True, verbose_name="Imagen de Avatar",)
     objects = MiembroManager()
 
     def __str__(self):
