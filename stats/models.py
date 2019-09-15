@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
+from django.urls import reverse
 
 
 class Clase(models.Model):
@@ -11,6 +12,18 @@ class Clase(models.Model):
 
     def __str__(self):
         return self.clase
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:clase_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:clase_update', args=(self.pk,))
 
 
 class RangoManager(models.Manager):
@@ -27,6 +40,18 @@ class Rango(models.Model):
     def __str__(self):
         return self.abreviatura
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:rango_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:rango_update', args=(self.pk,))
+
 
 class Nacionalidad(models.Model):
     pais = models.CharField(max_length=20, verbose_name="Pais", blank=False, null=False)
@@ -34,6 +59,18 @@ class Nacionalidad(models.Model):
 
     def __str__(self):
         return self.pais
+
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:nacionalidad_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:nacionalidad_update', args=(self.pk,))
 
 
 class Rol(models.Model):
@@ -43,6 +80,18 @@ class Rol(models.Model):
     def __str__(self):
         return self.abreviatura
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:rol_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:rol_update', args=(self.pk,))
+
 
 class Unidad(models.Model):
     nombre = models.CharField(max_length=20, verbose_name="Unidad", blank=False, null=False)
@@ -50,6 +99,15 @@ class Unidad(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:unidad_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:unidad_update', args=(self.pk,))
 
 
 class MiembroManager(models.Manager):
@@ -115,6 +173,18 @@ class Miembro(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.miembro.save()
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:miembro_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:miembro_update', args=(self.pk,))
+
 
 class Mision(models.Model):
     nombre = models.CharField(max_length=40, verbose_name="Nombre de Misión", blank=False, null=False)
@@ -137,6 +207,18 @@ class Mision(models.Model):
     def __str__(self):
         return "(" + str(self.fecha) + ") " + self.nombre + "[" + self.tipo + "]"
 
+    class Meta:
+        ordering = ('-pk',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:mision_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:mision_update', args=(self.pk,))
+
 
 class Asistencia(models.Model):
     mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
@@ -155,10 +237,19 @@ class Asistencia(models.Model):
     tiempo_de_sesion = models.DurationField(blank=False, null=False, default=0, verbose_name="Tiempo de Sesión")
     requiere_atencion = models.BooleanField(blank=False, null=False, verbose_name="Requiere Atención", default=False)
 
-    class Meta:
-        unique_together = ('miembro', 'fecha',)
-
     def __str__(self):
         return str(self.miembro) + " " + self.asistencia + "( " + str(self.fecha) + ")"
 
+    class Meta:
+        ordering = ('-pk',)
+        unique_together = ('miembro', 'fecha',)
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:asistencia_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:asistencia_update', args=(self.pk,))
 

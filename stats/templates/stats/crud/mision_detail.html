@@ -1,0 +1,15 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:mision_list' %}">Mision Listing</a></p>
+<table class="table">
+<tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
+<tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
+<tr><td>fecha</td><td>{{ object.fecha }}</td></tr>
+<tr><td>nombre_campa</td><td>{{ object.nombre_campa }}</td></tr>
+<tr><td>editores</td><td>{{ object.editores }}</td></tr>
+<tr><td>notas</td><td>{{ object.notas }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
+
+{% endblock %}

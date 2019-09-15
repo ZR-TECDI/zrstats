@@ -1,0 +1,13 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:miembro_list' %}">Miembro Listing</a></p>
+<table class="table">
+<tr><td>email</td><td>{{ object.email }}</td></tr>
+<tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
+<tr><td>peloton</td><td>{{ object.peloton }}</td></tr>
+<tr><td>escuadra</td><td>{{ object.escuadra }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Miembro</a>
+
+{% endblock %}

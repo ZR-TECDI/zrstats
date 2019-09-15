@@ -9,9 +9,8 @@ from datetime import datetime, timedelta
 from django.views.generic.list import ListView
 
 
-def handle_uploaded_file(f):
-    print("Comienza analisis-----")
-    mision = Mision(f)
+def handle_uploaded_file(mision_input):
+    mision = Mision(mision_input)
     resultado_rpt = procesar_rpt.main(mision.reporte.path)
     dict_mision = resultado_rpt[0]
     fecha = dict_mision['fecha']
@@ -52,13 +51,3 @@ def handle_uploaded_file(f):
                 # TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
                 asiste.save()
 
-
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadReporteForm(request.POST, request.FILES)
-        if form.is_valid():
-
-            return HttpResponseRedirect('/success/url/')
-    else:
-        form = UploadReporteForm()
-    return render(request, 'stats/upload.html', {'form': form})

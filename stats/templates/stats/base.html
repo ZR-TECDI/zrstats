@@ -300,6 +300,44 @@
 											<span>Home</span>
 										</a>
 									</li>
+                                    <li>
+										<a href="https://colorlib.com/polygon/octopus/index.html">
+											<i class="fa fa-globe" aria-hidden="true"></i>
+											<span>Template Demo Page</span>
+										</a>
+									</li>
+                                    <li class="nav-parent">
+                                        <a>
+                                            <i class="fa fa-align-left" aria-hidden="true"></i>
+                                            <span>CRUDs</span>
+                                        </a>
+                                        <ul class="nav nav-children" style="">
+                                            <li>
+                                                <a href="{% url 'stats:asistencia_list' %}">Asistencia</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:clase_list' %}">Clase</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:miembro_list' %}">Miembro</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:mision_list' %}">Misión</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:nacionalidad_list' %}">Nacionalidad</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:rango_list' %}">Rango</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:rol_list' %}">Rol</a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'stats:unidad_list' %}">Unidad</a>
+                                            </li>
+                                        </ul>
+                                    </li>
 								</ul>
 							</nav>
 
@@ -333,7 +371,7 @@
 					</header>
 
 					<!-- start: page -->
-                    {% block page_content %}
+                    {% block content %}
                     {% endblock %}
 					<!-- end: page -->
 				</section>

@@ -1,114 +1,218 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
-from .logics import procesar_rpt
 from .logics import procesar_resultado
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from .models import Miembro, Asistencia, Mision
-from datetime import datetime, timedelta
-from django.views.generic.list import ListView
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia
+from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm
 
 
 def index_view(request):
     return render(request, 'stats/index.html', {})
 
+
 # TODO hacer esta función más linda
-
-
 def upload_file(request):
     if request.method == 'POST':
         form = UploadReporteForm(request.POST, request.FILES)
         if form.is_valid():
-            # mision = Mision(reporte=request.FILES['file'])
-            # mision.nombre = "Test"
-            # mision.tipo = "Otros"
-            # mision.nombre_campa = "Campaña"
-            # mision.fecha = datetime.today().strftime('%Y-%m-%d')
-            # mision.save()
-            #file = request.FILES['file']
-            #path = default_storage.save(str(mision.mision), ContentFile(mision.mision.read()))
-            #dict = zrasistencia.main_django(mision.mision.path)
-            #dict = armastats.main(mision.mision.path)
-
-            print("Comienza analisis-----")
             mision = Mision(reporte=request.FILES['file'])
-            procesar_resultado(mision)
-            #####################################################
-            # - - - - - - - - - - - - - - - - - - cortar aquí
-            #####################################################
-            resultado_rpt = procesar_rpt.main(mision.reporte.path)
-            dict_mision = resultado_rpt[0]
-            fecha = dict_mision['fecha']
-            fecha = datetime.strptime(fecha, '%y:%m:%d')
-            miembros = Miembro.objects.all()
-
-            mision.nombre = dict_mision['nombre_mision']
-            mision.tipo = dict_mision['tipo_mision']
-            mision.nombre_campa = dict_mision['nombre_campa']
-            mision.fecha = fecha
-            mision.save()
-
-            for miembro in miembros:  # miembro de la lista de la DB
-                asiste = Asistencia()
-                asiste.mision = mision
-                asiste.miembro = miembro
-                asiste.fecha = fecha
-                asiste.asistencia = 'Falta'
-                t = datetime.strptime("0:0:0", '%H:%M:%S')
-                delta = timedelta(
-                    hours=t.hour, minutes=t.minute, seconds=t.second)
-                asiste.tiempo_de_sesion = delta
-                asiste.save()
-                #print("Estoy en miembro: "+miembro.nombre)
-                # for jugador, asistencia in dict.items():  # el dict retornado por el script
-                #     #print("Estoy en JUGADOR: " + jugador.split('.', 1)[1])
-                #     j1 = jugador.split('.', 1)[1]  # toma solo el nombre sin el rango, en el if se pasa a UPPER
-                #     j2 = miembro.nombre.upper()  # toma el nombre de Miembro y lo pasa a UPPER
-                #     if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
-                #         asiste = Asistencia.objects.get(miembro=miembro, fecha=datetime.today().strftime('%Y-%m-%d'))
-                #         print("ENCONTRE A "+j1+" LE PONGO ASISTENCIA")
-                #         asiste.asistencia = asistencia[1]
-                #         t = datetime.strptime(asistencia[0], '%H:%M:%S')
-                #         delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
-                #         asiste.tiempo_de_sesion = delta
-                #         #asiste.requiere_atencion = False
-                #         asiste.save()
-
-                for index in resultado_rpt[1:len(resultado_rpt)]:
-                    dict_jugador = resultado_rpt[index]
-                    j1 = dict_jugador['nombre']
-                    j2 = miembro.nombre.upper()
-                    if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
-                        asiste = Asistencia.objects.get(
-                            miembro=miembro, fecha=fecha)
-                        print("ENCONTRE A "+j1+" LE PONGO ASISTENCIA")
-                        asiste.asistencia = dict_jugador['asistencia']
-                        t = datetime.strptime(
-                            dict_jugador['tiempo_sesion'], '%H:%M:%S')
-                        delta = timedelta(
-                            hours=t.hour, minutes=t.minute, seconds=t.second)
-                        asiste.tiempo_de_sesion = delta
-                        asiste.requiere_atencion = dict_jugador['requiere_atencion']
-                        # TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
-                        asiste.save()
-            #####################################################
-            # - - - - - - - - - - - - - - - - - - cortar aquí
-            #####################################################
-
+            procesar_resultado.handle_uploaded_file(mision)
             return HttpResponseRedirect('/success/url/')
     else:
         form = UploadReporteForm()
     return render(request, 'stats/upload.html', {'form': form})
 
 
-class AsistenciaListView(ListView):
-    template_name = 'stats/tabla_asistencia.html'
-    model = Asistencia
-    paginate_by = 100  # if pagination is desired
+# class AsistenciaListView(ListView):
+#     template_name = 'stats/tabla_asistencia.html'
+#     model = Asistencia
+#     paginate_by = 100  # if pagination is desired
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['miembros'] = Miembro.objects.all()
+#         context['reportes'] = Mision.objects.all()
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['miembros'] = Miembro.objects.all()
-        context['reportes'] = Mision.objects.all()
-        return context
+
+# ======================================================================================================================
+#                      Funciones CRUD (Create, Read, Update and Delete) básicas de los Models
+# ======================================================================================================================
+
+class ClaseListView(ListView):
+    template_name = 'stats/crud/clase_list.html'
+    model = Clase
+
+
+class ClaseCreateView(CreateView):
+    template_name = 'stats/crud/clase_form.html'
+    model = Clase
+    form_class = ClaseForm
+
+
+class ClaseDetailView(DetailView):
+    template_name = 'stats/crud/clase_detail.html'
+    model = Clase
+
+
+class ClaseUpdateView(UpdateView):
+    template_name = 'stats/crud/clase_form.html'
+    model = Clase
+    form_class = ClaseForm
+
+
+class RangoListView(ListView):
+    template_name = 'stats/crud/rango_list.html'
+    model = Rango
+
+
+class RangoCreateView(CreateView):
+    template_name = 'stats/crud/rango_form.html'
+    model = Rango
+    form_class = RangoForm
+
+
+class RangoDetailView(DetailView):
+    template_name = 'stats/crud/rango_detail.html'
+    model = Rango
+
+
+class RangoUpdateView(UpdateView):
+    template_name = 'stats/crud/rango_form.html'
+    model = Rango
+    form_class = RangoForm
+
+
+class NacionalidadListView(ListView):
+    template_name = 'stats/crud/nacionalidad_list.html'
+    model = Nacionalidad
+
+
+class NacionalidadCreateView(CreateView):
+    template_name = 'stats/crud/nacionalidad_form.html'
+    model = Nacionalidad
+    form_class = NacionalidadForm
+
+
+class NacionalidadDetailView(DetailView):
+    template_name = 'stats/crud/nacionalidad_detail.html'
+    model = Nacionalidad
+
+
+class NacionalidadUpdateView(UpdateView):
+    template_name = 'stats/crud/nacionalidad_form.html'
+    model = Nacionalidad
+    form_class = NacionalidadForm
+
+
+class RolListView(ListView):
+    template_name = 'stats/crud/rol_list.html'
+    model = Rol
+
+
+class RolCreateView(CreateView):
+    template_name = 'stats/crud/rol_form.html'
+    model = Rol
+    form_class = RolForm
+
+
+class RolDetailView(DetailView):
+    template_name = 'stats/crud/rol_detail.html'
+    model = Rol
+
+
+class RolUpdateView(UpdateView):
+    template_name = 'stats/crud/rol_form.html'
+    model = Rol
+    form_class = RolForm
+
+
+class UnidadListView(ListView):
+    template_name = 'stats/crud/unidad_list.html'
+    model = Unidad
+
+
+class UnidadCreateView(CreateView):
+    template_name = 'stats/crud/unidad_form.html'
+    model = Unidad
+    form_class = UnidadForm
+
+
+class UnidadDetailView(DetailView):
+    template_name = 'stats/crud/unidad_detail.html'
+    model = Unidad
+
+
+class UnidadUpdateView(UpdateView):
+    template_name = 'stats/crud/unidad_form.html'
+    model = Unidad
+    form_class = UnidadForm
+
+
+class MiembroListView(ListView):
+    template_name = 'stats/crud/miembro_list.html'
+    model = Miembro
+
+
+class MiembroCreateView(CreateView):
+    template_name = 'stats/crud/miembro_form.html'
+    model = Miembro
+    form_class = MiembroForm
+
+
+class MiembroDetailView(DetailView):
+    template_name = 'stats/crud/miembro_detail.html'
+    model = Miembro
+
+
+class MiembroUpdateView(UpdateView):
+    template_name = 'stats/crud/miembro_form.html'
+    model = Unidad
+    form_class = UnidadForm
+
+
+class MisionListView(ListView):
+    template_name = 'stats/crud/mision_list.html'
+    model = Mision
+
+
+class MisionCreateView(CreateView):
+    template_name = 'stats/crud/mision_form.html'
+    model = Mision
+    form_class = MisionForm
+
+
+class MisionDetailView(DetailView):
+    template_name = 'stats/crud/mision_detail.html'
+    model = Mision
+
+
+class MisionUpdateView(UpdateView):
+    template_name = 'stats/crud/mision_form.html'
+    model = Mision
+    form_class = MisionForm
+
+
+class AsistenciaListView(ListView):
+    template_name = 'stats/crud/asistencia_list.html'
+    model = Asistencia
+
+
+class AsistenciaCreateView(CreateView):
+    template_name = 'stats/crud/asistencia_form.html'
+    model = Asistencia
+    form_class = AsistenciaForm
+
+
+class AsistenciaDetailView(DetailView):
+    template_name = 'stats/crud/asistencia_detail.html'
+    model = Asistencia
+
+
+class AsistenciaUpdateView(UpdateView):
+    template_name = 'stats/crud/asistencia_form.html'
+    model = Asistencia
+    form_class = AsistenciaForm
+
+
