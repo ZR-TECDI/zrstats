@@ -89,7 +89,6 @@
 							<div class="form-group mb-lg">
 								<div class="clearfix">
 									<label for="id_password" class="pull-left">Contraseña</label>
-									<a href="pages-recover-password.html" class="pull-right">Olvidé mi contraseña</a>
 								</div>
 								<div class="input-group input-group-icon">
 									<input id="id_password" name="password" type="password" class="form-control input-lg" />
@@ -103,18 +102,17 @@
 
 							<div class="row">
 								<div class="col-sm-8">
-									<div class="checkbox-custom checkbox-default">
-										<input id="RememberMe" name="rememberme" type="checkbox"/>
-										<label for="RememberMe">Recuérdame</label>
-									</div>
 								</div>
 								<div class="col-sm-4 text-right">
 									<button type="submit" value="Login"  class="btn btn-primary hidden-xs">Acceder</button>
 									<button type="submit" value="Login"  class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Acceder</button>
 								</div>
 							</div>
+                            <br>
 
-							<p class="text-center">No tienes una cuenta? <a href="pages-signup.html">Registrarme!</a>
+
+                            <span><a href="{% url 'password_reset' %}" class="pull-right">Olvidé mi contraseña</a></span>
+							<p class="text-center">No tienes una cuenta? <a href="{% url 'signup' %}">Registrarme!</a>
 
 						</form>
 					</div>

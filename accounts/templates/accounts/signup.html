@@ -75,25 +75,60 @@
 						<form method="post">
                             {% csrf_token %}
 							<div class="form-group mb-lg">
-								<label for="id_username">Nombre Ingame</label>
-								<input name="username" type="text" class="form-control input-lg" autofocus
-                                       required id="id_username" />
+                                <div class="clearfix">
+								    <label for="id_username">Nombre Ingame</label>
+                                </div>
+								<div class="input-group input-group-icon">
+                                    <input name="username" type="text" class="form-control input-lg" autofocus required id="id_username" />
+                                    <span class="input-group-addon">
+                                        <span class="icon icon-lg">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </span>
+                                </div>
 							</div>
 
 							<div class="form-group mb-lg">
-								<label for="email">E-mail</label>
-								<input type="text" name="email" required id="email" class="form-control input-lg" />
+                                <div class="clearfix">
+								    <label for="email">E-mail</label>
+                                </div>
+                                <div class="input-group input-group-icon">
+								    <input type="text" name="email" required id="email" class="form-control input-lg" />
+                                    <span class="input-group-addon">
+                                        <span class="icon icon-lg">
+                                            <i class="fa fa-envelope"></i>
+                                        </span>
+                                    </span>
+                                </div>
 							</div>
 
 							<div class="form-group mb-none">
 								<div class="row">
 									<div class="col-sm-6 mb-lg">
-										<label for="id_password1">Contraseña</label>
-										<input type="password" name="password1" required id="id_password1" class="form-control input-lg" />
+                                        <div class="input-group input-group-icon">
+										    <label for="id_password1">Contraseña</label>
+                                        </div>
+                                        <div class="input-group input-group-icon">
+										    <input type="password" name="password1" required id="id_password1" class="form-control input-lg" />
+                                            <span class="input-group-addon">
+                                                <span class="icon icon-lg">
+                                                    <i class="fa fa-lock"></i>
+                                                </span>
+                                            </span>
+                                        </div>
 									</div>
 									<div class="col-sm-6 mb-lg">
-										<label for="id_password2">Confirma contraseña</label>
-										<input type="password" name="password2" required id="id_password2" class="form-control input-lg" />
+                                        <div class="input-group input-group-icon">
+										    <label for="id_password2">Confirma contraseña</label>
+                                        </div>
+                                        <div class="input-group input-group-icon">
+										    <input type="password" name="password2" required id="id_password2" class="form-control input-lg" />
+                                            <span class="input-group-addon">
+                                                <span class="icon icon-lg">
+                                                    <i class="fa fa-lock"></i>
+                                                </span>
+                                            </span>
+                                        </div>
 									</div>
 								</div>
 							</div>
@@ -102,7 +137,7 @@
 								<div class="col-sm-8">
 									<div class="checkbox-custom checkbox-default">
 										<input id="AgreeTerms" name="agreeterms" type="checkbox"/>
-										<label for="AgreeTerms">I agree with <a href="#">terms of use</a></label>
+										<label for="AgreeTerms">Acepto los <a href="#">términos de uso</a></label>
 									</div>
 								</div>
 								<div class="col-sm-4 text-right">
