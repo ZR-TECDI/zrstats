@@ -8,8 +8,16 @@ app_name = 'stats'
 urlpatterns = [
     # /stats/
     path('', views.index_view, name='index'),
+
+    # /stats/to-profile/
+    path('to-profile', views.RedirectToProfile.as_view(), name='redirect_to_profile'),
+
+    # /stats/profile/<user_id>
+    path('profile/<int:pk>', views.ProfileView.as_view(), name='profile'),
+
     # /stats/upload
     path('upload', views.upload_file, name='upload'),
+
     # /stats/lista
     path('lista', views.AsistenciaListView.as_view(), name='stats-list'),
 ]

@@ -2,13 +2,34 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
 from .logics import procesar_resultado
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic.base import RedirectView
 from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 
 
 def index_view(request):
     return render(request, 'stats/index.html', {})
+
+
+# Vista para redireccionar al user a su propio perfil
+class RedirectToProfile(RedirectView):
+
+    def get_redirect_url(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            user_id = self.request.user.id
+            return reverse('stats:profile', kwargs={'pk': user_id})
+        else:
+            reverse('stats:index')
+
+
+# Vista para renderizar el perfil de alguien
+class ProfileView(LoginRequiredMixin, DetailView):
+    template_name = 'stats/profile.html'
+    model = Miembro
 
 
 # TODO hacer esta función más linda

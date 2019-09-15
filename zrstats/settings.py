@@ -130,10 +130,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = 'upload/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
-LOGIN_REDIRECT_URL = 'stats:index'
+LOGIN_REDIRECT_URL = 'stats:redirect_to_profile'
 LOGOUT_REDIRECT_URL = 'stats:index'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
