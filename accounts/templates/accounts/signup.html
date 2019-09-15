@@ -45,7 +45,7 @@
 
 				<div class="panel panel-sign">
 					<div class="panel-title-sign mt-xl text-right">
-						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Iniciar Sesión</h2>
+						<h2 class="title text-uppercase text-bold m-none"><i class="fa fa-user mr-xs"></i> Registro</h2>
 					</div>
 					<div class="panel-body">
                         {% if form.errors %}
@@ -75,46 +75,43 @@
 						<form method="post">
                             {% csrf_token %}
 							<div class="form-group mb-lg">
-								<label for="id_username">Usuario</label>
-								<div class="input-group input-group-icon">
-									<input id="id_username" name="username" type="text" class="form-control input-lg" />
-									<span class="input-group-addon">
-										<span class="icon icon-lg">
-											<i class="fa fa-user"></i>
-										</span>
-									</span>
-								</div>
+								<label for="id_username">Nombre Ingame</label>
+								<input name="username" type="text" class="form-control input-lg" autofocus
+                                       required id="id_username" />
 							</div>
 
 							<div class="form-group mb-lg">
-								<div class="clearfix">
-									<label for="id_password" class="pull-left">Contraseña</label>
-									<a href="pages-recover-password.html" class="pull-right">Olvidé mi contraseña</a>
-								</div>
-								<div class="input-group input-group-icon">
-									<input id="id_password" name="password" type="password" class="form-control input-lg" />
-									<span class="input-group-addon">
-										<span class="icon icon-lg">
-											<i class="fa fa-lock"></i>
-										</span>
-									</span>
+								<label for="email">E-mail</label>
+								<input type="text" name="email" required id="email" class="form-control input-lg" />
+							</div>
+
+							<div class="form-group mb-none">
+								<div class="row">
+									<div class="col-sm-6 mb-lg">
+										<label for="id_password1">Contraseña</label>
+										<input type="password" name="password1" required id="id_password1" class="form-control input-lg" />
+									</div>
+									<div class="col-sm-6 mb-lg">
+										<label for="id_password2">Confirma contraseña</label>
+										<input type="password" name="password2" required id="id_password2" class="form-control input-lg" />
+									</div>
 								</div>
 							</div>
 
 							<div class="row">
 								<div class="col-sm-8">
 									<div class="checkbox-custom checkbox-default">
-										<input id="RememberMe" name="rememberme" type="checkbox"/>
-										<label for="RememberMe">Recuérdame</label>
+										<input id="AgreeTerms" name="agreeterms" type="checkbox"/>
+										<label for="AgreeTerms">I agree with <a href="#">terms of use</a></label>
 									</div>
 								</div>
 								<div class="col-sm-4 text-right">
-									<button type="submit" value="Login"  class="btn btn-primary hidden-xs">Acceder</button>
-									<button type="submit" value="Login"  class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Acceder</button>
+									<button type="submit" value="Signup" class="btn btn-primary hidden-xs">Registrarme</button>
+									<button type="submit" value="Signup" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Registrarme</button>
 								</div>
 							</div>
-
-							<p class="text-center">No tienes una cuenta? <a href="pages-signup.html">Registrarme!</a>
+                            <br>
+							<p class="text-center">Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión!</a>
 
 						</form>
 					</div>
@@ -124,6 +121,8 @@
 			</div>
 		</section>
 		<!-- end: page -->
+
+
 
 		<!-- Vendor -->
 		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js'%}"></script>
@@ -143,5 +142,5 @@
 		<!-- Theme Initialization Files -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js'%}"></script>
 
-	</body><img src="http://www.ten28.com/fref.jpg">
+	</body>
 </html>

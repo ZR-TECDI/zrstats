@@ -59,7 +59,8 @@ class MiembroManager(models.Manager):
 
 class Miembro(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Usuario")
-    rango = models.ForeignKey(Rango, verbose_name="Rango", on_delete=models.DO_NOTHING,  blank=True, null=True)
+    email = models.EmailField(verbose_name="Email", blank=True, null=True)
+    rango = models.ForeignKey(Rango, verbose_name="Rango", on_delete=models.DO_NOTHING, blank=True, null=True)
     nombre = models.CharField(max_length=20, verbose_name="Nombre", blank=False, null=True)
     clase1 = models.ForeignKey(Clase, verbose_name="Clase 1", on_delete=models.DO_NOTHING,
                                blank=True, null=True, related_name='clase1')
