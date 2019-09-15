@@ -4,6 +4,7 @@ from stats.models import *
 from collections import defaultdict
 import os
 
+
 lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase]
 for item in lista:
     item.objects.all().delete()
@@ -140,8 +141,8 @@ def agregar_miembros():
         for line in txt.readlines():
             array = line.replace('\n', '').split(' ')
             print(array)
-
-            miembro = Miembro()
+            user = User.objects.create_user(username=array[1], email=array[1]+"@zrarmy.com", password=array[1].lower())
+            miembro = Miembro.objects.get(nombre=array[1])
             miembro.nombre = array[1]
             print(miembro.nombre)
             miembro.rango = Rango.objects.get(abreviatura = array[0])

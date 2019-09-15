@@ -59,14 +59,14 @@ class MiembroManager(models.Manager):
 
 class Miembro(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Usuario")
-    rango = models.ForeignKey(Rango, verbose_name="Rango", on_delete=models.DO_NOTHING, null=False)
-    nombre = models.CharField(max_length=20, verbose_name="Nombre", blank=False, null=False)
+    rango = models.ForeignKey(Rango, verbose_name="Rango", on_delete=models.DO_NOTHING,  blank=True, null=True)
+    nombre = models.CharField(max_length=20, verbose_name="Nombre", blank=False, null=True)
     clase1 = models.ForeignKey(Clase, verbose_name="Clase 1", on_delete=models.DO_NOTHING,
-                               null=False, related_name='clase1')
+                               blank=True, null=True, related_name='clase1')
     clase2 = models.ForeignKey(Clase, verbose_name="Clase 2", on_delete=models.DO_NOTHING,
-                               null=False, related_name='clase2')
+                               blank=True, null=True, related_name='clase2')
     nacionalidad = models.ForeignKey(Nacionalidad, verbose_name="Nacionalidad", on_delete=models.DO_NOTHING,
-                                     null=False, default=1)
+                                     blank=True, null=True)
     ESTADO_CHOICES = (
         ('Activo', 'Activo'),
         ('Reserva', 'Reserva'),
@@ -75,14 +75,20 @@ class Miembro(models.Model):
     )
     estado = models.CharField(max_length=20, verbose_name="Estado", blank=False, null=False,
                               choices=ESTADO_CHOICES, default=ESTADO_CHOICES[0])
-    unidad = models.ForeignKey(Unidad, verbose_name="Unidad", on_delete=models.DO_NOTHING, null=False, default=1)
-    peloton = models.CharField(max_length=20, verbose_name="Pelotón", blank=False, null=False, default="1")
-    escuadra = models.CharField(max_length=20, verbose_name="Escuadra", blank=False, null=False, default="-")
-    rol = models.ForeignKey(Rol, verbose_name="Rol", on_delete=models.DO_NOTHING, null=False, default=1)
+    unidad = models.ForeignKey(Unidad, verbose_name="Unidad", on_delete=models.DO_NOTHING,  blank=True, null=True)
+    peloton = models.CharField(max_length=20, verbose_name="Pelotón",  blank=True, null=True)
+    escuadra = models.CharField(max_length=20, verbose_name="Escuadra",  blank=True, null=True)
+    rol = models.ForeignKey(Rol, verbose_name="Rol", on_delete=models.DO_NOTHING,  blank=True, null=True)
     objects = MiembroManager()
 
     def __str__(self):
-        return self.rango.abreviatura+'.'+self.nombre
+        if self.nombre is None:
+            return self.user.username
+        else:
+            if self.rango is None:
+                return self.nombre
+            else:
+                return self.rango.abreviatura+'.'+self.nombre
 
     def cantidad_asistencias(self):
         return self.asistencia_set.filter(asistencia__icontains='asiste').count()
@@ -98,11 +104,15 @@ class Miembro(models.Model):
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
-            Miembro.objects.create(user=instance)
+            nuevo_miembro = Miembro()
+            nuevo_miembro.user = instance
+            nuevo_miembro.nombre = instance.username
+            nuevo_miembro.rango = Rango.objects.get(abreviatura="Asp")
+            nuevo_miembro.save()
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        instance.socio.save()
+        instance.miembro.save()
 
 
 class Mision(models.Model):

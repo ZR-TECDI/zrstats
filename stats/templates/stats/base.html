@@ -257,9 +257,16 @@
 								<li>
 									<a role="menuitem" tabindex="-1" href="#" data-lock-screen="true"><i class="fa fa-lock"></i> Lock Screen</a>
 								</li>
-								<li>
-									<a role="menuitem" tabindex="-1" href=""><i class="fa fa-power-off"></i> Logout</a>
-								</li>
+                                {% if user.is_authenticated %}
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a role="menuitem" tabindex="-1" href="{% url 'login' %}"><i class="fa fa-power-off"></i> Login</a>
+                                    </li>
+                                {% endif %}
+
 							</ul>
 						</div>
 					</div>
