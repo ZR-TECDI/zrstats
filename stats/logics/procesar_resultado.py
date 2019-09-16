@@ -1,12 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from stats.forms import UploadReporteForm
 from stats.logics import procesar_rpt
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from stats.models import Miembro, Asistencia, Mision
 from datetime import datetime, timedelta
-from django.views.generic.list import ListView
 
 
 def handle_uploaded_file(mision_input):
@@ -50,4 +46,3 @@ def handle_uploaded_file(mision_input):
                 asiste.requiere_atencion = dict_jugador['requiere_atencion']
                 # TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
                 asiste.save()
-
