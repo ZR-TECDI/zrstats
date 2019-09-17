@@ -22,7 +22,7 @@
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
-        <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
+
 
 		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme.css' %}" />
@@ -35,6 +35,17 @@
 
 		<!-- Head Libs -->
 		<script src="{% static 'stats/octopus/assets/vendor/modernizr/modernizr.js' %}"></script>
+
+        <!-- Flag Icon CSS -->
+        <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
+
+        <!-- Select2 CSS y JS -->
+        <link rel="stylesheet" href="{% static 'stats/select2/css/select2.min.css' %}" />
+        <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
+
+
+
+
 
         {% block head_extra %}
         {% endblock %}
@@ -307,6 +318,12 @@
 											<span>Template Demo Page</span>
 										</a>
 									</li>
+                                    <li>
+										<a href="{% url 'stats:crear-mision' %}">
+											<i class="fa fa-calendar-o" aria-hidden="true"></i>
+											<span>Crear Misión</span>
+										</a>
+									</li>
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa fa-align-left" aria-hidden="true"></i>
@@ -464,6 +481,13 @@
 
 		<!-- Theme Initialization Files -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js' %}"></script>
+        <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static '/stats/django_select2/django_select2.js' %}"></script>
+        <script type="text/javascript">
+          window.onerror = function (msg) {
+            $("body").attr("JSError", msg);
+          }
+        </script>
         {% block extra_scripts %}
         {% endblock %}
 

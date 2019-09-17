@@ -20,6 +20,9 @@ urlpatterns = [
 
     # /stats/lista
     path('lista', views.AsistenciaListView.as_view(), name='stats-list'),
+
+    # /stats/mision/crear/
+    path('mision/crear/', views.CrearMision.as_view(), name='crear-mision'),
 ]
 
 urlpatterns += (

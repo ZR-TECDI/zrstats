@@ -1,5 +1,20 @@
 from django import forms
 from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia
+from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget, ModelSelect2MultipleWidget, \
+    ModelSelect2TagWidget, ModelSelect2Widget, Select2MultipleWidget, Select2Widget
+
+
+class MisionForm(forms.ModelForm):
+    class Meta:
+        model = Mision
+        fields = ['nombre', 'tipo', 'fecha_creacion', 'fecha_aprobacion', 'nombre_campa', 'descripcion', 'notas_privadas',
+                  'notas_editor', 'imagen', 'briefing', 'mapa', 'fecha_programada', 'fecha_finalizada', 'reporte',
+                  'autor', 'editores', 'responsables']
+        widgets = {
+            'autor': Select2Widget,
+            'editores': Select2MultipleWidget,
+            'responsables': Select2MultipleWidget,
+        }
 
 
 class UploadReporteForm(forms.Form):
@@ -40,12 +55,6 @@ class MiembroForm(forms.ModelForm):
     class Meta:
         model = Miembro
         fields = ['email', 'nombre', 'peloton', 'escuadra', 'user', 'rango', 'clase1', 'unidad', 'rol']
-
-
-class MisionForm(forms.ModelForm):
-    class Meta:
-        model = Mision
-        fields = ['nombre', 'reporte', 'fecha', 'nombre_campa', 'editores', 'notas']
 
 
 class AsistenciaForm(forms.ModelForm):

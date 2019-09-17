@@ -32,6 +32,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
     model = Miembro
 
 
+# Vista para el formulario de crear misiones
+class CrearMision(CreateView):
+    template_name = 'stats/mision_create_form.html'
+    model = Mision
+    form_class = MisionForm
+
+
 # TODO hacer esta función más linda
 def upload_file(request):
     if request.method == 'POST':

@@ -26,11 +26,18 @@
 <p><a class="btn btn-default" href="{% url 'stats:mision_list' %}">Mision Listing</a></p>
 <table class="table">
 <tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
-<tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
-<tr><td>fecha</td><td>{{ object.fecha }}</td></tr>
+<tr><td>fecha_creacion</td><td>{{ object.fecha_creacion }}</td></tr>
+<tr><td>fecha_aprobacion</td><td>{{ object.fecha_aprobacion }}</td></tr>
 <tr><td>nombre_campa</td><td>{{ object.nombre_campa }}</td></tr>
-<tr><td>editores</td><td>{{ object.editores }}</td></tr>
-<tr><td>notas</td><td>{{ object.notas }}</td></tr>
+<tr><td>descripcion</td><td>{{ object.descripcion }}</td></tr>
+<tr><td>notas_privadas</td><td>{{ object.notas_privadas }}</td></tr>
+<tr><td>notas_editor</td><td>{{ object.notas_editor }}</td></tr>
+<tr><td>imagen</td><td>{{ object.imagen }}</td></tr>
+<tr><td>briefing</td><td>{{ object.briefing }}</td></tr>
+<tr><td>mapa</td><td>{{ object.mapa }}</td></tr>
+<tr><td>fecha_programada</td><td>{{ object.fecha_programada }}</td></tr>
+<tr><td>fecha_finalizada</td><td>{{ object.fecha_finalizada }}</td></tr>
+<tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
 </table>
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
 

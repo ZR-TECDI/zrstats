@@ -27,20 +27,38 @@
 <table class="table">
 <tr>
 <td>ID</td><td>Link</td>
-    <td>email</td>
     <td>nombre</td>
-    <td>peloton</td>
-    <td>escuadra</td>
+    <td>fecha_creacion</td>
+    <td>fecha_aprobacion</td>
+    <td>nombre_campa</td>
+    <td>descripcion</td>
+    <td>notas_privadas</td>
+    <td>notas_editor</td>
+    <td>imagen</td>
+    <td>briefing</td>
+    <td>mapa</td>
+    <td>fecha_programada</td>
+    <td>fecha_finalizada</td>
+    <td>reporte</td>
 </tr>
 {% for object in object_list %}
 <tr>
     <td>{{object.pk}}</td>
     <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.email }}</td>
     <td>{{ object.nombre }}</td>
-    <td>{{ object.peloton }}</td>
-    <td>{{ object.escuadra }}</td>
+    <td>{{ object.fecha_creacion }}</td>
+    <td>{{ object.fecha_aprobacion }}</td>
+    <td>{{ object.nombre_campa }}</td>
+    <td>{{ object.descripcion }}</td>
+    <td>{{ object.notas_privadas }}</td>
+    <td>{{ object.notas_editor }}</td>
+    <td>{{ object.imagen }}</td>
+    <td>{{ object.briefing }}</td>
+    <td>{{ object.mapa }}</td>
+    <td>{{ object.fecha_programada }}</td>
+    <td>{{ object.fecha_finalizada }}</td>
+    <td>{{ object.reporte }}</td>
 </tr>
-{% endfor %}
+{% endfor %
 </table><a class="btn btn-primary" href="{% url 'stats:miembro_create' %}">Create new Miembro</a>
 {% endblock %}

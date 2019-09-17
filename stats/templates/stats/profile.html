@@ -26,7 +26,11 @@
             <section class="panel">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
-                        <img src="{{ user.miembro.avatar.url }}" class="rounded img-responsive" alt="{{ user.username }} ">
+                        {% if user.avatar is not None %}
+                            <img src="{{ user.miembro.avatar.url }}" class="rounded img-responsive" alt="{{ user.username }} ">
+                        {% else %}
+                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%" class="rounded img-responsive" alt="{{ user.username }}  ">
+                        {% endif %}
                         <div class="thumb-info-title">
                             <span class="thumb-info-inner">{{ user.miembro }} </span>
                             <span class="thumb-info-type">{{ user.miembro.unidad }}</span>
