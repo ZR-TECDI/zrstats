@@ -115,6 +115,39 @@ class MiembroManager(models.Manager):
         return super().get_queryset().order_by('rango__orden')
 
 
+class Campana(models.Model):
+    nombre = models.CharField(max_length=20, verbose_name="Nombre Campaña", blank=False, null=False)
+    # Choices = ('Lo que se guarda', 'Lo que se muestra')
+    TIPO_CAMP_CHOICES = (
+        ('CAMP', 'Campaña Oficial'),
+        ('CURSO', 'Curso'),
+        ('OTRO', 'Otros'),
+    )
+    tipo = models.CharField(max_length=20, verbose_name="Tipo Campaña", blank=False, null=False,
+                            choices=TIPO_CAMP_CHOICES, default=TIPO_CAMP_CHOICES[0])
+    descripcion = models.TextField(verbose_name="Descripción", blank=True, null=True)
+    ESTADO_CAMP_CHOICES = (
+        ('BORRADOR', 'Borrador'),
+        ('APROBADA', 'Aprobada'),
+        ('EN CURSO', 'En Curso'),
+        ('FINALIZADA', 'Finalizada'),
+    )
+    estado = models.CharField(max_length=20, verbose_name="Estado", blank=False, null=False,
+                              choices=ESTADO_CAMP_CHOICES, default=ESTADO_CAMP_CHOICES[0])
+
+    def __str__(self):
+        return self.nombre + " ["+self.tipo+"]"
+
+    def __unicode__(self):
+        return u'%s' % self.pk
+
+    def get_absolute_url(self):
+        return reverse('stats:campana_detail', args=(self.pk,))
+
+    def get_update_url(self):
+        return reverse('stats:campana_update', args=(self.pk,))
+
+
 class Miembro(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, verbose_name="Usuario")
     email = models.EmailField(verbose_name="Email", blank=True, null=True)
@@ -190,31 +223,36 @@ class Miembro(models.Model):
 class Mision(models.Model):
     nombre = models.CharField(max_length=40, verbose_name="Nombre de Misión", blank=False, null=False)
     fecha_creacion = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha Creación")
+
+    # Choices = ('Lo que se guarda', 'Lo que se muestra')
     TIPO_MISION_CHOICES = (
-        ('Misión Oficial', 'Misión Oficial'),
-        ('Entrenamiento', 'Entrenamiento'),
-        ('Improvisada', 'Improvisada'),
-        ('Gala', 'Gala'),
-        ('Instrucción', 'Instrucción'),
-        ('Otros', 'Otros'),
+        ('OFI', 'Misión Oficial'),
+        ('PRACT', 'Práctica'),
+        ('IMPRO', 'Improvisada'),
+        ('GALA', 'Gala'),
+        ('INSTR', 'Instrucción'),
+        ('COOP', 'Cooperativa'),
+        ('OTRO', 'Otros'),
     )
     tipo = models.CharField(max_length=40, verbose_name="Tipo de misión", blank=False, null=False,
                             choices=TIPO_MISION_CHOICES, default=TIPO_MISION_CHOICES[0])
+
+    #  Choices = ('Lo que se guarda', 'Lo que se muestra')
     ESTADO_MISION_CHOICES = (
-        ('Borrador', 'Borrador'),
-        ('Pendiende de aprobación', 'Pendiende de aprobación'),
-        ('En edición', 'En edición'),
-        ('Lista para jugar', 'Lista para jugar'),
-        ('Rechazada', 'Rechazada'),
-        ('Finalizada', 'Finalizada'),
+        ('BORRADOR', 'Borrador'),
+        ('PEND.APROB.', 'Pendiende de aprobación'),
+        ('EN EDICION', 'En edición'),
+        ('PREPARADA', 'Lista para jugar'),
+        ('RECHAZADA', 'Rechazada'),
+        ('FINALIZADA', 'Finalizada'),
     )
     estado = models.CharField(max_length=40, verbose_name="Estado", blank=True, null=True,
                               choices=ESTADO_MISION_CHOICES, default=ESTADO_MISION_CHOICES[0])
     fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
-    nombre_campa = models.CharField(max_length=40, verbose_name="Nombre de Campaña", blank=False, null=False)
+    campana = models.ForeignKey(Campana, verbose_name="Campaña", on_delete=models.CASCADE, blank=True, null=True)
     autor = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, blank=True, null=True)
-    editores = models.ManyToManyField('Miembro', verbose_name="Editores", related_name='misiones_editadas', blank=True, null=True)
-    responsables = models.ManyToManyField('Miembro', verbose_name="Responsables", related_name='misiones_a_cargo', blank=True, null=True)
+    editores = models.ManyToManyField('Miembro', verbose_name="Editores", related_name='misiones_editadas', blank=True)
+    responsables = models.ManyToManyField('Miembro', verbose_name="Responsables", related_name='misiones_a_cargo', blank=True)
     descripcion = models.TextField(verbose_name="Descripción (pública)", blank=True, null=True)
     notas_privadas = models.TextField(verbose_name="Notas Privadas", blank=True, null=True)
     notas_editor = models.TextField(verbose_name="Notas al Editor", blank=True, null=True)
