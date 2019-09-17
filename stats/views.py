@@ -2,10 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
 from .logics import procesar_resultado
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.views.generic.base import RedirectView
-from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm
+from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm, CampanaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -176,6 +176,28 @@ class UnidadUpdateView(UpdateView):
     template_name = 'stats/crud/unidad_form.html'
     model = Unidad
     form_class = UnidadForm
+
+
+class CampanaListView(ListView):
+    template_name = 'stats/crud/campana_list.html'
+    model = Campana
+
+
+class CampanaCreateView(CreateView):
+    template_name = 'stats/crud/campana_form.html'
+    model = Campana
+    form_class = CampanaForm
+
+
+class CampanaDetailView(DetailView):
+    template_name = 'stats/crud/campana_detail.html'
+    model = Campana
+
+
+class CampanaUpdateView(UpdateView):
+    template_name = 'stats/crud/campana_form.html'
+    model = Campana
+    form_class = CampanaForm
 
 
 class MiembroListView(ListView):

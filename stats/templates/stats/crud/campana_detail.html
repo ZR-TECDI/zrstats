@@ -1,0 +1,35 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Campaña
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Campaña</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Campaña
+{% endblock %}
+
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:campana_list' %}">Campaña Listing</a></p>
+<table class="table">
+<tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
+<tr><td>tipo</td><td>{{ object.tipo }}</td></tr>
+<tr><td>estado</td><td>{{ object.estado }}</td></tr>
+<tr><td>descripcion</td><td>{{ object.descripcion }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Campaña</a>
+
+{% endblock %}

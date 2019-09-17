@@ -1,5 +1,5 @@
 from django import forms
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, Campana
 from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget, ModelSelect2MultipleWidget, \
     ModelSelect2TagWidget, ModelSelect2Widget, Select2MultipleWidget, Select2Widget
 
@@ -7,11 +7,12 @@ from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget,
 class MisionForm(forms.ModelForm):
     class Meta:
         model = Mision
-        fields = ['nombre', 'tipo', 'fecha_creacion', 'fecha_aprobacion', 'nombre_campa', 'descripcion', 'notas_privadas',
+        fields = ['nombre', 'tipo', 'estado', 'fecha_creacion', 'fecha_aprobacion', 'campana', 'descripcion', 'notas_privadas',
                   'notas_editor', 'imagen', 'briefing', 'mapa', 'fecha_programada', 'fecha_finalizada', 'reporte',
                   'autor', 'editores', 'responsables']
         widgets = {
             'autor': Select2Widget,
+            'campana': Select2Widget,
             'editores': Select2MultipleWidget,
             'responsables': Select2MultipleWidget,
         }
@@ -49,6 +50,12 @@ class UnidadForm(forms.ModelForm):
     class Meta:
         model = Unidad
         fields = ['nombre', 'abreviatura']
+
+
+class CampanaForm(forms.ModelForm):
+    class Meta:
+        model = Campana
+        fields = ['nombre', 'tipo', 'descripcion', 'estado']
 
 
 class MiembroForm(forms.ModelForm):

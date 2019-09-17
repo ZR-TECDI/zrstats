@@ -66,6 +66,14 @@ urlpatterns += (
 )
 
 urlpatterns += (
+    # urls for Unidad
+    path('campana/', views.CampanaListView.as_view(), name='campana_list'),
+    path('campana/create/', views.CampanaCreateView.as_view(), name='campana_create'),
+    path('campana/detail/<int:pk>/', views.CampanaDetailView.as_view(), name='campana_detail'),
+    path('campana/update/<int:pk>/', views.CampanaUpdateView.as_view(), name='campana_update'),
+)
+
+urlpatterns += (
     # urls for Miembro
     path('miembro/', views.MiembroListView.as_view(), name='miembro_list'),
     path('miembro/create/', views.MiembroCreateView.as_view(), name='miembro_create'),

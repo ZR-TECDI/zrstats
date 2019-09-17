@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block head_title %}
-    Misión
+    Campaña
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -13,38 +13,32 @@
         </a>
     </li>
     <li><span>CRUDs</span></li>
-    <li><span>Misión</span></li>
+    <li><span>Campaña</span></li>
 </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Misión
+    Campaña
 {% endblock %}
 
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:mision_list' %}">Mision Listing</a></p>
+<p><a class="btn btn-default" href="{% url 'stats:campana_list' %}">Campaña Listing</a></p>
 <table class="table">
 <tr>
 <td>ID</td><td>Link</td>
     <td>nombre</td>
-    <td>reporte</td>
-    <td>fecha</td>
-    <td>campana</td>
-    <td>editores</td>
-    <td>notas</td>
+    <td>tipo</td>
+    <td>estado</td>
 </tr>
 {% for object in object_list %}
 <tr>
     <td>{{object.pk}}</td>
     <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
     <td>{{ object.nombre }}</td>
-    <td>{{ object.reporte }}</td>
-    <td>{{ object.fecha }}</td>
-    <td>{{ object.campana }}</td>
-    <td>{{ object.editores }}</td>
-    <td>{{ object.notas }}</td>
+    <td>{{ object.tipo }}</td>
+    <td>{{ object.estado }}</td>
 </tr>
 {% endfor %}
-</table><a class="btn btn-primary" href="{% url 'stats:mision_create' %}">Create new Mision</a>
+</table><a class="btn btn-primary" href="{% url 'stats:campana_create' %}">Create new Campaña</a>
 {% endblock %}
