@@ -131,6 +131,7 @@ def crear_naciones():
         var.abreviatura = array[1]
         var.save()
 
+
 def agregar_miembros():
     #rango|nombre|clase1|clase2|nac|est|unidad|pel|esc|rol
     # 0      1      2     3      4   5     6    7   8   9
@@ -169,9 +170,13 @@ def agregar_miembros():
             print(miembro.escuadra)
             miembro.rol = Rol.objects.get(abreviatura = array[9])
             print(miembro.rol)
-
             miembro.save()
+            if miembro.nombre == "Admin":
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
             print(miembro)
+
 
 def main():
     crear_unidades()
@@ -180,6 +185,8 @@ def main():
     crear_clase()
     crear_naciones()
     agregar_miembros()
+    print("FINALIZADO DATOS INICIALES")
+
 
 if __name__ == '__main__':
     main()
