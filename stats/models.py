@@ -138,7 +138,7 @@ class Miembro(models.Model):
     peloton = models.CharField(max_length=20, verbose_name="Pelotón",  blank=True, null=True)
     escuadra = models.CharField(max_length=20, verbose_name="Escuadra",  blank=True, null=True)
     rol = models.ForeignKey(Rol, verbose_name="Rol", on_delete=models.DO_NOTHING,  blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatar/', blank=True, null=True, verbose_name="Imagen de Avatar",)
+    avatar = models.ImageField(upload_to='avatar/', blank=True, null=True, verbose_name="Imagen de Avatar")
     objects = MiembroManager()
 
     def __str__(self):
@@ -189,8 +189,7 @@ class Miembro(models.Model):
 
 class Mision(models.Model):
     nombre = models.CharField(max_length=40, verbose_name="Nombre de Misión", blank=False, null=False)
-    reporte = models.FileField(upload_to='reportes/')
-    fecha = models.DateField(blank=False, null=False, default=now)
+    fecha_creacion = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha Creación")
     TIPO_MISION_CHOICES = (
         ('Misión Oficial', 'Misión Oficial'),
         ('Entrenamiento', 'Entrenamiento'),
@@ -199,14 +198,35 @@ class Mision(models.Model):
         ('Instrucción', 'Instrucción'),
         ('Otros', 'Otros'),
     )
-    tipo = models.CharField(max_length=20, verbose_name="Tipo de misión", blank=False, null=False,
+    tipo = models.CharField(max_length=40, verbose_name="Tipo de misión", blank=False, null=False,
                             choices=TIPO_MISION_CHOICES, default=TIPO_MISION_CHOICES[0])
+    ESTADO_MISION_CHOICES = (
+        ('Borrador', 'Borrador'),
+        ('Pendiende de aprobación', 'Pendiende de aprobación'),
+        ('En edición', 'En edición'),
+        ('Lista para jugar', 'Lista para jugar'),
+        ('Rechazada', 'Rechazada'),
+        ('Finalizada', 'Finalizada'),
+    )
+    estado = models.CharField(max_length=40, verbose_name="Estado", blank=True, null=True,
+                              choices=ESTADO_MISION_CHOICES, default=ESTADO_MISION_CHOICES[0])
+    fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
     nombre_campa = models.CharField(max_length=40, verbose_name="Nombre de Campaña", blank=False, null=False)
-    editores = models.CharField(max_length=128, verbose_name="Editores", blank=True, null=True)
-    notas = models.CharField(max_length=255, verbose_name="Notas", blank=True, null=True)
+    autor = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, blank=True, null=True)
+    editores = models.ManyToManyField('Miembro', verbose_name="Editores", related_name='misiones_editadas', blank=True, null=True)
+    responsables = models.ManyToManyField('Miembro', verbose_name="Responsables", related_name='misiones_a_cargo', blank=True, null=True)
+    descripcion = models.TextField(verbose_name="Descripción (pública)", blank=True, null=True)
+    notas_privadas = models.TextField(verbose_name="Notas Privadas", blank=True, null=True)
+    notas_editor = models.TextField(verbose_name="Notas al Editor", blank=True, null=True)
+    imagen = models.ImageField(upload_to='mision_logo/', blank=True, null=True, verbose_name="Imagen")
+    briefing = models.FileField(upload_to='briefings/', blank=True, null=True, verbose_name="Briefing")
+    mapa = models.CharField(max_length=40, verbose_name="Mapa", blank=True, null=True)
+    fecha_programada = models.DateField(blank=True, null=True, verbose_name="Fecha Programada")
+    fecha_finalizada = models.DateField(blank=True, null=True, verbose_name="Fecha Finalizada")
+    reporte = models.FileField(upload_to='reportes/', blank=True, null=True)
 
     def __str__(self):
-        return "(" + str(self.fecha) + ") " + self.nombre + "[" + self.tipo + "]"
+        return self.nombre + " [" + self.tipo + "]"
 
     class Meta:
         ordering = ('-pk',)
