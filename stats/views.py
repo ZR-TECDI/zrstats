@@ -38,6 +38,32 @@ class CrearMision(CreateView):
     model = Mision
     form_class = MisionForm
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        mision = self.object
+        mision.notas_privadas = "PUTO EL QUE LEE"
+        if mision.reporte is None:
+            mision.notas_privadas = "SIN REPORTE"
+        mision.save()
+        return super(CrearMision, self).form_valid(form)
+
+
+class ActualizarMision(UpdateView):
+    template_name = 'stats/mision_create_form.html'
+    model = Mision
+    form_class = MisionForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        mision = self.object
+        mision.notas_privadas = "PUTO EL QUE LEE"
+        if mision.reporte == "":  # Asi se chequea un FileFiled nulo
+            mision.notas_privadas = "SIN REPORTE"
+        else:
+            procesar_resultado.handle_uploaded_file(mision)
+        mision.save()
+        return super(ActualizarMision, self).form_valid(form)
+
 
 # TODO hacer esta función más linda
 def upload_file(request):

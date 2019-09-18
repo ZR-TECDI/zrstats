@@ -40,5 +40,6 @@
 <tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
 </table>
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
+    <a class="btn btn-primary" href="{% url 'stats:actualizar-mision' object.id %}">Editar Mision</a>
 
 {% endblock %}

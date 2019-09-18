@@ -183,10 +183,10 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
             if atrasado:
                 asistencia = "atrasado"
         elif total_time <= tiempo_asistencia and total_time > tiempo_minimo:
-            requiere_atencion = "true"
+            requiere_atencion = "True"
         else:
             asistencia = "falta"
-            requiere_atencion = "true"
+            requiere_atencion = "True"
 
         nombre = x.split(".")
         rango = nombre[0]

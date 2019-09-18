@@ -5,12 +5,11 @@ from stats.models import Miembro, Asistencia, Mision
 from datetime import datetime, timedelta
 
 
-def handle_uploaded_file(mision_input):
-    mision = Mision(mision_input)
+def handle_uploaded_file(mision):
     resultado_rpt = procesar_rpt.main(mision.reporte.path)
     dict_mision = resultado_rpt[0]
-    fecha = dict_mision['fecha']
-    fecha = datetime.strptime(fecha, '%y:%m:%d')
+    fecha = dict_mision['fecha'].replace(':', '/')
+    fecha = datetime.strptime(fecha, '%Y/%m/%d')
     miembros = Miembro.objects.all()
 
     mision.nombre = dict_mision['nombre_mision']
@@ -18,7 +17,7 @@ def handle_uploaded_file(mision_input):
     mision.nombre_campa = dict_mision['nombre_campa']
     mision.fecha = fecha
     mision.save()
-
+    resultado_rpt.pop(0)  # elminio el primer elemento del dict (el que NO es una asistencia)
     for miembro in miembros:  # miembro de la lista de la DB
         asiste = Asistencia()
         asiste.mision = mision
@@ -30,8 +29,9 @@ def handle_uploaded_file(mision_input):
         asiste.tiempo_de_sesion = delta
         asiste.save()
 
-        for index in resultado_rpt[1:]:
-            dict_jugador = resultado_rpt[index]
+
+        for index in resultado_rpt:
+            dict_jugador = index
             j1 = dict_jugador['nombre']
             j2 = miembro.nombre.upper()
             if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
