@@ -27,37 +27,37 @@
 <table class="table">
 <tr>
 <td>ID</td><td>Link</td>
+    <td>user</td>
+    <td>email</td>
+    <td>rango</td>
     <td>nombre</td>
-    <td>fecha_creacion</td>
-    <td>fecha_aprobacion</td>
-    <td>campana</td>
-    <td>descripcion</td>
-    <td>notas_privadas</td>
-    <td>notas_editor</td>
-    <td>imagen</td>
-    <td>briefing</td>
-    <td>mapa</td>
-    <td>fecha_programada</td>
-    <td>fecha_finalizada</td>
-    <td>reporte</td>
+    <td>clase1</td>
+    <td>clase2</td>
+    <td>nacionalidad</td>
+    <td>estado</td>
+    <td>unidad</td>
+    <td>peloton</td>
+    <td>escuadra</td>
+    <td>rol</td>
+    <td>avatar</td>
 </tr>
 {% for object in object_list %}
 <tr>
     <td>{{object.pk}}</td>
     <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.user }}</td>
+    <td>{{ object.email }}</td>
+    <td>{{ object.rango }}</td>
     <td>{{ object.nombre }}</td>
-    <td>{{ object.fecha_creacion }}</td>
-    <td>{{ object.fecha_aprobacion }}</td>
-    <td>{{ object.campana }}</td>
-    <td>{{ object.descripcion }}</td>
-    <td>{{ object.notas_privadas }}</td>
-    <td>{{ object.notas_editor }}</td>
-    <td>{{ object.imagen }}</td>
-    <td>{{ object.briefing }}</td>
-    <td>{{ object.mapa }}</td>
-    <td>{{ object.fecha_programada }}</td>
-    <td>{{ object.fecha_finalizada }}</td>
-    <td>{{ object.reporte }}</td>
+    <td>{{ object.clase1 }}</td>
+    <td>{{ object.clase2 }}</td>
+    <td>{{ object.nacionalidad }}</td>
+    <td>{{ object.estado }}</td>
+    <td>{{ object.unidad }}</td>
+    <td>{{ object.peloton }}</td>
+    <td>{{ object.escuadra }}</td>
+    <td>{{ object.rol }}</td>
+    <td>{{ object.avatar }}</td>
 </tr>
 {% endfor %}
 </table><a class="btn btn-primary" href="{% url 'stats:miembro_create' %}">Create new Miembro</a>

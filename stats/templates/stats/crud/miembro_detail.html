@@ -25,10 +25,19 @@
 {% block content %}
 <p><a class="btn btn-default" href="{% url 'stats:miembro_list' %}">Miembro Listing</a></p>
 <table class="table">
+<tr><td>user</td><td>{{ object.user }}</td></tr>
 <tr><td>email</td><td>{{ object.email }}</td></tr>
+<tr><td>rango</td><td>{{ object.rango }}</td></tr>
 <tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
+<tr><td>clase1</td><td>{{ object.clase1 }}</td></tr>
+<tr><td>clase2</td><td>{{ object.clase2 }}</td></tr>
+<tr><td>nacionalidad</td><td>{{ object.nacionalidad }}</td></tr>
+<tr><td>estado</td><td>{{ object.estado }}</td></tr>
+<tr><td>unidad</td><td>{{ object.unidad }}</td></tr>
 <tr><td>peloton</td><td>{{ object.peloton }}</td></tr>
 <tr><td>escuadra</td><td>{{ object.escuadra }}</td></tr>
+<tr><td>rol</td><td>{{ object.rol }}</td></tr>
+<tr><td>avatar</td><td>{{ object.avatar }}</td></tr>
 </table>
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Miembro</a>
 
