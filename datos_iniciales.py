@@ -161,7 +161,6 @@ def agregar_miembros():
                 el_estado = 'Reserva'
             miembro.estado = el_estado
             print(miembro.estado)
-
             miembro.unidad = Unidad.objects.get(abreviatura = array[6])
             print(miembro.unidad)
             miembro.peloton = array[7]
@@ -171,10 +170,6 @@ def agregar_miembros():
             miembro.rol = Rol.objects.get(abreviatura = array[9])
             print(miembro.rol)
             miembro.save()
-            if miembro.nombre == "Admin":
-                user.is_staff = True
-                user.is_superuser = True
-                user.save()
             print(miembro)
 
 
@@ -185,6 +180,11 @@ def main():
     crear_clase()
     crear_naciones()
     agregar_miembros()
+    # Le pongo permisos al usuario admin
+    user = User.objects.get(username="Admin")
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
     print("FINALIZADO DATOS INICIALES")
 
 

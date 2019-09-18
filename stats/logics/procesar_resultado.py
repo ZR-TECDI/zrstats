@@ -29,7 +29,6 @@ def handle_uploaded_file(mision):
         asiste.tiempo_de_sesion = delta
         asiste.save()
 
-
         for index in resultado_rpt:
             dict_jugador = index
             j1 = dict_jugador['nombre']
