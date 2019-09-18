@@ -61,7 +61,7 @@ class CampanaForm(forms.ModelForm):
 class MiembroForm(forms.ModelForm):
     class Meta:
         model = Miembro
-        fields = ['email', 'nombre', 'peloton', 'escuadra', 'user', 'rango', 'clase1', 'unidad', 'rol']
+        fields = ['email', 'nombre', 'peloton', 'escuadra', 'avatar', 'user', 'rango', 'clase1', 'unidad', 'rol']
 
 
 class AsistenciaForm(forms.ModelForm):

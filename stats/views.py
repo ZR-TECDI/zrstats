@@ -245,7 +245,7 @@ class MiembroDetailView(DetailView):
 class MiembroUpdateView(UpdateView):
     template_name = 'stats/crud/miembro_form.html'
     model = Unidad
-    form_class = UnidadForm
+    form_class = MiembroForm
 
 
 class MisionListView(ListView):
