@@ -22,6 +22,7 @@
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'stats/DataTables/datatables.min.css'%}"/>
 
 
 		<!-- Theme CSS -->
@@ -58,7 +59,7 @@
 			<!-- start: header -->
 			<header class="header">
 				<div class="logo-container">
-					<a href="../" class="logo">
+					<a href="{% url 'stats:index' %}" class="logo">
 						<img src="{% static 'stats/img/zr_stats_logo.png' %}" height="40px" alt="Logo"/>
 					</a>
 					<div class="visible-xs toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
@@ -324,6 +325,12 @@
 											<span>Crear Misión</span>
 										</a>
 									</li>
+                                    <li>
+										<a href="{% url 'stats:test-page' %}">
+											<i class="fa fa-wheelchair" aria-hidden="true"></i>
+											<span>Test Page</span>
+										</a>
+									</li>
                                     <li class="nav-parent">
                                         <a>
                                             <i class="fa fa-align-left" aria-hidden="true"></i>
@@ -475,6 +482,7 @@
 		<script src="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
+        <script type="text/javascript" src="{% static 'stats/DataTables/datatables.min.js'%}"></script>
 
 		<!-- Theme Base, Components and Settings -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.js' %}"></script>
@@ -486,11 +494,7 @@
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js' %}"></script>
         <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
         <script type="text/javascript" src="{% static '/stats/django_select2/django_select2.js' %}"></script>
-        <script type="text/javascript">
-          window.onerror = function (msg) {
-            $("body").attr("JSError", msg);
-          }
-        </script>
+
         {% block extra_scripts %}
         {% endblock %}
 

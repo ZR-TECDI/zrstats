@@ -1,0 +1,60 @@
+{% extends 'stats/base.html' %}
+{% load static %}
+
+{% block head_title %}TEST PAGE{% endblock %}
+
+{% block page_title %}TEST PAGE{% endblock %}
+
+
+
+{% block content %}
+    <table class="table" id="table">
+    <thead>
+    <th>#</th>
+    <th>ID</th><th>Link</th>
+        <th>user</th>
+        <th>email</th>
+        <th>rango</th>
+        <th>nombre</th>
+        <th>clase1</th>
+        <th>clase2</th>
+        <th>nacionalidad</th>
+        <th>estado</th>
+        <th>unidad</th>
+        <th>peloton</th>
+        <th>escuadra</th>
+        <th>rol</th>
+        <th>avatar</th>
+    </thead>
+    {% for object in object_list %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{object.pk}}</td>
+        <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+        <td>{{ object.user }}</td>
+        <td>{{ object.email }}</td>
+        <td>{{ object.rango }}</td>
+        <td>{{ object.nombre }}</td>
+        <td>{{ object.clase1 }}</td>
+        <td>{{ object.clase2 }}</td>
+        <td>{{ object.nacionalidad }}</td>
+        <td>{{ object.estado }}</td>
+        <td>{{ object.unidad }}</td>
+        <td>{{ object.peloton }}</td>
+        <td>{{ object.escuadra }}</td>
+        <td>{{ object.rol }}</td>
+        <td>{{ object.avatar }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+    $(document).ready( function () {
+        $('#table').DataTable({
+
+        });
+    } );
+    </script>
+{% endblock %}

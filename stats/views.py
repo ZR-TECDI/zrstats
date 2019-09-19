@@ -9,10 +9,16 @@ from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
+from django.http import JsonResponse
 
 
 def index_view(request):
     return render(request, 'stats/index.html', {})
+
+
+class TestPage(ListView):
+    template_name = 'stats/test_page.html'
+    model = Miembro
 
 
 # Vista para redireccionar al user a su propio perfil
