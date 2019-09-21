@@ -36,7 +36,7 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
         global fecha_rpt
         fecha_rpt = f[5].split(" ")
         fecha_rpt = fecha_rpt[3]
-        fecha_rpt = fecha_rpt.replace('/', ':')
+        #fecha_rpt = fecha_rpt.replace('/', ':')
 
 # Error y matar proceso en caso de que no existan resultados en el RPT
         if not rpt:
@@ -113,7 +113,7 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     # Tomando datos de misión desde el reporte
     dic_mision['fecha'] = fecha_rpt
     # TODO leer esta data desde el reporte/generar data en el reporte con KDM
-    dic_mision['tipo_mision'] = 'OTROS'
+    dic_mision['tipo_mision'] = 'OTRO'
     dic_mision['nombre_mision'] = 'test'
     dic_mision['nombre_campa'] = 'Campaña de la nieve'
     dic_mision['editor'] = 'ZR TECDI'

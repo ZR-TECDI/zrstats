@@ -10,6 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
+from datetime import datetime
+import calendar
 
 
 def index_view(request):
@@ -47,9 +49,12 @@ class CrearMision(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         mision = self.object
-        mision.notas_privadas = "PUTO EL QUE LEE"
-        if mision.reporte is None:
-            mision.notas_privadas = "SIN REPORTE"
+        if mision.reporte:
+            # override_by_rpt le da prioridad a los datos del rpt
+            procesar_resultado.handle_uploaded_file(mision, override_by_rpt=True)
+        else:
+            # mision.notas_privadas = "SIN REPORTE"
+            pass
         mision.save()
         return super(CrearMision, self).form_valid(form)
 
@@ -62,38 +67,57 @@ class ActualizarMision(UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         mision = self.object
-        mision.notas_privadas = "PUTO EL QUE LEE"
-        if mision.reporte == "":  # Asi se chequea un FileFiled nulo
-            mision.notas_privadas = "SIN REPORTE"
+        if mision.reporte:
+            # override_by_rpt le da prioridad a los datos del rpt
+            procesar_resultado.handle_uploaded_file(mision, override_by_rpt=False)
         else:
-            procesar_resultado.handle_uploaded_file(mision)
+            #mision.notas_privadas = "SIN REPORTE"
+            pass
         mision.save()
         return super(ActualizarMision, self).form_valid(form)
 
 
-# TODO hacer esta función más linda
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadReporteForm(request.POST, request.FILES)
-        if form.is_valid():
-            mision = Mision(reporte=request.FILES['file'])
-            procesar_resultado.handle_uploaded_file(mision)
-            return HttpResponseRedirect('/success/url/')
-    else:
-        form = UploadReporteForm()
-    return render(request, 'stats/upload.html', {'form': form})
+class AsistenciaMes(ListView):
+    template_name = 'stats/asistencia_mes.html'
+    model = Mision
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        miembros = Miembro.objects.all()
+        #year = datetime.now().year
+        #month = datetime.now().month
+        year = self.kwargs['year']
+        month = self.kwargs['month']
+        month_days = calendar.monthcalendar(year, month)
+        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month)
+        asistencia_mensual = Asistencia.objects.filter(fecha__month=month)
 
-# class AsistenciaListView(ListView):
-#     template_name = 'stats/tabla_asistencia.html'
-#     model = Asistencia
-#     paginate_by = 100  # if pagination is desired
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['miembros'] = Miembro.objects.all()
-#         context['reportes'] = Mision.objects.all()
-#         return context
+        # Armo el calendario del mes
+        mision_calendar = []
+        for week in month_days:
+            for day in week:
+                if day != 0:
+                    mision_day = {}
+                    mision_day["mision"] = None
+                    mision_day["day"] = day
+                    mision_calendar.append(mision_day)
+
+        # Le pongo misiones a los dias del calendario
+        for day in mision_calendar:
+            for mision in misiones_mes:
+                if mision.fecha_finalizada.day == day["day"]:
+                    mision_day = {}
+                    idx = mision_calendar.index(day)
+                    mision_day["mision"] = mision
+                    mision_day["day"] = day["day"]
+                    mision_calendar[idx] = mision_day
+
+        context['mision_calendar'] = mision_calendar
+        context['misiones_mes'] = misiones_mes
+        context['miembros'] = miembros
+        context['asistencia'] = asistencia_mensual
+        context['fecha_mes'] = datetime(year, month, 1)
+        return context
 
 
 # ======================================================================================================================
@@ -297,4 +321,29 @@ class AsistenciaUpdateView(UpdateView):
     model = Asistencia
     form_class = AsistenciaForm
 
+
+# ESTAS FUNCIONES COMENTADAS LAS GUARDO SOLO COMO REFERENCIA/DOCUMENTACION
+
+# def upload_file(request):
+#     if request.method == 'POST':
+#         form = UploadReporteForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             mision = Mision(reporte=request.FILES['file'])
+#             procesar_resultado.handle_uploaded_file(mision)
+#             return HttpResponseRedirect('/success/url/')
+#     else:
+#         form = UploadReporteForm()
+#     return render(request, 'stats/upload.html', {'form': form})
+
+
+# class AsistenciaListView(ListView):
+#     template_name = 'stats/tabla_asistencia.html'
+#     model = Asistencia
+#     paginate_by = 100  # if pagination is desired
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['miembros'] = Miembro.objects.all()
+#         context['reportes'] = Mision.objects.all()
+#         return context
 

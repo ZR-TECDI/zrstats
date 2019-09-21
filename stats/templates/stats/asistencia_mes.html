@@ -1,0 +1,89 @@
+{% extends 'stats/base.html' %}
+{% load static %}
+
+
+{% block head_title %}
+    Misiones
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>Misiones</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Misiones de {{ fecha_mes|date:"F" }} del {{ fecha_mes|date:"Y" }}
+{% endblock %}
+
+
+{% block content %}
+<table class="table table-bordered" id="table">
+    <thead>
+    <th style="width: 2%">#</th>
+    <th style="width: 4%">Miembro</th>
+    {% for d in mision_calendar %}
+        {% if d.mision is not None %}
+            <th class="text-center" style="color: red" data-toggle="tooltip" data-placement="top" data-original-title="{{ d.mision }} ({{ d.mision.fecha_finalizada|date:"l" }})">
+                {{ d.day }}
+            </th>
+        {% else %}
+            <th class="text-center">
+                {{ d.day }}
+            </th>
+        {% endif %}
+    {% endfor %}
+    </thead>
+    {% for miembro in miembros %}
+        <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{{ miembro.get_absolute_url }}">{{ miembro }}</a></td>
+        {% for d in mision_calendar %}
+            {% if asistencia.count == 0 %}
+                <td class="text-center"></td>
+            {% else %}
+                {% for a in asistencia %}
+                    {% if a.miembro == miembro %}
+                        {% if a.fecha.day == d.day %}
+                            {% if a.requiere_atencion %}
+                                {% if a.asistencia == 'Falta' %}
+                                    <td class="danger text-center">F*</td>
+                                {% elif a.asistencia == 'asiste' %}
+                                    <td class="success text-center">A*</td>
+                                {% elif a.asistencia == 'atrasado' %}
+                                    <td class="warning text-center">T*</td>
+                                {% else %}
+                                    <td class="text-center">*</td>
+                               {% endif %}
+                            {% else %}
+                                {% if a.asistencia == 'Falta' %}
+                                    <td class="danger text-center">F</td>
+                                {% elif a.asistencia == 'asiste' %}
+                                    <td class="success text-center">A</td>
+                                {% elif a.asistencia == 'atrasado' %}
+                                    <td class="warning text-center">T</td>
+                                {% else %}
+                                    <td class="text-center"></td>
+                               {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <td class="text-center"></td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </tr>
+        {% endfor %}
+</table>
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+{% endblock %}

@@ -5,24 +5,29 @@ from stats.models import Miembro, Asistencia, Mision
 from datetime import datetime, timedelta
 
 
-def handle_uploaded_file(mision):
+def handle_uploaded_file(mision, override_by_rpt=True):
+    mision.save()  # tengo que guardar primero la mision para que se guarde el rpt y me tome el File
     resultado_rpt = procesar_rpt.main(mision.reporte.path)
     dict_mision = resultado_rpt[0]
-    fecha = dict_mision['fecha'].replace(':', '/')
-    fecha = datetime.strptime(fecha, '%Y/%m/%d')
-    miembros = Miembro.objects.all()
+    fecha_rpt = dict_mision['fecha']
+    fecha_rpt = datetime.strptime(fecha_rpt, '%Y/%m/%d')
+    mision.fecha_finalizada = fecha_rpt
+    mision.estado = Mision.ESTADO_FINALIZADA  # Si subo el reporte si o si tiene que estar FINALIZADA
 
-    mision.nombre = dict_mision['nombre_mision']
-    mision.tipo = dict_mision['tipo_mision']
-    mision.nombre_campa = dict_mision['nombre_campa']
-    mision.fecha = fecha
+    if override_by_rpt:  # asumo Form inexistente y trato de llenar todolo que pueda desde el rpt
+        mision.nombre = dict_mision['nombre_mision']
+        mision.tipo = dict_mision['tipo_mision']
+        mision.nombre_campa = dict_mision['nombre_campa']  # TODO generar objeto campaña/asignar a existente
+        # TODO subir imagen default / tomar imagen del pbo
+
     mision.save()
     resultado_rpt.pop(0)  # elminio el primer elemento del dict (el que NO es una asistencia)
+    miembros = Miembro.objects.all()
     for miembro in miembros:  # miembro de la lista de la DB
         asiste = Asistencia()
         asiste.mision = mision
         asiste.miembro = miembro
-        asiste.fecha = fecha
+        asiste.fecha = fecha_rpt
         asiste.asistencia = 'Falta'
         t = datetime.strptime("0:0:0", '%H:%M:%S')
         delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
@@ -34,7 +39,7 @@ def handle_uploaded_file(mision):
             j1 = dict_jugador['nombre']
             j2 = miembro.nombre.upper()
             if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
-                asiste = Asistencia.objects.get(miembro=miembro, fecha=fecha)
+                asiste = Asistencia.objects.get(miembro=miembro, fecha=fecha_rpt)
                 print("ENCONTRE A "+j1+" LE PONGO ASISTENCIA")
                 asiste.asistencia = dict_jugador['asistencia']
                 t = datetime.strptime(

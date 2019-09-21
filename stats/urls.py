@@ -15,9 +15,6 @@ urlpatterns = [
     # /stats/profile/<user_id>
     path('profile/<int:pk>', views.ProfileView.as_view(), name='profile'),
 
-    # /stats/upload
-    path('upload', views.upload_file, name='upload'),
-
     # /stats/lista
     path('lista', views.AsistenciaListView.as_view(), name='stats-list'),
 
@@ -29,6 +26,9 @@ urlpatterns = [
 
     # /stats/mision/actualizar/<id_mision>
     path('mision/actualizar/<int:pk>', views.ActualizarMision.as_view(), name='actualizar-mision'),
+
+    # /stats/asistencia-mes/2019/6
+    path('asistencia-mes/<int:year>/<int:month>', views.AsistenciaMes.as_view(), name='asistencia-mes'),
 ]
 
 urlpatterns += (

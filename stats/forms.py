@@ -7,9 +7,9 @@ from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget,
 class MisionForm(forms.ModelForm):
     class Meta:
         model = Mision
-        fields = ['nombre', 'tipo', 'estado', 'fecha_creacion', 'fecha_aprobacion', 'campana', 'descripcion', 'notas_privadas',
-                  'notas_editor', 'imagen', 'briefing', 'mapa', 'fecha_programada', 'fecha_finalizada', 'reporte',
-                  'autor', 'editores', 'responsables']
+        fields = ['nombre', 'oficial', 'tipo', 'estado', 'campana', 'descripcion',
+                  'notas_privadas', 'notas_editor', 'imagen', 'briefing', 'mapa', 'fecha_programada',
+                  'reporte', 'autor', 'editores', 'responsables']
         widgets = {
             'autor': Select2Widget,
             'campana': Select2Widget,

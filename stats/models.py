@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
 from django.urls import reverse
+from django.db.models.signals import post_save, post_init
 
 
 class Clase(models.Model):
@@ -223,32 +224,54 @@ class Miembro(models.Model):
 class Mision(models.Model):
     nombre = models.CharField(max_length=40, verbose_name="Nombre de Misión", blank=False, null=False)
     fecha_creacion = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha Creación")
-
+    fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
+    fecha_programada = models.DateField(blank=True, null=True, verbose_name="Fecha Programada")
+    fecha_finalizada = models.DateField(blank=True, null=True, verbose_name="Fecha Finalizada")
+    oficial = models.BooleanField(verbose_name="Es Oficial?", blank=False, null=False, default=True)
     # Choices = ('Lo que se guarda', 'Lo que se muestra')
     TIPO_MISION_CHOICES = (
-        ('OFI', 'Misión Oficial'),
-        ('PRACT', 'Práctica'),
-        ('IMPRO', 'Improvisada'),
+        ('CAMPANA', 'Campaña'),
+        ('ENTRENAMIENTO', 'Entrenamiento'),
+        ('IMPROVISADA', 'Improvisada'),
         ('GALA', 'Gala'),
-        ('INSTR', 'Instrucción'),
-        ('COOP', 'Cooperativa'),
+        ('CURSO', 'Curso'),
+        ('COOPERATIVA', 'Cooperativa'),
         ('OTRO', 'Otros'),
     )
+    # Estas variables las declaro para luego hacer por ejemplo en una view
+    # una_mision = Mision(tipo=Mision.TIPO_CAMPANA)
+    # en vez de hacerlo hardcode asi
+    # una_mision = Mision(tipo='CAMPANA')
+    TIPO_CAMPANA = 'CAMPANA'
+    TIPO_ENTRENAMIENTO = 'ENTRENAMIENTO'
+    TIPO_IMPROVISADA = 'IMPROVISADA'
+    TIPO_GALA = 'GALA'
+    TIPO_CURSO = 'CURSO'
+    TIPO_COOPERATIVA = 'COOPERATIVA'
+    TIPO_OTRO = 'OTRO'
     tipo = models.CharField(max_length=40, verbose_name="Tipo de misión", blank=False, null=False,
-                            choices=TIPO_MISION_CHOICES, default=TIPO_MISION_CHOICES[0])
+                            choices=TIPO_MISION_CHOICES, default=TIPO_OTRO)
 
     #  Choices = ('Lo que se guarda', 'Lo que se muestra')
     ESTADO_MISION_CHOICES = (
         ('BORRADOR', 'Borrador'),
-        ('PEND.APROB.', 'Pendiende de aprobación'),
-        ('EN EDICION', 'En edición'),
-        ('PREPARADA', 'Lista para jugar'),
-        ('RECHAZADA', 'Rechazada'),
+        ('PENDIENTE', 'Pendiende de aprobación'),
+        ('EDITANDO', 'En edición'),
+        ('PREPARADA', 'Preparada'),
+        ('AGENDADA', 'Agendada'),
         ('FINALIZADA', 'Finalizada'),
+        ('RECHAZADA', 'Rechazada'),
     )
+    ESTADO_BORRADOR = 'BORRADOR'
+    ESTADO_PENDIENTE = 'PENDIENTE'
+    ESTADO_EDITANDO = 'EDITANDO'
+    ESTADO_PREPARADA = 'PREPARADA'
+    ESTADO_AGENDADA = 'AGENDADA'
+    ESTADO_FINALIZADA = 'FINALIZADA'
+    ESTADO_RECHAZADA = 'RECHAZADA'
     estado = models.CharField(max_length=40, verbose_name="Estado", blank=True, null=True,
-                              choices=ESTADO_MISION_CHOICES, default=ESTADO_MISION_CHOICES[0])
-    fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
+                              choices=ESTADO_MISION_CHOICES, default=ESTADO_BORRADOR)
+
     campana = models.ForeignKey(Campana, verbose_name="Campaña", on_delete=models.CASCADE, blank=True, null=True)
     autor = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, blank=True, null=True)
     editores = models.ManyToManyField('Miembro', verbose_name="Editores", related_name='misiones_editadas', blank=True)
@@ -259,8 +282,7 @@ class Mision(models.Model):
     imagen = models.ImageField(upload_to='mision_logo/', blank=True, null=True, verbose_name="Imagen")
     briefing = models.FileField(upload_to='briefings/', blank=True, null=True, verbose_name="Briefing")
     mapa = models.CharField(max_length=40, verbose_name="Mapa", blank=True, null=True)
-    fecha_programada = models.DateField(blank=True, null=True, verbose_name="Fecha Programada")
-    fecha_finalizada = models.DateField(blank=True, null=True, verbose_name="Fecha Finalizada")
+
     reporte = models.FileField(upload_to='reportes/', blank=True, null=True)
 
     def __str__(self):

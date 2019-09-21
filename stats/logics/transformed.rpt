@@ -3,7 +3,7 @@
 == "C:\Games\ArmA3\A3Master\arma3server_x64.exe" -port=2302 "-config=C:\Games\ArmA3\A3Master\Servers\SERVER_D2\SERVER_D2_config.cfg" "-cfg=C:\Games\ArmA3\A3Master\Servers\SERVER_D2\SERVER_D2_basic.cfg" "-profiles=C:\Games\ArmA3\A3Master\Servers\SERVER_D2\" -name=SERVER_D2 "-mod=@ace;@ACEX;@ACE_Compat__RHS_Armed_Forces_of_the_Russian_Federation;@ACE_Compat__RHS_GREF;@ACE_Compat__RHS_United_States_Armed_Forces;@ADV__ACE_Medical;@ALiVE;@ASR_AI3;@A_10_Warthog;@CBA_A3;@CUP_ACE3_Compatibility_Addon__Terrains;@CUP_Terrains__Core;@CUP_Terrains__Maps;@Diwako_s_ACE_Ragdolling;@Enhanced_Movement;@FIR_AWS_AirWeaponSystem_;@F_16_Fighting_Falcon;@Project_OPFOR;@Radio_Animations_for_Task_Force_Radio;@RAV_Lifter_A3;@RHIB_ZR;@RHSAFRF;@RHSGREF;@RHSSAF;@RHSUSAF;@Task_Force_Arrowhead_Radio_BETA__;@Universal_Uniforms;@Universal_Uniforms_RHS;@USS_Nimitz;@Vcom_AI_V3_1;@ZR_AAV;@ZR_Core;@ZR_Middle_East_Maps_1_1;@_DISCONTINUED_Burnes_Armories__Landing_Craft_Air_Cushion_LCAC_;@KAT__Advanced_Medical;" "-serverMod=@Advanced_Urban_Rappel
 Original output filename: Arma3Retail_Server_x64
 Exe timestamp: 2018/12/11 20:28:04
-Current time:  2019/02/05 16:47:19
+Current time:  2019/02/06 16:47:19
 
 Type: Public
 Build: Stable
