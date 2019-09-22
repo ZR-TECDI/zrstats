@@ -93,6 +93,14 @@ class CalendarView(ListView):
             m['end'] = mision.fecha_finalizada
             m['allDay'] = True
             m['url'] = mision.get_absolute_url()
+            if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or mision.tipo == Mision.TIPO_GALA:
+                m['className'] = "fc-event-danger"
+            if mision.tipo == Mision.TIPO_IMPROVISADA:
+                m['className'] = "fc-event-success"
+            if mision.tipo == Mision.TIPO_CURSO:
+                m['className'] = "fc-event-warning"
+            if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
+                m['className'] = "fc-event-info"
             mision_list.append(m)
 
         context['mision_list'] = mision_list
