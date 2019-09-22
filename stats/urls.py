@@ -27,8 +27,13 @@ urlpatterns = [
     # /stats/mision/actualizar/<id_mision>
     path('mision/actualizar/<int:pk>', views.ActualizarMision.as_view(), name='actualizar-mision'),
 
+    # /stats/calendario/
+    path('calendario', views.CalendarView.as_view(), name='calendario'),
+
     # /stats/asistencia-mes/2019/6
     path('asistencia-mes/<int:year>/<int:month>', views.AsistenciaMes.as_view(), name='asistencia-mes'),
+
+
 ]
 
 urlpatterns += (

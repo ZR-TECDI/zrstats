@@ -77,6 +77,28 @@ class ActualizarMision(UpdateView):
         return super(ActualizarMision, self).form_valid(form)
 
 
+class CalendarView(ListView):
+    template_name = 'stats/calendario.html'
+    model = Mision
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        misiones = Mision.objects.all()
+
+        mision_list = []
+        for mision in misiones:
+            m = {}
+            m['title'] = mision.nombre
+            m['start'] = mision.fecha_finalizada
+            m['end'] = mision.fecha_finalizada
+            m['allDay'] = True
+            m['url'] = mision.get_absolute_url()
+            mision_list.append(m)
+
+        context['mision_list'] = mision_list
+        return context
+
+
 class AsistenciaMes(ListView):
     template_name = 'stats/asistencia_mes.html'
     model = Mision
