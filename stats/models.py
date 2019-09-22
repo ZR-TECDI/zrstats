@@ -117,24 +117,32 @@ class MiembroManager(models.Manager):
 
 
 class Campana(models.Model):
-    nombre = models.CharField(max_length=20, verbose_name="Nombre Campaña", blank=False, null=False)
-    # Choices = ('Lo que se guarda', 'Lo que se muestra')
+    nombre = models.CharField(max_length=140, verbose_name="Nombre Campaña", blank=False, null=False)
     TIPO_CAMP_CHOICES = (
         ('CAMP', 'Campaña Oficial'),
         ('CURSO', 'Curso'),
         ('OTRO', 'Otros'),
     )
+    TIPO_CAMPANA = 'CAMPANA'
+    TIPO_CURSO = 'CURSO'
+    TIPO_OTRO = 'OTRO'
     tipo = models.CharField(max_length=20, verbose_name="Tipo Campaña", blank=False, null=False,
-                            choices=TIPO_CAMP_CHOICES, default=TIPO_CAMP_CHOICES[0])
+                            choices=TIPO_CAMP_CHOICES, default=TIPO_CAMPANA)
     descripcion = models.TextField(verbose_name="Descripción", blank=True, null=True)
+    notas_privadas = models.TextField(verbose_name="Notas Privadas", blank=True, null=True)
+    imagen = models.ImageField(upload_to='campana_img/', blank=True, null=True, verbose_name="Imagen")
     ESTADO_CAMP_CHOICES = (
         ('BORRADOR', 'Borrador'),
         ('APROBADA', 'Aprobada'),
-        ('EN CURSO', 'En Curso'),
+        ('EN_CURSO', 'En Curso'),
         ('FINALIZADA', 'Finalizada'),
     )
+    ESTADO_BORRADOR = 'BORRADOR'
+    ESTADO_APROBADA = 'APROBADA'
+    ESTADO_EN_CURSO = 'EN_CURSO'
+    ESTADO_FINALIZADA = 'FINALIZADA'
     estado = models.CharField(max_length=20, verbose_name="Estado", blank=False, null=False,
-                              choices=ESTADO_CAMP_CHOICES, default=ESTADO_CAMP_CHOICES[0])
+                              choices=ESTADO_CAMP_CHOICES, default=ESTADO_BORRADOR)
 
     def __str__(self):
         return self.nombre + " ["+self.tipo+"]"
@@ -222,7 +230,7 @@ class Miembro(models.Model):
 
 
 class Mision(models.Model):
-    nombre = models.CharField(max_length=40, verbose_name="Nombre de Misión", blank=False, null=False)
+    nombre = models.CharField(max_length=140, verbose_name="Nombre de Misión", blank=False, null=False)
     fecha_creacion = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha Creación")
     fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
     fecha_programada = models.DateField(blank=True, null=True, verbose_name="Fecha Programada")
@@ -306,13 +314,19 @@ class Asistencia(models.Model):
     miembro = models.ForeignKey(Miembro, verbose_name="Miembro", on_delete=models.DO_NOTHING, null=False)
     fecha = models.DateField(blank=False, null=False, default=now)
     ASISTENCIA_CHOICES = (
-        ('Asiste', 'Asiste'),
-        ('Falta', 'Falta'),
-        ('Atraso', 'Atraso'),
-        ('Justificado', 'Justificado'),
-        ('Reserva', 'Reserva'),
-        ('Licencia', 'Licencia'),
+        ('ASISTE', 'Asiste'),
+        ('FALTA', 'Falta'),
+        ('TARDE', 'Atraso'),
+        ('JUSTIFICADA', 'Justificado'),
+        ('RESERVA', 'Reserva'),
+        ('LICENCIA', 'Licencia'),
     )
+    ASIST_ASISTE = 'ASISTE'
+    ASIST_FALTA = 'FALTA'
+    ASIST_TARDE = 'TARDE'
+    ASIST_JUSTIFICADA = 'JUSTIFICADA'
+    ASIST_RESERVA = 'RESERVA'
+    ASIST_LICENCIA = 'LICENCIA'
     asistencia = models.CharField(max_length=20, verbose_name="Asistencia", blank=False, null=False,
                                   choices=ASISTENCIA_CHOICES)
     tiempo_de_sesion = models.DurationField(blank=False, null=False, default=0, verbose_name="Tiempo de Sesión")

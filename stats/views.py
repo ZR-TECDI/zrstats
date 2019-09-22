@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
 from .logics import procesar_resultado
 from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana
+from .logics import services
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.views.generic.base import RedirectView
 from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm, CampanaForm
@@ -113,39 +114,18 @@ class AsistenciaMes(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        miembros = Miembro.objects.all()
-        #year = datetime.now().year
-        #month = datetime.now().month
+        miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
         year = self.kwargs['year']
         month = self.kwargs['month']
-        month_days = calendar.monthcalendar(year, month)
-        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month)
-        asistencia_mensual = Asistencia.objects.filter(fecha__month=month)
+        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month).order_by('fecha_finalizada')
 
-        # Armo el calendario del mes
-        mision_calendar = []
-        for week in month_days:
-            for day in week:
-                if day != 0:
-                    mision_day = {}
-                    mision_day["mision"] = None
-                    mision_day["day"] = day
-                    mision_calendar.append(mision_day)
+        lista_asistencia = []
+        for m in miembros:
+            asist_miem = services.asistencia_miembro(m, month, year)
+            lista_asistencia.append(asist_miem)
 
-        # Le pongo misiones a los dias del calendario
-        for day in mision_calendar:
-            for mision in misiones_mes:
-                if mision.fecha_finalizada.day == day["day"]:
-                    mision_day = {}
-                    idx = mision_calendar.index(day)
-                    mision_day["mision"] = mision
-                    mision_day["day"] = day["day"]
-                    mision_calendar[idx] = mision_day
-
-        context['mision_calendar'] = mision_calendar
+        context['asistencia'] = lista_asistencia
         context['misiones_mes'] = misiones_mes
-        context['miembros'] = miembros
-        context['asistencia'] = asistencia_mensual
         context['fecha_mes'] = datetime(year, month, 1)
         return context
 

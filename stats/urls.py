@@ -32,8 +32,6 @@ urlpatterns = [
 
     # /stats/asistencia-mes/2019/6
     path('asistencia-mes/<int:year>/<int:month>', views.AsistenciaMes.as_view(), name='asistencia-mes'),
-
-
 ]
 
 urlpatterns += (
