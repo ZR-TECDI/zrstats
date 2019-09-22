@@ -3,9 +3,10 @@
 from stats.models import *
 from collections import defaultdict
 import os
+import random
+import datetime
 
-
-lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase]
+lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase, User, Asistencia, Mision, Campana]
 for item in lista:
     item.objects.all().delete()
 
@@ -141,36 +142,161 @@ def agregar_miembros():
     with open(datos_iniciales) as txt:
         for line in txt.readlines():
             array = line.replace('\n', '').split(' ')
-            print(array)
+            #print(array)
             user = User.objects.create_user(username=array[1], email=array[1]+"@zrarmy.com", password=array[1].lower())
             miembro = Miembro.objects.get(nombre=array[1])
             miembro.nombre = array[1]
-            print(miembro.nombre)
+            #print(miembro.nombre)
             miembro.rango = Rango.objects.get(abreviatura = array[0])
-            print(miembro.rango)
+            #print(miembro.rango)
             miembro.clase1 = Clase.objects.get(abreviatura = array[2])
-            print(miembro.clase1)
+            #print(miembro.clase1)
             miembro.clase2 = Clase.objects.get(abreviatura = array[3])
-            print(miembro.clase2)
+            #print(miembro.clase2)
             miembro.nacionalidad = Nacionalidad.objects.get(abreviatura = array[4])
-            print(miembro.nacionalidad)
+            #print(miembro.nacionalidad)
 
             if array[5] == 'A':
                 el_estado = 'Activo'
             elif array[5] == 'R':
                 el_estado = 'Reserva'
             miembro.estado = el_estado
-            print(miembro.estado)
+            #print(miembro.estado)
             miembro.unidad = Unidad.objects.get(abreviatura = array[6])
-            print(miembro.unidad)
+            #print(miembro.unidad)
             miembro.peloton = array[7]
-            print(miembro.peloton)
+            #print(miembro.peloton)
             miembro.escuadra = array[8]
-            print(miembro.escuadra)
+            #print(miembro.escuadra)
             miembro.rol = Rol.objects.get(abreviatura = array[9])
-            print(miembro.rol)
+            #print(miembro.rol)
             miembro.save()
-            print(miembro)
+            #print(miembro)
+
+
+def crea_mision_ofi(fecha, campana, i, miembros):
+    mision = Mision()
+    mision.nombre = "Mision " + str(i) + " de " + fecha.strftime("%b")
+    mision.fecha_finalizada = fecha
+    mision.fecha_creacion = fecha
+    mision.tipo = Mision.TIPO_CAMPANA
+    mision.estado = Mision.ESTADO_FINALIZADA
+    mision.campana = campana
+    mision.descripcion = "Campaña jugada durante el mes de " + fecha.strftime("%B")
+    mision.save()
+
+    t = datetime.datetime.strptime("02:30:15", '%H:%M:%S')
+    delta = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+    for m in miembros:
+        if random.choice([True, False]):
+            a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                          asistencia=Asistencia.ASIST_ASISTE, tiempo_de_sesion=delta)
+        else:
+            if random.choice([True, False]):
+                a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_FALTA, tiempo_de_sesion=delta)
+            else:
+                a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_TARDE, tiempo_de_sesion=delta)
+
+
+
+def crea_mision_asp(fecha, camp_asp, ai, aspirantes):
+    mis_asp = Mision()
+    mis_asp.nombre = "Aspirantes curso " + str(ai) + " Camada de " + fecha.strftime("%b")
+    mis_asp.fecha_finalizada = fecha
+    mis_asp.fecha_creacion = fecha
+    mis_asp.tipo = Mision.TIPO_CURSO
+    mis_asp.estado = Mision.ESTADO_FINALIZADA
+    mis_asp.campana = camp_asp
+    mis_asp.descripcion = "Dia " + str(ai) + " de la camada Aspirante del mes de " + fecha.strftime("%B")
+    mis_asp.save()
+    t = datetime.datetime.strptime("02:30:15", '%H:%M:%S')
+    delta = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+    for m in aspirantes:
+        if random.choice([True, False]):
+            a = Asistencia.objects.create(mision=mis_asp, miembro=m, fecha=mis_asp.fecha_finalizada,
+                                          asistencia=Asistencia.ASIST_ASISTE, tiempo_de_sesion=delta)
+        else:
+            if random.choice([True, False]):
+                a = Asistencia.objects.create(mision=mis_asp, miembro=m, fecha=mis_asp.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_FALTA, tiempo_de_sesion=delta)
+            else:
+                a = Asistencia.objects.create(mision=mis_asp, miembro=m, fecha=mis_asp.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_TARDE, tiempo_de_sesion=delta)
+
+
+def crea_mision_impro(fecha, miembros):
+    mision = Mision()
+    mision.nombre = "Impro del dia " + fecha.strftime("%Y / %d / %b")
+    mision.fecha_finalizada = fecha
+    mision.fecha_creacion = fecha
+    mision.tipo = Mision.TIPO_IMPROVISADA
+    mision.estado = Mision.ESTADO_FINALIZADA
+    mision.descripcion = "Improvisada"
+    mision.save()
+    t = datetime.datetime.strptime("02:30:15", '%H:%M:%S')
+    delta = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+    for m in miembros:
+        if random.choice([True, False]):
+            a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                          asistencia=Asistencia.ASIST_ASISTE, tiempo_de_sesion=delta)
+        else:
+            if random.choice([True, False]):
+                a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_FALTA, tiempo_de_sesion=delta)
+            else:
+                a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
+                                              asistencia=Asistencia.ASIST_TARDE, tiempo_de_sesion=delta)
+
+
+def generar_misiones():
+    print("Generado misiones, campañas y asistencias")
+    # Genero campañas
+    fecha = datetime.date(2019, 1, 1)
+    fecha_fin = datetime.date(now().year, now().month, now().day)
+    #fecha_fin = datetime.date(2019, 2, 1)
+    dia = datetime.timedelta(days=1)
+    mes = 0
+    miembros = Miembro.objects.exclude(rango__abreviatura='Asp')
+    aspirantes = Miembro.objects.filter(rango__abreviatura='Asp')
+    while fecha <= fecha_fin:
+
+        if mes < fecha.month:  # cambio de mes y creo campaña
+            i = 1  # numero de mision dentro de la campaña
+            ai = 1  # numero de curso asp
+            mes += 1
+            campana = Campana()
+            campana.nombre = "Campaña de " + fecha.strftime("%B")
+            campana.tipo = Campana.TIPO_CAMPANA
+            campana.estado = Campana.ESTADO_FINALIZADA
+            campana.save()
+
+            camp_asp = Campana()
+            camp_asp.nombre = "Camada Asp. de " + fecha.strftime("%B")
+            camp_asp.tipo = Campana.TIPO_CURSO
+            camp_asp.estado = Campana.ESTADO_FINALIZADA
+            camp_asp.save()
+
+        if fecha.weekday() == 1:  # martes
+            crea_mision_ofi(fecha, campana, i, miembros)
+            i += 1
+            crea_mision_asp(fecha, camp_asp, ai, aspirantes)
+            ai += 1
+        elif fecha.weekday() == 2:  # miercoles
+            crea_mision_asp(fecha, camp_asp, ai, aspirantes)
+            ai += 1
+        elif fecha.weekday() == 3:  # jueves
+            crea_mision_ofi(fecha, campana, i, miembros)
+            i += 1
+        else:
+            if random.choice([True, False]):  # 20% de chance de generar una impro un dia no oficial
+                crea_mision_impro(fecha, miembros)
+
+        fecha = fecha + dia  # Avanzo el dia en el calendario
+    print("FINALIZADO AGREAGAR MISIONES Y ASISTENCIAS")
+
+
 
 
 def main():
@@ -180,6 +306,7 @@ def main():
     crear_clase()
     crear_naciones()
     agregar_miembros()
+    generar_misiones()
     # Le pongo permisos al usuario admin
     user = User.objects.get(username="Admin")
     user.is_staff = True

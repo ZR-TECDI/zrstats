@@ -65,3 +65,8 @@ Inf Fhantom FL -- VE A FAZR -- 1 --
 Cbo Matako MC RO ARG R IMZR 1 2 --
 Cbo Toxic -- -- ARG A IMZR 1 2 --
 May Admin FL -- VE A ALTM -- -- CMD
+Asp Aspi FL -- ARG A IMZR 1 1 --
+Asp Irante FL -- ARG A IMZR 1 1 --
+Asp Cucaracha FL -- ARG A IMZR 1 1 --
+Asp Mugre FL -- ARG A IMZR 1 1 --
+Asp Cagao FL -- ARG A IMZR 1 1 --
