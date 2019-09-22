@@ -40,7 +40,32 @@
             <header class="panel-heading">
                 <div class="panel-actions">
                 <a href="#" class="fa fa-caret-down"></a>
-                <a href="#" class="fa fa-times"></a>
+                </div>
+                <h4 class="panel-title">Acciones</h4>
+            </header>
+            <div class="panel-body">
+                <p><a href="{% url 'stats:crear-mision' %}"><i class="fa fa-plus mr-xs"></i> Nueva Misión</a></p>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-6">
+        <section class="panel panel-featured panel-featured-primary">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">Calendario de Misiones</h2>
+            </header>
+            <div class="panel-body">
+                <div id="calendar"></div>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-3">
+        <section class="panel panel-featured">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
                 </div>
                 <h4 class="panel-title">Referencia</h4>
             </header>
@@ -64,20 +89,6 @@
                         <span class="description truncate">Cualquier otro tipo de misión</span>
                     </li>
                 </ul>
-            </div>
-        </section>
-    </div>
-    <div class="col-md-6">
-        <section class="panel panel-featured">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                <a href="#" class="fa fa-caret-down"></a>
-                <a href="#" class="fa fa-times"></a>
-                </div>
-                <h2 class="panel-title">Calendario de Misiones</h2>
-            </header>
-            <div class="panel-body">
-                <div id="calendar"></div>
             </div>
         </section>
     </div>
