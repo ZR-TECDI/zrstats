@@ -99,9 +99,9 @@ class CalendarView(ListView):
             if mision.tipo == Mision.TIPO_IMPROVISADA:
                 m['className'] = "fc-event-success"
             if mision.tipo == Mision.TIPO_CURSO:
-                m['className'] = "fc-event-warning"
-            if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
                 m['className'] = "fc-event-info"
+            if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
+                m['className'] = "fc-event-warning"
             mision_list.append(m)
 
         context['mision_list'] = mision_list
