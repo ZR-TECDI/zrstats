@@ -30,6 +30,8 @@ def handle_uploaded_file(mision, override_by_rpt=True):
     miembros = Miembro.objects.all()
     for miembro in miembros:  # miembro de la lista de la DB
         asiste = Asistencia()
+        if miembro.rango.abreviatura == 'Asp':
+            asiste.requiere_atencion = True
         asiste.mision = mision
         asiste.miembro = miembro
         asiste.fecha = fecha_rpt
