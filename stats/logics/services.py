@@ -3,7 +3,7 @@ from ..models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, A
 
 def asistencia_miembro(miembro, month, year):
 
-    misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month)
+    misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month).order_by('fecha_finalizada','id')
 
     asistencia = []
     for mision in misiones_mes:

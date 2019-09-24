@@ -1,7 +1,7 @@
 from stats.logics import procesar_rpt
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from stats.models import Miembro, Asistencia, Mision
+from stats.models import Miembro, Asistencia, Mision, Campana
 from datetime import datetime, timedelta
 
 
@@ -16,8 +16,13 @@ def handle_uploaded_file(mision, override_by_rpt=True):
 
     if override_by_rpt:  # asumo Form inexistente y trato de llenar todolo que pueda desde el rpt
         mision.nombre = dict_mision['nombre_mision']
+        campana_nombre = dict_mision['tipo_mision']
+        try:
+            campana = Campana.objects.get(nombre__iexact=campana_nombre)
+            mision.campana = campana
+        except Campana.DoesNotExist:
+            pass
         mision.tipo = dict_mision['tipo_mision']
-        mision.nombre_campa = dict_mision['nombre_campa']  # TODO generar objeto campaña/asignar a existente
         # TODO subir imagen default / tomar imagen del pbo
 
     mision.save()

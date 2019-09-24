@@ -18,6 +18,12 @@ class MisionForm(forms.ModelForm):
         }
 
 
+class MisionReporteForm(forms.ModelForm):
+    class Meta:
+        model = Mision
+        fields = ['reporte']
+
+
 class UploadReporteForm(forms.Form):
     file = forms.FileField()
 

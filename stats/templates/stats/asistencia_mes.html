@@ -31,20 +31,42 @@
     <header class="panel-heading">
     <div class="panel-actions">
     </div>
-    <h2 class="panel-title">Tabla de Asistencia Mensual</h2>
+    <h2 class="panel-title">Tabla de Asistencia Mensual [{{ fecha_mes|date:"F Y" }}]
+        <span class="pull-right text-muted">Referencia:
+            <span class="badge alert-danger">Misión Oficial</span>
+            <span class="badge alert-info">Curso</span>
+            <span class="badge alert-success">Impro</span>
+            <span class="badge alert-warning">Otros</span>
+        </span>
+    </h2>
+
     </header>
     <div class="panel-body">
         <div class="text-right mb-md"></div>
         <div class="row datatables-header form-inline"></div>
-        <div class="table-responsive">
-            <table class="table table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
+        <div class="table-responsive table-condensed">
+            <table class="table table-condensed table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
             <thead>
             <th style="width: 2%">#</th>
             <th style="width: 4%">Miembro</th>
             {% for mision in misiones_mes %}
-                <th class="text-center" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                    {{ mision.fecha_finalizada|date:"D d"}}
-                </th>
+                {% if mision.tipo == "CAMPANA" or mision.tipo == "ENTRENAMIENTO" or mision.tipo == "GALA"  %}
+                    <th class="text-center alert-danger" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                       {{ mision.fecha_finalizada|date:"D d"}}
+                    </th>
+                {% elif  mision.tipo == "IMPROVISADA"%}
+                    <th class="text-center alert-success" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                       {{ mision.fecha_finalizada|date:"D d"}}
+                    </th>
+                {% elif  mision.tipo == "CURSO"%}
+                    <th class="text-center alert-info" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                       {{ mision.fecha_finalizada|date:"D d"}}
+                    </th>
+                {% else  %}
+                    <th class="text-center alert-warning" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                       {{ mision.fecha_finalizada|date:"D d"}}
+                    </th>
+                {% endif %}
             {% endfor %}
             </thead>
             {% for m in asistencia %}
@@ -104,6 +126,7 @@
 		var $table = $('#datatable-tabletools');
 
 		$table.dataTable({
+            ordering: false,
             pageLength: 50,
 			sDom: "B<'text-right mb-md'T>" + $.fn.dataTable.defaults.sDom,
 			oTableTools: {

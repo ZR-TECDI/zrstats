@@ -6,7 +6,7 @@ from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, As
 from .logics import services
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.views.generic.base import RedirectView
-from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm, CampanaForm
+from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm, CampanaForm, MisionReporteForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -58,6 +58,24 @@ class CrearMision(CreateView):
             pass
         mision.save()
         return super(CrearMision, self).form_valid(form)
+
+
+class CrearMisionReporte(CreateView):
+    template_name = 'stats/mision_reporte_create_form.html'
+    model = Mision
+    form_class = MisionReporteForm
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        mision = self.object
+        if mision.reporte:
+            # override_by_rpt le da prioridad a los datos del rpt
+            procesar_resultado.handle_uploaded_file(mision, override_by_rpt=True)
+        else:
+            # redireccionar error upload reporte
+            pass
+        mision.save()
+        return super(CrearMisionReporte, self).form_valid(form)
 
 
 class ActualizarMision(UpdateView):
@@ -117,7 +135,7 @@ class AsistenciaMes(ListView):
         miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
         year = self.kwargs['year']
         month = self.kwargs['month']
-        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month).order_by('fecha_finalizada')
+        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month).order_by('fecha_finalizada','id')
 
         lista_asistencia = []
         for m in miembros:

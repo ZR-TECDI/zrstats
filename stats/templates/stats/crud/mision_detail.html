@@ -42,4 +42,11 @@
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
     <a class="btn btn-primary" href="{% url 'stats:actualizar-mision' object.id %}">Editar Mision</a>
 
+    Asistencia:
+    <ul>
+    {% for a in object.asistencia_set.all %}
+        <li>{{ a.miembro }} - {{ a.asistencia }}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}

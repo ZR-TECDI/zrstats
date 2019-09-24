@@ -24,6 +24,9 @@ urlpatterns = [
     # /stats/mision/crear/
     path('mision/crear/', views.CrearMision.as_view(), name='crear-mision'),
 
+    # /stats/mision/crear/reporte/
+    path('mision/crear/reporte', views.CrearMisionReporte.as_view(), name='crear-mision-reporte'),
+
     # /stats/mision/actualizar/<id_mision>
     path('mision/actualizar/<int:pk>', views.ActualizarMision.as_view(), name='actualizar-mision'),
 
