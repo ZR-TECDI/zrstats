@@ -43,7 +43,7 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
 # Vista para el formulario de crear misiones
 class CrearMision(CreateView):
-    template_name = 'stats/mision_create_form.html'
+    template_name = 'stats/mision/mision_create_form.html'
     model = Mision
     form_class = MisionForm
 
@@ -61,7 +61,7 @@ class CrearMision(CreateView):
 
 
 class CrearMisionReporte(CreateView):
-    template_name = 'stats/mision_reporte_create_form.html'
+    template_name = 'stats/mision/mision_reporte_create_form.html'
     model = Mision
     form_class = MisionReporteForm
 
@@ -79,7 +79,7 @@ class CrearMisionReporte(CreateView):
 
 
 class ActualizarMision(UpdateView):
-    template_name = 'stats/mision_create_form.html'
+    template_name = 'stats/mision/mision_create_form.html'
     model = Mision
     form_class = MisionForm
 
@@ -320,6 +320,11 @@ class MisionCreateView(CreateView):
 class MisionDetailView(DetailView):
     template_name = 'stats/crud/mision_detail.html'
     model = Mision
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['unidades'] = Unidad.objects.all().order_by('nombre')
+        return context
 
 
 class MisionUpdateView(UpdateView):

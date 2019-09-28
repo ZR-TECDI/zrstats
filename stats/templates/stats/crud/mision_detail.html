@@ -1,6 +1,8 @@
 {% extends "stats/base.html" %}
 {% load static %}
 
+
+
 {% block head_title %}
     Misión
 {% endblock %}
@@ -23,30 +25,125 @@
 
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:mision_list' %}">Mision Listing</a></p>
-<table class="table">
-<tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
-<tr><td>fecha_creacion</td><td>{{ object.fecha_creacion }}</td></tr>
-<tr><td>fecha_aprobacion</td><td>{{ object.fecha_aprobacion }}</td></tr>
-<tr><td>campana</td><td>{{ object.campana }}</td></tr>
-<tr><td>descripcion</td><td>{{ object.descripcion }}</td></tr>
-<tr><td>notas_privadas</td><td>{{ object.notas_privadas }}</td></tr>
-<tr><td>notas_editor</td><td>{{ object.notas_editor }}</td></tr>
-<tr><td>imagen</td><td>{{ object.imagen }}</td></tr>
-<tr><td>briefing</td><td>{{ object.briefing }}</td></tr>
-<tr><td>mapa</td><td>{{ object.mapa }}</td></tr>
-<tr><td>fecha_programada</td><td>{{ object.fecha_programada }}</td></tr>
-<tr><td>fecha_finalizada</td><td>{{ object.fecha_finalizada }}</td></tr>
-<tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
-</table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
-    <a class="btn btn-primary" href="{% url 'stats:actualizar-mision' object.id %}">Editar Mision</a>
 
-    Asistencia:
-    <ul>
-    {% for a in object.asistencia_set.all %}
-        <li>{{ a.miembro }} - {{ a.asistencia }}</li>
-    {% endfor %}
-    </ul>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel-body panel-body-nopadding">
+            <div class="img-responsive">
+                <img alt="" class="img-responsive img-rounded" src="{% static 'stats/img/mision_default.jpg' %}">
+            </div>
+        </div>
+        <div class="p-md">
+            <h4 class="text-semibold mt-none">Descripción</h4>
+            <p> {{ object.descripcion }}
+                Nullam quiris risus eget urna mollis ornare vel eu leo. Cum soccis natoque penatibus et magnis dis parturient montes. Urna mollis ornare vel eu leo. Cum soccis natoque penatibus et magnis dis parturient montes. Soccis natoque penatibus et magnis dis parturient montes.</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">Misión: {{ object.nombre }}</h2>
+            </header>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table-condensed">
+                        <tr>
+                            <td>Mapa:</td><td>{{ object.mapa }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fecha:</td><td>{{ object.fecha_finalizada }}</td>
+                        </tr>
+                        <tr>
+                            <td>Tipo de Misión:</td><td>{{ object.tipo }}</td>
+                        </tr>
+                        {% if object.tipo == mision.TIPO_CAMPANA %}
+                        <tr>
+                            <td>Campaña:</td><td>{{ object.campana }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-2">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">Asistencia</h2>
+            </header>
+            <div class="panel-body" style="max-height: 600px;overflow-y: scroll;">
+                <div class="table-responsive">
+                    <table class="table-condensed">
+                        {% for unidad in unidades %}
+                            <tr><td><h4 class="text-center">{{ unidad }}</h4></td></tr>
+                            {% for a in object.asistencia_set.all.order_by  %}
+                                {% if a.miembro.unidad.id == unidad.id %}
+                                    {% if a.asistencia == "asiste" %}
+                                        <tr>
+                                            <td>{{ a.miembro }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-xs-4">
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+                </div>
+                <h2 class="panel-title">Detalle de Misión</h2>
+            </header>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>hola</th>
+                            <th>valor</th>
+                        </tr>
+                        </thead>
+                        <tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
+                        <tr><td>fecha_creacion</td><td>{{ object.fecha_creacion }}</td></tr>
+                        <tr><td>fecha_aprobacion</td><td>{{ object.fecha_aprobacion }}</td></tr>
+                        <tr><td>campana</td><td>{{ object.campana }}</td></tr>
+                        <tr><td>descripcion</td><td>{{ object.descripcion }}</td></tr>
+                        <tr><td>notas_privadas</td><td>{{ object.notas_privadas }}</td></tr>
+                        <tr><td>notas_editor</td><td>{{ object.notas_editor }}</td></tr>
+                        <tr><td>imagen</td><td>{{ object.imagen }}</td></tr>
+                        <tr><td>briefing</td><td>{{ object.briefing }}</td></tr>
+                        <tr><td>mapa</td><td>{{ object.mapa }}</td></tr>
+                        <tr><td>fecha_programada</td><td>{{ object.fecha_programada }}</td></tr>
+                        <tr><td>fecha_finalizada</td><td>{{ object.fecha_finalizada }}</td></tr>
+                        <tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
+<a class="btn btn-primary" href="{% url 'stats:actualizar-mision' object.id %}">Editar Mision</a>
+
 
 {% endblock %}
+
