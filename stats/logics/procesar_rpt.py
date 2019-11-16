@@ -15,7 +15,7 @@ import sys
 
 # globals
 fecha_rpt = []
-
+rpt_mision_data = []
 # funciones
 
 
@@ -32,6 +32,7 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
         f = f.readlines()
         l = s.join(f)
         rpt = re.findall('^.*"ZRASISTENCIA.*$', l, re.M)
+        rpt_mision_data = re.findall('^.*"ZRSTATS.*$', l, re.M)
 
         global fecha_rpt
         fecha_rpt = f[5].split(" ")
@@ -94,7 +95,22 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
             y[contador].pop(2)
             contador += 1
 
-    return sessions
+    # Armo un diccionario con las sesiones y la info de mision
+    rpt_dict = {}
+    rpt_dict['asistencia'] = sessions
+
+    # Parseo los campos de la info de mision (campos con ZRSTATS)
+    mission_data = []
+    for campo in rpt_mision_data:
+        aux = campo.split("\"", 1)[1]
+        aux2 = aux.split(":")[1]
+        aux2 = aux2.split("\"", 1)[0]
+        mission_data.append(aux2)
+
+
+    rpt_dict['info_mision'] = mission_data
+
+    return rpt_dict
 
 
 def calculo_tiempo(data_total):
@@ -111,15 +127,39 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     dic_mision = {}
 
     # Tomando datos de misión desde el reporte
+    mision_info = data_total['info_mision']
     dic_mision['fecha'] = fecha_rpt
     # TODO leer esta data desde el reporte/generar data en el reporte con KDM
-    dic_mision['tipo_mision'] = 'OTRO'
-    dic_mision['nombre_mision'] = 'test'
-    dic_mision['nombre_campa'] = 'Campaña de la nieve'
-    dic_mision['editor'] = 'ZR TECDI'
+
+    for campo in mision_info:
+        clave = campo.split()[0]
+        valor = campo.split(clave, 1)[1]
+
+        if clave == "NOMBRE_MISION":
+            dic_mision['NOMBRE_MISION'] = valor
+
+        if clave == "DESC_MISION":
+            dic_mision['DESC_MISION'] = valor
+
+        if clave == "AUTOR_MISION":
+            dic_mision['AUTOR_MISION'] = valor
+
+        if clave == "TIPO_MISION":
+            dic_mision['TIPO_MISION'] = valor
+
+        if clave == "NOMBRE_CAMPA":
+            dic_mision['NOMBRE_CAMPA'] = valor
+
+        if clave == "ES_OFICIAL":
+            dic_mision['ES_OFICIAL'] = valor
+
+        if clave == "MAPA_MISION":
+            dic_mision['MAPA_MISION'] = valor
+
     resultado_reporte.append(dic_mision)
 
-    for x, y in data_total.items():
+    data_asistencia = data_total['asistencia']
+    for x, y in data_asistencia.items():
         eventos = int(len(y))
         contador = 0
         total_time = datetime.timedelta(hours=0, minutes=0, seconds=0)

@@ -15,14 +15,31 @@ def handle_uploaded_file(mision, override_by_rpt=True):
     mision.estado = Mision.ESTADO_FINALIZADA  # Si subo el reporte si o si tiene que estar FINALIZADA
 
     if override_by_rpt:  # asumo Form inexistente y trato de llenar todolo que pueda desde el rpt
-        mision.nombre = dict_mision['nombre_mision']
-        campana_nombre = dict_mision['tipo_mision']
+        mision.nombre = dict_mision['NOMBRE_MISION']
+        mision.descripcion = dict_mision['DESC_MISION']
+        mision.mapa = dict_mision['MAPA_MISION']
+        mision.tipo = dict_mision['TIPO_MISION']
+
+        if dict_mision['ES_OFICIAL'] == "True":
+            mision.oficial = True
+        else:
+            mision.oficial = False
+
+        # busco si existe campaña y si coincide asigno existente
+        campana_nombre = dict_mision['NOMBRE_CAMPA']
         try:
             campana = Campana.objects.get(nombre__iexact=campana_nombre)
             mision.campana = campana
         except Campana.DoesNotExist:
             pass
-        mision.tipo = dict_mision['tipo_mision']
+
+        # busco si el autor coincide con un Miembro
+        autor_nombre = dict_mision['AUTOR_MISION']
+        try:
+            autor = Miembro.objects.get(nombre__iexact=autor_nombre)
+            mision.autor = autor
+        except Miembro.DoesNotExist:
+            pass
         # TODO subir imagen default / tomar imagen del pbo
 
     mision.save()
