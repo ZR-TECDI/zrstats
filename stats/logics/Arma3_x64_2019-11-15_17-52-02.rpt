@@ -4250,8 +4250,8 @@ PhysMem: 16 GiB, VirtMem : 131072 GiB, AvailPhys : 7.7 GiB, AvailVirt : 131072 G
 17:58:30 [ACE] (advanced_ballistics) INFO: Starting Terrain Extension [cells: 27225] [world: prei_khmaoch_luong]
 17:58:30 [ACE] (common) INFO: 3 delayed functions running.
 17:58:41 "DMB_DEBUG: Player is not DM"
-17:58:41 "Cbo.Strix es ahora visible y perece al da√±o"
-2019/02/05, 17:58:48 "ZRASISTENCIA: Cbo.Strix conectado"
+13:58:41 "Cbo.Strix es ahora visible y perece al da√±o"
+2019/02/05, 13:58:48 "ZRASISTENCIA: Cbo.Strix conectado"
 17:58:48 OPC DATA [2,"76561198051010525","Cbo.Strix",false,2,"2"]
 17:58:48 CallExtension loaded: task_force_radio_pipe (E:\Steam\steamapps\common\Arma 3\!Workshop\@Task Force Arrowhead Radio (BETA!!!)\task_force_radio_pipe_x64.dll) [ÄÎ*s]
 

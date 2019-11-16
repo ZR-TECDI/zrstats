@@ -172,7 +172,7 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
 
         hora_ingreso = datetime.timedelta(
             hours=hora_ingreso, minutes=minuto_ingreso, seconds=segundo_ingreso)
-        if hora_ingreso > datetime.timedelta(hours=21, minutes=15, seconds=0):
+        if hora_ingreso > datetime.timedelta(hours=21, minutes=15, seconds=0): # HORA INICIO MISION 21hs
             atrasado = True
         else:
             atrasado = False
@@ -202,6 +202,11 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
             except IndexError:
                 print("ERROR: No encontré desconexión de " +
                       x + ".\n¿Seguirá conectado?\n")
+
+                # asumo tiempo total basado en el ingreso y el fin de la mision
+                hora_fin_mision = datetime.timedelta(hours=23, minutes=0, seconds=0)
+                ingreso = datetime.timedelta(hours=hour_in, minutes=minute_in, seconds=0)
+                total_time = hora_fin_mision - ingreso
             try:
                 in_time = datetime.datetime(
                     year_in, month_in, day_in, hour_in, minute_in, second_in)
