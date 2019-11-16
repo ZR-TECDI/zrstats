@@ -6,7 +6,8 @@ from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, As
 from .logics import services
 from django.views.generic import DetailView, ListView, UpdateView, CreateView
 from django.views.generic.base import RedirectView
-from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, AsistenciaForm, CampanaForm, MisionReporteForm
+from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, \
+    AsistenciaForm, CampanaForm, MisionReporteForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -112,7 +113,8 @@ class CalendarView(ListView):
             m['end'] = mision.fecha_finalizada
             m['allDay'] = True
             m['url'] = mision.get_absolute_url()
-            if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or mision.tipo == Mision.TIPO_GALA:
+            if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or \
+                    mision.tipo == Mision.TIPO_GALA:
                 m['className'] = "fc-event-danger"
             if mision.tipo == Mision.TIPO_IMPROVISADA:
                 m['className'] = "fc-event-success"
@@ -135,7 +137,8 @@ class AsistenciaMes(ListView):
         miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
         year = self.kwargs['year']
         month = self.kwargs['month']
-        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year, fecha_finalizada__month=month).order_by('fecha_finalizada','id')
+        misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
+                                             fecha_finalizada__month=month).order_by('fecha_finalizada', 'id')
 
         lista_asistencia = []
         for m in miembros:
