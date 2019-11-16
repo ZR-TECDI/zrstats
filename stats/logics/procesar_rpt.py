@@ -31,8 +31,8 @@ Nótese que para funcionar correctamente, es necesario un eventhandler que agreg
         s = "\n"
         f = f.readlines()
         l = s.join(f)
-        rpt = re.findall('^.*"ZRASISTENCIA.*$', l, re.M)
-        rpt_mision_data = re.findall('^.*"ZRSTATS.*$', l, re.M)
+        rpt = re.findall('^.*"ZRASISTENCIA.*$', l, re.M) # busca en el rpt todos los eventos de ZRASISTENCIA
+        rpt_mision_data = re.findall('^.*"ZRSTATS.*$', l, re.M) # busca en el rpt todos los eventos de ZRSTATS
 
         global fecha_rpt
         fecha_rpt = f[5].split(" ")
@@ -132,8 +132,8 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     # TODO leer esta data desde el reporte/generar data en el reporte con KDM
 
     for campo in mision_info:
-        clave = campo.split()[0]
-        valor = campo.split(clave, 1)[1]
+        clave = campo.split()[0]  # extraigo el campo, ej "NOMBRE_CAMPA"
+        valor = campo.split(clave, 1)[1]  # extraigo el valor, ej "Regreso Al Infierno"
 
         if clave == "NOMBRE_MISION":
             dic_mision['NOMBRE_MISION'] = valor
@@ -214,18 +214,18 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
                 pass
             contador += 2
 
-        tiempo_asistencia = datetime.timedelta(hours=1, minutes=20)
+        tiempo_asistencia = datetime.timedelta(hours=1, minutes=20) # TIEMPO MINIMO REQUERIDO PARA ASISTENCIA
         tiempo_minimo = datetime.timedelta(minutes=30)
         requiere_atencion = "False"
 
         if total_time >= tiempo_asistencia:
-            asistencia = "asiste"
+            asistencia = "Asiste"
             if atrasado:
-                asistencia = "atrasado"
+                asistencia = "Tarde"
         elif total_time <= tiempo_asistencia and total_time > tiempo_minimo:
             requiere_atencion = "True"
         else:
-            asistencia = "falta"
+            asistencia = "Falta"
             requiere_atencion = "True"
 
         nombre = x.split(".")
