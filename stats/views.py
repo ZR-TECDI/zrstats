@@ -39,7 +39,7 @@ class RedirectToProfile(RedirectView):
 # Vista para renderizar el perfil de alguien
 class ProfileView(LoginRequiredMixin, DetailView):
     template_name = 'stats/profile.html'
-    model = Miembro
+    model = User
 
 
 # Vista para el formulario de crear misiones

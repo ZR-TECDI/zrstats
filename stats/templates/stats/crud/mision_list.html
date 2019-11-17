@@ -50,7 +50,7 @@
             <table  class="table table-bordered table-striped mb-none" id="datatable-default">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th style="width: 10px">ID</th>
                         <th>Nombre</th>
                         <th>Tipo</th>
                         <th>Fecha</th>
@@ -88,7 +88,11 @@
                         {% endif %}
                         <td>{{ object.autor }}</td>
                         <td>{% for editor in object.editores.all %}{% if forloop.last %}{{ editor }}{% else %}{{ editor }}, {% endif %} {% endfor %}</td>
-                        <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
+                        {% if object.reporte %}
+                            <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
+                        {% else %}
+                            <td>Sin reporte.</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 </tbody>

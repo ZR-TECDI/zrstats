@@ -2,6 +2,10 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block head_extra %}
+    {{ form.media }}
+{% endblock %}
+
 {% block head_title %}
     Misión
 {% endblock %}

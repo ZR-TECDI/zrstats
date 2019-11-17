@@ -30,7 +30,11 @@
     <div class="col-md-8">
         <div class="panel-body panel-body-nopadding">
             <div class="img-responsive">
+                {% if object.imagen %}
+                <img alt="" class="img-responsive img-rounded" src="{{ object.imagen.url }}">
+                {% else %}
                 <img alt="" class="img-responsive img-rounded" src="{% static 'stats/img/mision_default.jpg' %}">
+                {% endif %}
             </div>
         </div>
         <div class="p-md">
@@ -84,7 +88,7 @@
                             <tr><td><h4 class="text-center">{{ unidad }}</h4></td></tr>
                             {% for a in object.asistencia_set.all.order_by  %}
                                 {% if a.miembro.unidad.id == unidad.id %}
-                                    {% if a.asistencia == "asiste" %}
+                                    {% if a.asistencia == a.ASIST_ASISTE %}
                                         <tr>
                                             <td>{{ a.miembro }}</td>
                                         </tr>

@@ -18,7 +18,12 @@
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
 		<!-- Vendor CSS -->
-		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap/css/bootstrap.css' %}" />
+		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap/css/bootstrap.css' %}" />
+
+        <script src="{% static 'stats/octopus/assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
+
+        <link rel="stylesheet" href="{% static 'stats/select2/css/select2.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
@@ -37,12 +42,17 @@
 		<!-- Head Libs -->
 		<script src="{% static 'stats/octopus/assets/vendor/modernizr/modernizr.js' %}"></script>
 
+
+
+
         <!-- Flag Icon CSS -->
         <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
 
         <!-- Select2 CSS y JS -->
-        <link rel="stylesheet" href="{% static 'stats/select2/css/select2.min.css' %}" />
         <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
+
+
+
 
 
 
@@ -480,10 +490,11 @@
             {% endblock %}
 		</section>
 
-		<!-- Vendor -->
-		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js' %}"></script>
-		<script src="{% static 'stats/octopus/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
-		<script src="{% static 'stats/octopus/assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
+		<!-- Vendor-->
+
+
+
+        <script src="{% static 'stats/octopus/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/nanoscroller/nanoscroller.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.js' %}"></script>
@@ -500,8 +511,12 @@
 
 		<!-- Theme Initialization Files -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js' %}"></script>
-        <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
+
         <script type="text/javascript" src="{% static '/stats/django_select2/django_select2.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'stats/select2-bootstrap-theme/dist/select2-bootstrap.min.css' %}" />
+        <script>
+            $.fn.select2.defaults.set( "theme", "bootstrap" );
+        </script>
 
         {% block extra_scripts %}
         {% endblock %}

@@ -235,7 +235,12 @@ class Mision(models.Model):
     fecha_aprobacion = models.DateField(blank=True, null=True, verbose_name="Fecha de Aprobación")
     fecha_programada = models.DateField(blank=True, null=True, verbose_name="Fecha Programada")
     fecha_finalizada = models.DateField(blank=True, null=True, verbose_name="Fecha Finalizada")
-    oficial = models.BooleanField(verbose_name="Es Oficial?", blank=False, null=False, default=True)
+    OFICIAL_MISION_CHOICES = (
+        (True, 'Si'),
+        (False, 'No'),
+    )
+    oficial = models.BooleanField(verbose_name="Es Oficial? (Misión de Martes/Jueves)", blank=False, null=False,
+                                  default=True, choices=OFICIAL_MISION_CHOICES)
     # Choices = ('Lo que se guarda', 'Lo que se muestra')
     TIPO_MISION_CHOICES = (
         ('CAMPANA', 'Campaña'),
@@ -285,12 +290,44 @@ class Mision(models.Model):
     editores = models.ManyToManyField('Miembro', verbose_name="Editores", related_name='misiones_editadas', blank=True)
     responsables = models.ManyToManyField('Miembro', verbose_name="Responsables", related_name='misiones_a_cargo', blank=True)
     descripcion = models.TextField(verbose_name="Descripción (pública)", blank=True, null=True)
-    notas_privadas = models.TextField(verbose_name="Notas Privadas", blank=True, null=True)
-    notas_editor = models.TextField(verbose_name="Notas al Editor", blank=True, null=True)
+    notas_privadas = models.TextField(verbose_name="Notas (Privadas)", blank=True, null=True)
+    notas_editor = models.TextField(verbose_name="Apuntes para los editores", blank=True, null=True)
     imagen = models.ImageField(upload_to='mision_logo/', blank=True, null=True, verbose_name="Imagen")
     briefing = models.FileField(upload_to='briefings/', blank=True, null=True, verbose_name="Briefing")
-    mapa = models.CharField(max_length=40, verbose_name="Mapa", blank=True, null=True)
-
+    #  Choices = ('Lo que se guarda', 'Lo que se muestra')
+    MAPA_MISION_CHOICES = (
+        ('Altis', 'Altis'),
+        ('Stratis', 'Stratis'),
+        ('Malden', 'Malden'),
+        ('VR', 'Realidad Virtual'),
+        ('Bozcaada', 'Bozcaada'),
+        ('Bootcamp_ACR', 'Bukovina'),
+        ('Woodland_ACR', 'Bystrica'),
+        ('chernarus', 'Chernarus'),
+        ('chernarus_summer', 'Chernarus (Verano)'),
+        ('Chernarus_Winter', 'Chernarus (Invierno)'),
+        ('Desert_E', 'Desierto'),
+        ('fallujah', 'Fallujah'),
+        ('pja310', 'G.O.S. Al Rayak'),
+        ('pj307', 'G.O.S. Dariyah'),
+        ('MCN_HazarKot', 'Hazar-Kot (valle)'),
+        ('Kidal', 'Kidal'),
+        ('Kunduz', 'Kunduz, Afganistán'),
+        ('porto ', 'Porto'),
+        ('ProvingGrounds_PMC', 'Campo de pruebas'),
+        ('intro ', 'Rahmadi'),
+        ('sara ', 'Sahrani'),
+        ('saralite', 'Sahrani del Sur'),
+        ('sara_dbe1', 'Sahrani Unida'),
+        ('Shapur_BAF', 'Shapur'),
+        ('takistan', 'Takistán'),
+        ('Mountains_ACR', 'Takistán (montañas)'),
+        ('Tanoa', 'Tanoa'),
+        ('utes', 'Utes'),
+        ('zargabad', 'Zargabad'),
+        ('prei_khmaoch_luong', 'Prei (Camboya)'),
+    )
+    mapa = models.CharField(max_length=40, verbose_name="Mapa", blank=True, null=True, choices=MAPA_MISION_CHOICES)
     reporte = models.FileField(upload_to='reportes/', blank=True, null=True)
 
     def __str__(self):

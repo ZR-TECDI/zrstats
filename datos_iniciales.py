@@ -137,6 +137,7 @@ def agregar_miembros():
     #rango|nombre|clase1|clase2|nac|est|unidad|pel|esc|rol
     # 0      1      2     3      4   5     6    7   8   9
 
+    print("Creando Miembros...")
     script_dir = os.path.dirname(os.path.realpath(__file__))
     datos_iniciales = script_dir + '\\datos_iniciales.txt'
     with open(datos_iniciales) as txt:
@@ -258,7 +259,7 @@ def generar_misiones():
     #fecha_fin = datetime.date(2019, 2, 1)
     dia = datetime.timedelta(days=1)
     mes = 0
-    miembros = Miembro.objects.exclude(rango__abreviatura='Asp')
+    miembros = Miembro.objects.all().exclude(rango__abreviatura='Asp')
     aspirantes = Miembro.objects.filter(rango__abreviatura='Asp')
     while fecha <= fecha_fin:
 

@@ -52,19 +52,19 @@
             {% for mision in misiones_mes %}
                 {% if mision.tipo == "CAMPANA" or mision.tipo == "ENTRENAMIENTO" or mision.tipo == "GALA"  %}
                     <th class="text-center alert-danger" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       {{ mision.fecha_finalizada|date:"D d"}}
+                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
                     </th>
                 {% elif  mision.tipo == "IMPROVISADA"%}
                     <th class="text-center alert-success" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       {{ mision.fecha_finalizada|date:"D d"}}
+                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
                     </th>
                 {% elif  mision.tipo == "CURSO"%}
                     <th class="text-center alert-info" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       {{ mision.fecha_finalizada|date:"D d"}}
+                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
                     </th>
                 {% else  %}
                     <th class="text-center alert-warning" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       {{ mision.fecha_finalizada|date:"D d"}}
+                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
                     </th>
                 {% endif %}
             {% endfor %}

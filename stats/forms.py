@@ -2,6 +2,7 @@ from django import forms
 from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, Campana
 from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget, ModelSelect2MultipleWidget, \
     ModelSelect2TagWidget, ModelSelect2Widget, Select2MultipleWidget, Select2Widget
+from bootstrap_datepicker_plus import DatePickerInput
 
 
 class MisionForm(forms.ModelForm):
@@ -11,10 +12,78 @@ class MisionForm(forms.ModelForm):
                   'notas_privadas', 'notas_editor', 'imagen', 'briefing', 'mapa', 'fecha_programada',
                   'reporte', 'autor', 'editores', 'responsables']
         widgets = {
-            'autor': Select2Widget,
-            'campana': Select2Widget,
-            'editores': Select2MultipleWidget,
-            'responsables': Select2MultipleWidget,
+            'autor': Select2Widget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'campana': Select2Widget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'editores': Select2MultipleWidget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'responsables': Select2MultipleWidget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'tipo': forms.Select(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'nombre': forms.TextInput(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'descripcion': forms.Textarea(
+                attrs={
+                    'class': 'form-control mb-md',
+                    'rows': 6,
+                    'cols': 6
+                }
+            ),
+            'notas_privadas': forms.Textarea(
+                attrs={
+                    'class': 'form-control mb-md',
+                    'rows': 6,
+                    'cols': 6
+                }
+            ),
+            'notas_editor': forms.Textarea(
+                attrs={
+                    'class': 'form-control mb-md',
+                    'rows': 6,
+                    'cols': 6
+                }
+            ),
+            'mapa': Select2Widget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'estado': Select2Widget(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
+            'fecha_programada': DatePickerInput(
+                format='%d/%m/%Y',
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+            'oficial': forms.Select(
+                attrs={
+                    'class': 'form-control mb-md'
+                }
+            ),
         }
 
 
