@@ -134,6 +134,7 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     for campo in mision_info:
         clave = campo.split()[0]  # extraigo el campo, ej "NOMBRE_CAMPA"
         valor = campo.split(clave, 1)[1]  # extraigo el valor, ej "Regreso Al Infierno"
+        valor = valor.strip() # saco espacios al inicio y al final
 
         if clave == "NOMBRE_MISION":
             dic_mision['NOMBRE_MISION'] = valor

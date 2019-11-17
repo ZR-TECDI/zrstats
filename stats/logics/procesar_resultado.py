@@ -19,19 +19,32 @@ def handle_uploaded_file(mision, override_by_rpt=True):
         mision.descripcion = dict_mision['DESC_MISION']
         mision.mapa = dict_mision['MAPA_MISION']
         mision.tipo = dict_mision['TIPO_MISION']
-
         if dict_mision['ES_OFICIAL'] == "True":
             mision.oficial = True
         else:
             mision.oficial = False
-
-        # busco si existe campaña y si coincide asigno existente
         campana_nombre = dict_mision['NOMBRE_CAMPA']
-        try:
-            campana = Campana.objects.get(nombre__iexact=campana_nombre)
-            mision.campana = campana
-        except Campana.DoesNotExist:
-            pass
+        # Si el nombre campaña es None, ni siquiera intento buscar o crear campaña
+        if campana_nombre is not None:
+            try:
+                # busco si existe campaña y si coincide asigno existente
+                campana = Campana.objects.get(nombre__iexact=campana_nombre)
+                mision.campana = campana
+            except Campana.DoesNotExist:
+                # si no existe, creo una campaña nueva
+                campana = Campana()
+                campana.nombre = campana_nombre
+                if dict_mision['TIPO_MISION'] == Mision.TIPO_CAMPANA:
+                    campana.tipo = Campana.TIPO_CAMPANA
+                elif dict_mision['TIPO_MISION'] == str(Mision.TIPO_CURSO):
+                    campana.tipo = Campana.TIPO_CURSO
+                else:
+                    campana.tipo = Campana.TIPO_OTRO
+                campana.estado = Campana.ESTADO_EN_CURSO
+                campana.save()
+                mision.campana = campana
+        else:
+            mision.campana = None
 
         # busco si el autor coincide con un Miembro
         autor_nombre = dict_mision['AUTOR_MISION']
