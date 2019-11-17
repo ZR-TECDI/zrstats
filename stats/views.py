@@ -314,6 +314,11 @@ class MiembroUpdateView(UpdateView):
 class MisionListView(ListView):
     template_name = 'stats/crud/mision_list.html'
     model = Mision
+    ordering = ['-id']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class MisionCreateView(CreateView):

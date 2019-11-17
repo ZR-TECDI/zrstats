@@ -230,6 +230,7 @@
             </div>
         </section>
 
+{% if user.is_staff %}
         <section class="panel">
             <header class="panel-heading">
                 <div class="panel-actions">
@@ -257,7 +258,9 @@
                     </div>
                 </div>
                 <br>
+            </div>
         </section>
+{% endif %}
 
         <button class="btn btn-primary" type="submit">Aceptar</button>
         </form>

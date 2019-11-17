@@ -25,16 +25,16 @@
 {% block content %}
 
 <div class="row">
-    <div class="col">
-        <a class="btn btn-primary" href="{% url 'stats:mision_list' %}">Todas las Misiones</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Misiones Campaña</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Misiones Improvisadas</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Cursos</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Entrenamientos</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Galas</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Cooperativas</a>
-        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Otros</a>
-    </div>
+    <ul>
+        <li class="btn btn-default"><a href="#" class="all">Todas</a></li>
+        <li class="btn btn-default"><a  href="#">Campaña</a></li>
+        <li class="btn btn-default"><a href="#">Improvisada</a></li>
+        <li class="btn btn-default"><a href="#}">Curso</a></li>
+        <li class="btn btn-default"><a href="#">Entrenamiento</a></li>
+        <li class="btn btn-default"><a href="#">Gala</a></li>
+        <li class="btn btn-default"><a href="#">Cooperativs</a></li>
+        <li class="btn btn-default"><a href="#">Otro</a></li>
+    </ul>
 </div>
 
 <div class="row">
@@ -113,15 +113,26 @@
 {% block extra_scripts %}
 
 <script>
-    (function($){
-        'use strict';
-        var datatableInit = function(){
-            $('#datatable-default').dataTable();
-        };
+        $(document).ready( function () {
+            var table = $('#datatable-default').DataTable({
+                "order": [[0, "desc"]],
+            });
 
-        $(function() {
-            datatableInit();
+            $('ul').on( 'click', 'a', function () {
+            table
+                .columns(2)
+                .search( $(this).text())
+                .draw();
+            });
+
+            $('ul').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(2)
+                .search('')
+                .draw();
+            });
+
         });
-    }).apply( this, [ jQuery ]);
 </script>
 {% endblock %}

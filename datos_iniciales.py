@@ -184,6 +184,7 @@ def crea_mision_ofi(fecha, campana, i, miembros):
     mision.estado = Mision.ESTADO_FINALIZADA
     mision.campana = campana
     mision.descripcion = "Campaña jugada durante el mes de " + fecha.strftime("%B")
+    mision.autor = miembros.order_by('?').first()
     mision.save()
 
     t = datetime.datetime.strptime("02:30:15", '%H:%M:%S')
@@ -235,6 +236,7 @@ def crea_mision_impro(fecha, miembros):
     mision.tipo = Mision.TIPO_IMPROVISADA
     mision.estado = Mision.ESTADO_FINALIZADA
     mision.descripcion = "Improvisada"
+    mision.autor = miembros.order_by('?').first()
     mision.save()
     t = datetime.datetime.strptime("02:30:15", '%H:%M:%S')
     delta = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
