@@ -4117,11 +4117,11 @@ PhysMem: 16 GiB, VirtMem : 131072 GiB, AvailPhys : 7.7 GiB, AvailVirt : 131072 G
 17:58:20 "ASR AI3: Loading default settings for AI skills, launch the game with -filePatching to enable loading from userconfig\asr_ai3\asr_ai3_config.sqf"
 17:58:20 Attempt to override final function - ace_dogtags_fnc_cancheckdogtag
 17:58:20 Attempt to override final function - ace_dogtags_fnc_getdogtagdata
-17:58:20 "ZRSTATS: NOMBRE_MISION CampaÃ±a de la Segunda Guerra Mundial parte 2"
-17:58:20 "ZRSTATS: DESC_MISION campaÃ±a de la segunda guerra otra vez"
-17:58:20 "ZRSTATS: AUTOR_MISION StrixGroso"
+17:58:20 "ZRSTATS: NOMBRE_MISION Campaña de la Segunda Guerra Mundial parte 2"
+17:58:20 "ZRSTATS: DESC_MISION campaña de la segunda guerra otra vez"
+17:58:20 "ZRSTATS: AUTOR_MISION Strix"
 17:58:20 "ZRSTATS: TIPO_MISION CAMPANA"
-17:58:20 "ZRSTATS: NOMBRE_CAMPA CampaÃ±a de la Segunda Guerra Mundial"
+17:58:20 "ZRSTATS: NOMBRE_CAMPA Campaña de la Segunda Guerra Mundial"
 17:58:20 "ZRSTATS: ES_OFICIAL True"
 17:58:20 "ZRSTATS: MAPA_MISION prei_khmaoch_luong"
 17:58:26 a3\characters_f\common\headgear_helmet_heli_shield.p3d: No geometry and no visual shape
@@ -4251,7 +4251,7 @@ PhysMem: 16 GiB, VirtMem : 131072 GiB, AvailPhys : 7.7 GiB, AvailVirt : 131072 G
 17:58:30 [ACE] (common) INFO: 3 delayed functions running.
 17:58:41 "DMB_DEBUG: Player is not DM"
 13:58:41 "Cbo.Strix es ahora visible y perece al daÃ±o"
-2019/02/05, 13:58:48 "ZRASISTENCIA: Cbo.Strix conectado"
+2019/02/05, 17:58:48 "ZRASISTENCIA: Cbo.Strix conectado"
 17:58:48 OPC DATA [2,"76561198051010525","Cbo.Strix",false,2,"2"]
 17:58:48 CallExtension loaded: task_force_radio_pipe (E:\Steam\steamapps\common\Arma 3\!Workshop\@Task Force Arrowhead Radio (BETA!!!)\task_force_radio_pipe_x64.dll) [€ë*s]
 

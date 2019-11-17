@@ -134,7 +134,7 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
     for campo in mision_info:
         clave = campo.split()[0]  # extraigo el campo, ej "NOMBRE_CAMPA"
         valor = campo.split(clave, 1)[1]  # extraigo el valor, ej "Regreso Al Infierno"
-        valor = valor.strip() # saco espacios al inicio y al final
+        valor = valor.strip()  # saco espacios al inicio y al final
 
         if clave == "NOMBRE_MISION":
             dic_mision['NOMBRE_MISION'] = valor
@@ -223,7 +223,7 @@ dic_jugador = {'nombre':'x', 'rango':'y', 'asistencia':'z', 'tiempo_sesion':'%h:
         tiempo_asistencia = datetime.timedelta(hours=1, minutes=20) # TIEMPO MINIMO REQUERIDO PARA ASISTENCIA
         tiempo_minimo = datetime.timedelta(minutes=30)
         requiere_atencion = "False"
-
+        asistencia = "Falta"  # se declara en Falta como Default, abajo se modifica de ser necesario
         if total_time >= tiempo_asistencia:
             asistencia = "Asiste"
             if atrasado:
