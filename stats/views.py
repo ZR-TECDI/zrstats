@@ -88,11 +88,12 @@ class ActualizarMision(UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         mision = self.object
-        if mision.reporte:
+        if mision.reporte is None:
+            # Subo reporte nuevo
             # override_by_rpt le da prioridad a los datos del rpt
             procesar_resultado.handle_uploaded_file(mision, override_by_rpt=False)
         else:
-            #mision.notas_privadas = "SIN REPORTE"
+            # ya tenia reporte desde antes no tengo que procesar nada
             pass
         mision.save()
         return super(ActualizarMision, self).form_valid(form)

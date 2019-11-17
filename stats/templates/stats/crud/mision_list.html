@@ -56,6 +56,7 @@
                         <th>Fecha</th>
                         <th>Campaña</th>
                         <th>Estado</th>
+                        <th>Autor</th>
                         <th>Editores</th>
                         <th>Reporte</th>
                     </tr>
@@ -64,12 +65,29 @@
                 {% for object in object_list %}
                     <tr>
                         <td>{{object.pk}}</td>
-                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre }}</a></td>
+                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre|truncatewords:4 }}</a></td>
                         <td>{{object.print_tipo}}</td>
                         <td>{{ object.fecha_finalizada }}</td>
-                        <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre }}</a></td>
-                        <td>{{ object.estado }}</td>
-                        <td>{{ object.editores }}</td>
+                        <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre|truncatewords:4 }}</a></td>
+                        {% if object.estado == object.ESTADO_FINALIZADA %}
+                            <td class="success">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_AGENDADA %}
+                            <td class="primary">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_BORRADOR %}
+                            <td class="warning">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_EDITANDO %}
+                            <td class="warning">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_PENDIENTE %}
+                            <td class="warning">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_PREPARADA %}
+                            <td class="primary">{{ object.estado }}</td>
+                        {% elif object.estado == object.ESTADO_RECHAZADA %}
+                            <td class="danger">{{ object.estado }}</td>
+                        {% else %}
+                            <td class="danger">Oops!</td>
+                        {% endif %}
+                        <td>{{ object.autor }}</td>
+                        <td>{% for editor in object.editores.all %}{% if forloop.last %}{{ editor }}{% else %}{{ editor }}, {% endif %} {% endfor %}</td>
                         <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
                     </tr>
                 {% endfor %}
