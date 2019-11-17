@@ -23,28 +23,83 @@
 
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:mision_list' %}">Mision Listing</a></p>
-<table class="table">
-<tr>
-<td>ID</td><td>Link</td>
-    <td>nombre</td>
-    <td>reporte</td>
-    <td>fecha</td>
-    <td>campana</td>
-    <td>editores</td>
-    <td>notas</td>
-</tr>
-{% for object in object_list %}
-<tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.nombre }}</td>
-    <td>{{ object.reporte }}</td>
-    <td>{{ object.fecha }}</td>
-    <td>{{ object.campana }}</td>
-    <td>{{ object.editores }}</td>
-    <td>{{ object.notas }}</td>
-</tr>
-{% endfor %}
-</table><a class="btn btn-primary" href="{% url 'stats:mision_create' %}">Create new Mision</a>
+
+<div class="row">
+    <div class="col">
+        <a class="btn btn-primary" href="{% url 'stats:mision_list' %}">Todas las Misiones</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Misiones Campaña</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Misiones Improvisadas</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Cursos</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Entrenamientos</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Galas</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Cooperativas</a>
+        <a class="btn btn-default" href="{% url 'stats:mision_list' %}">Otros</a>
+    </div>
+</div>
+
+<div class="row">
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+            <h2 class="panel-title">Todas las Misiones</h2>
+        </header>
+        <div class="panel-body">
+            <table  class="table table-bordered table-striped mb-none" id="datatable-default">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
+                        <th>Campaña</th>
+                        <th>Estado</th>
+                        <th>Editores</th>
+                        <th>Reporte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td>{{object.pk}}</td>
+                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre }}</a></td>
+                        <td>{{object.print_tipo}}</td>
+                        <td>{{ object.fecha_finalizada }}</td>
+                        <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre }}</a></td>
+                        <td>{{ object.estado }}</td>
+                        <td>{{ object.editores }}</td>
+                        <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<div class="row">
+    <div class="col">
+        <a class="btn btn-success" href="{% url 'stats:mision_create' %}">Crear Misión</a>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script>
+    (function($){
+        'use strict';
+        var datatableInit = function(){
+            $('#datatable-default').dataTable();
+        };
+
+        $(function() {
+            datatableInit();
+        });
+    }).apply( this, [ jQuery ]);
+</script>
 {% endblock %}

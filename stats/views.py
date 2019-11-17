@@ -61,6 +61,7 @@ class CrearMision(CreateView):
         return super(CrearMision, self).form_valid(form)
 
 
+# Vista para el formulario de SUBIR REPORTE y crear la misión automáticamente
 class CrearMisionReporte(CreateView):
     template_name = 'stats/mision/mision_reporte_create_form.html'
     model = Mision

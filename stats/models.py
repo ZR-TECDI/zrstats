@@ -308,6 +308,22 @@ class Mision(models.Model):
     def get_update_url(self):
         return reverse('stats:mision_update', args=(self.pk,))
 
+    def print_tipo(self):
+        if self.tipo == self.TIPO_OTRO:
+            return "Otros"
+        elif self.tipo == self.TIPO_CURSO:
+            return "Curso"
+        elif self.tipo == self.TIPO_CAMPANA:
+            return "Campaña"
+        elif self.tipo == self.TIPO_IMPROVISADA:
+            return "Improvisada"
+        elif self.tipo == self.TIPO_COOPERATIVA:
+            return "Cooperativa"
+        elif self.tipo == self.TIPO_GALA:
+            return "Gala"
+        elif self.tipo == self.TIPO_ENTRENAMIENTO:
+            return "Entrenamiento"
+
 
 class Asistencia(models.Model):
     mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
