@@ -64,12 +64,12 @@ def crear_rol():
         'ce': ['Comandante Escuadra', 'CE'],
         'lea': ['Líder Equipo A', 'LEA'],
         'leb': ['Líder Equipo B', 'LEB'],
-        'a':['ALPHA', 'A'],
-        'b':['BRAVO', 'B'],
-        'cmda1':['Com. Ariete 1', 'CMDA1'],
-        'cmda2':['Com. Ariete 2', 'CMDA2'],
-        'cmda3':['Com. Ariete 3', 'CMDA3'],
-        'cmda4':['Com. Ariete 4', 'CMDA4']
+        'a': ['ALPHA', 'A'],
+        'b': ['BRAVO', 'B'],
+        'cmda1': ['Com. Ariete 1', 'CMDA1'],
+        'cmda2': ['Com. Ariete 2', 'CMDA2'],
+        'cmda3': ['Com. Ariete 3', 'CMDA3'],
+        'cmda4': ['Com. Ariete 4', 'CMDA4']
     }
 
     print('Creando roles...')
@@ -104,24 +104,250 @@ def crear_clase():
 
 
 def crear_naciones():
-    # TODO no habrá un template con todos los países como en cualquier formulario web?
     naciones_dict = {
-        'arg': ['Argentina', 'ARG'],
-        'cl': ['Chile', 'CL'],
-        'co': ['Colombia', 'CO'],
-        'cr': ['Costa Rica', 'CR'],
-        'sv': ['El Salvador', 'SV'],
-        'jp': ['Japón', 'JP'],
-        'mx': ['México', 'MX'],
-        'pa': ['Panamá', 'PA'],
-        'py': ['Paraguay', 'PY'],
-        'pe': ['Perú', 'PE'],
-        'us': ['United States', 'US'],
-        've': ['Venezuela', 'VE'],
-        'pr': ['Puerto Rico', 'PR'],
-        'bo': ['Bolivia', 'BO'],
-        'rd': ['República Dominicana', 'RD'],
-        'ca': ['Canadá', 'CA']
+        'AF': ['Afghanistan', 'AF'],
+        'AL': ['Albania', 'AL'],
+        'DZ': ['Algeria', 'DZ'],
+        'AS': ['AmericanSamoa', 'AS'],
+        'AD': ['Andorra', 'AD'],
+        'AO': ['Angola', 'AO'],
+        'AI': ['Anguilla', 'AI'],
+        'AQ': ['Antarctica', 'AQ'],
+        'AG': ['AntiguaandBarbuda', 'AG'],
+        'AR': ['Argentina', 'AR'],
+        'AM': ['Armenia', 'AM'],
+        'AW': ['Aruba', 'AW'],
+        'AU': ['Australia', 'AU'],
+        'AT': ['Austria', 'AT'],
+        'AZ': ['Azerbaijan', 'AZ'],
+        'BS': ['Bahamas', 'BS'],
+        'BH': ['Bahrain', 'BH'],
+        'BD': ['Bangladesh', 'BD'],
+        'BB': ['Barbados', 'BB'],
+        'BY': ['Belarus', 'BY'],
+        'BE': ['Belgium', 'BE'],
+        'BZ': ['Belize', 'BZ'],
+        'BJ': ['Benin', 'BJ'],
+        'BM': ['Bermuda', 'BM'],
+        'BT': ['Bhutan', 'BT'],
+        'BO': ['Bolivia', 'BO'],
+        'BA': ['BosniaandHerzegovina', 'BA'],
+        'BW': ['Botswana', 'BW'],
+        'BV': ['BouvetIsland', 'BV'],
+        'BR': ['Brazil', 'BR'],
+        'IO': ['BritishIndianOceanTerritory', 'IO'],
+        'BN': ['Brunei', 'BN'],
+        'BG': ['Bulgaria', 'BG'],
+        'BF': ['BurkinaFaso', 'BF'],
+        'BI': ['Burundi', 'BI'],
+        'KH': ['Cambodia', 'KH'],
+        'CM': ['Cameroon', 'CM'],
+        'CA': ['Canada', 'CA'],
+        'CV': ['CapeVerde', 'CV'],
+        'KY': ['CaymanIslands', 'KY'],
+        'CF': ['CentralAfricanRepublic', 'CF'],
+        'TD': ['Chad', 'TD'],
+        'CL': ['Chile', 'CL'],
+        'CN': ['China', 'CN'],
+        'CX': ['ChristmasIsland', 'CX'],
+        'CC': ['Cocos(Keeling)Islands', 'CC'],
+        'CO': ['Colombia', 'CO'],
+        'KM': ['Comoros', 'KM'],
+        'CG': ['Congo', 'CG'],
+        'CD': ['Congo,theDemocraticRepublicofthe', 'CD'],
+        'CK': ['CookIslands', 'CK'],
+        'CR': ['CostaRica', 'CR'],
+        'CI': ['IvoryCoast', 'CI'],
+        'HR': ['Croatia', 'HR'],
+        'CU': ['Cuba', 'CU'],
+        'CY': ['Cyprus', 'CY'],
+        'CZ': ['CzechRepublic', 'CZ'],
+        'DK': ['Denmark', 'DK'],
+        'DJ': ['Djibouti', 'DJ'],
+        'DM': ['Dominica', 'DM'],
+        'DO': ['DominicanRepublic', 'DO'],
+        'EC': ['Ecuador', 'EC'],
+        'EG': ['Egypt', 'EG'],
+        'SV': ['ElSalvador', 'SV'],
+        'GQ': ['EquatorialGuinea', 'GQ'],
+        'ER': ['Eritrea', 'ER'],
+        'EE': ['Estonia', 'EE'],
+        'ET': ['Ethiopia', 'ET'],
+        'FK': ['FalklandIslands(Malvinas)', 'FK'],
+        'FO': ['FaroeIslands', 'FO'],
+        'FJ': ['Fiji', 'FJ'],
+        'FI': ['Finland', 'FI'],
+        'FR': ['France', 'FR'],
+        'GF': ['FrenchGuiana', 'GF'],
+        'PF': ['FrenchPolynesia', 'PF'],
+        'TF': ['FrenchSouthernTerritories', 'TF'],
+        'GA': ['Gabon', 'GA'],
+        'GM': ['Gambia', 'GM'],
+        'GE': ['Georgia', 'GE'],
+        'DE': ['Germany', 'DE'],
+        'GH': ['Ghana', 'GH'],
+        'GI': ['Gibraltar', 'GI'],
+        'GR': ['Greece', 'GR'],
+        'GL': ['Greenland', 'GL'],
+        'GD': ['Grenada', 'GD'],
+        'GP': ['Guadeloupe', 'GP'],
+        'GU': ['Guam', 'GU'],
+        'GT': ['Guatemala', 'GT'],
+        'GG': ['Guernsey', 'GG'],
+        'GN': ['Guinea', 'GN'],
+        'GW': ['Guinea-Bissau', 'GW'],
+        'GY': ['Guyana', 'GY'],
+        'HT': ['Haiti', 'HT'],
+        'HM': ['HeardIslandandMcDonaldIslands', 'HM'],
+        'VA': ['HolySee(VaticanCityState)', 'VA'],
+        'HN': ['Honduras', 'HN'],
+        'HK': ['HongKong', 'HK'],
+        'HU': ['Hungary', 'HU'],
+        'IS': ['Iceland', 'IS'],
+        'IN': ['India', 'IN'],
+        'ID': ['Indonesia', 'ID'],
+        'IR': ['Iran,IslamicRepublicof', 'IR'],
+        'IQ': ['Iraq', 'IQ'],
+        'IE': ['Ireland', 'IE'],
+        'IM': ['IsleofMan', 'IM'],
+        'IL': ['Israel', 'IL'],
+        'IT': ['Italy', 'IT'],
+        'JM': ['Jamaica', 'JM'],
+        'JP': ['Japan', 'JP'],
+        'JE': ['Jersey', 'JE'],
+        'JO': ['Jordan', 'JO'],
+        'KZ': ['Kazakhstan', 'KZ'],
+        'KE': ['Kenya', 'KE'],
+        'KI': ['Kiribati', 'KI'],
+        'KP': ['Korea,DemocraticPeoplesRepublicof', 'KP'],
+        'KR': ['SouthKorea', 'KR'],
+        'KW': ['Kuwait', 'KW'],
+        'KG': ['Kyrgyzstan', 'KG'],
+        'LA': ['LaoPeoplesDemocraticRepublic', 'LA'],
+        'LV': ['Latvia', 'LV'],
+        'LB': ['Lebanon', 'LB'],
+        'LS': ['Lesotho', 'LS'],
+        'LR': ['Liberia', 'LR'],
+        'LY': ['Libya', 'LY'],
+        'LI': ['Liechtenstein', 'LI'],
+        'LT': ['Lithuania', 'LT'],
+        'LU': ['Luxembourg', 'LU'],
+        'MO': ['Macao', 'MO'],
+        'MK': ['Macedonia,theformerYugoslavRepublicof', 'MK'],
+        'MG': ['Madagascar', 'MG'],
+        'MW': ['Malawi', 'MW'],
+        'MY': ['Malaysia', 'MY'],
+        'MV': ['Maldives', 'MV'],
+        'ML': ['Mali', 'ML'],
+        'MT': ['Malta', 'MT'],
+        'MH': ['MarshallIslands', 'MH'],
+        'MQ': ['Martinique', 'MQ'],
+        'MR': ['Mauritania', 'MR'],
+        'MU': ['Mauritius', 'MU'],
+        'YT': ['Mayotte', 'YT'],
+        'MX': ['Mexico', 'MX'],
+        'FM': ['Micronesia,FederatedStatesof', 'FM'],
+        'MD': ['Moldova,Republicof', 'MD'],
+        'MC': ['Monaco', 'MC'],
+        'MN': ['Mongolia', 'MN'],
+        'ME': ['Montenegro', 'ME'],
+        'MS': ['Montserrat', 'MS'],
+        'MA': ['Morocco', 'MA'],
+        'MZ': ['Mozambique', 'MZ'],
+        'MM': ['Birmania', 'MM'],
+        'NA': ['Namibia', 'NA'],
+        'NR': ['Nauru', 'NR'],
+        'NP': ['Nepal', 'NP'],
+        'NL': ['Netherlands', 'NL'],
+        'AN': ['NetherlandsAntilles', 'AN'],
+        'NC': ['NewCaledonia', 'NC'],
+        'NZ': ['NewZealand', 'NZ'],
+        'NI': ['Nicaragua', 'NI'],
+        'NE': ['Niger', 'NE'],
+        'NG': ['Nigeria', 'NG'],
+        'NU': ['Niue', 'NU'],
+        'NF': ['NorfolkIsland', 'NF'],
+        'MP': ['NorthernMarianaIslands', 'MP'],
+        'NO': ['Norway', 'NO'],
+        'OM': ['Oman', 'OM'],
+        'PK': ['Pakistan', 'PK'],
+        'PW': ['Palau', 'PW'],
+        'PS': ['PalestinianTerritory,Occupied', 'PS'],
+        'PA': ['Panama', 'PA'],
+        'PG': ['PapuaNewGuinea', 'PG'],
+        'PY': ['Paraguay', 'PY'],
+        'PE': ['Peru', 'PE'],
+        'PH': ['Philippines', 'PH'],
+        'PN': ['Pitcairn', 'PN'],
+        'PL': ['Poland', 'PL'],
+        'PT': ['Portugal', 'PT'],
+        'PR': ['PuertoRico', 'PR'],
+        'QA': ['Qatar', 'QA'],
+        'RE': ['Réunion', 'RE'],
+        'RO': ['Romania', 'RO'],
+        'RU': ['Russia', 'RU'],
+        'RW': ['Rwanda', 'RW'],
+        'SH': ['SaintHelena', 'SH'],
+        'KN': ['SaintKittsandNevis', 'KN'],
+        'LC': ['SaintLucia', 'LC'],
+        'PM': ['SaintPierreandMiquelon', 'PM'],
+        'VC': ['St.VincentandtheGrenadines', 'VC'],
+        'WS': ['Samoa', 'WS'],
+        'SM': ['SanMarino', 'SM'],
+        'ST': ['SaoTomeandPrincipe', 'ST'],
+        'SA': ['SaudiArabia', 'SA'],
+        'SN': ['Senegal', 'SN'],
+        'RS': ['Serbia', 'RS'],
+        'SC': ['Seychelles', 'SC'],
+        'SL': ['SierraLeone', 'SL'],
+        'SG': ['Singapore', 'SG'],
+        'SK': ['Slovakia', 'SK'],
+        'SI': ['Slovenia', 'SI'],
+        'SB': ['SolomonIslands', 'SB'],
+        'SO': ['Somalia', 'SO'],
+        'ZA': ['SouthAfrica', 'ZA'],
+        'GS': ['SouthGeorgiaandtheSouthSandwichIslands', 'GS'],
+        'ES': ['Spain', 'ES'],
+        'LK': ['SriLanka', 'LK'],
+        'SD': ['Sudan', 'SD'],
+        'SR': ['Suriname', 'SR'],
+        'SJ': ['SvalbardandJanMayen', 'SJ'],
+        'SZ': ['Swaziland', 'SZ'],
+        'SE': ['Sweden', 'SE'],
+        'CH': ['Switzerland', 'CH'],
+        'SY': ['SyrianArabRepublic', 'SY'],
+        'TW': ['Taiwan', 'TW'],
+        'TJ': ['Tajikistan', 'TJ'],
+        'TZ': ['Tanzania,UnitedRepublicof', 'TZ'],
+        'TH': ['Thailand', 'TH'],
+        'TL': ['Timor-Leste', 'TL'],
+        'TG': ['Togo', 'TG'],
+        'TK': ['Tokelau', 'TK'],
+        'TO': ['Tonga', 'TO'],
+        'TT': ['TrinidadandTobago', 'TT'],
+        'TN': ['Tunisia', 'TN'],
+        'TR': ['Turkey', 'TR'],
+        'TM': ['Turkmenistan', 'TM'],
+        'TC': ['TurksandCaicosIslands', 'TC'],
+        'TV': ['Tuvalu', 'TV'],
+        'UG': ['Uganda', 'UG'],
+        'UA': ['Ukraine', 'UA'],
+        'AE': ['UnitedArabEmirates', 'AE'],
+        'GB': ['UnitedKingdom', 'GB'],
+        'US': ['UnitedStates', 'US'],
+        'UM': ['UnitedStatesMinorOutlyingIslands', 'UM'],
+        'UY': ['Uruguay', 'UY'],
+        'UZ': ['Uzbekistan', 'UZ'],
+        'VU': ['Vanuatu', 'VU'],
+        'VE': ['Venezuela', 'VE'],
+        'VN': ['Vietnam', 'VN'],
+        'VG': ['VirginIslands,British', 'VG'],
+        'VI': ['VirginIslands,U.S.', 'VI'],
+        'WF': ['WallisandFutuna', 'WF'],
+        'EH': ['WesternSahara', 'EH'],
+        'YE': ['Yemen', 'YE'],
+        'ZM': ['Zambia', 'ZM'],
+        'ZW': ['Zimbabwe', 'ZW'],
     }
 
     print('Creando naciones...')
@@ -134,7 +360,7 @@ def crear_naciones():
 
 
 def agregar_miembros():
-    #rango|nombre|clase1|clase2|nac|est|unidad|pel|esc|rol
+    # rango|nombre|clase1|clase2|nac|est|unidad|pel|esc|rol
     # 0      1      2     3      4   5     6    7   8   9
 
     print("Creando Miembros...")
@@ -143,36 +369,37 @@ def agregar_miembros():
     with open(datos_iniciales) as txt:
         for line in txt.readlines():
             array = line.replace('\n', '').split(' ')
-            #print(array)
-            user = User.objects.create_user(username=array[1], email=array[1]+"@zrarmy.com", password=array[1].lower())
+            # print(array)
+            user = User.objects.create_user(username=array[1], email=array[1] + "@zrarmy.com",
+                                            password=array[1].lower())
             miembro = Miembro.objects.get(nombre=array[1])
             miembro.nombre = array[1]
-            #print(miembro.nombre)
-            miembro.rango = Rango.objects.get(abreviatura = array[0])
-            #print(miembro.rango)
-            miembro.clase1 = Clase.objects.get(abreviatura = array[2])
-            #print(miembro.clase1)
-            miembro.clase2 = Clase.objects.get(abreviatura = array[3])
-            #print(miembro.clase2)
-            miembro.nacionalidad = Nacionalidad.objects.get(abreviatura = array[4])
-            #print(miembro.nacionalidad)
+            # print(miembro.nombre)
+            miembro.rango = Rango.objects.get(abreviatura=array[0])
+            # print(miembro.rango)
+            miembro.clase1 = Clase.objects.get(abreviatura=array[2])
+            # print(miembro.clase1)
+            miembro.clase2 = Clase.objects.get(abreviatura=array[3])
+            # print(miembro.clase2)
+            miembro.nacionalidad = Nacionalidad.objects.get(abreviatura=array[4])
+            # print(miembro.nacionalidad)
 
             if array[5] == 'A':
                 el_estado = 'Activo'
             elif array[5] == 'R':
                 el_estado = 'Reserva'
             miembro.estado = el_estado
-            #print(miembro.estado)
-            miembro.unidad = Unidad.objects.get(abreviatura = array[6])
-            #print(miembro.unidad)
+            # print(miembro.estado)
+            miembro.unidad = Unidad.objects.get(abreviatura=array[6])
+            # print(miembro.unidad)
             miembro.peloton = array[7]
-            #print(miembro.peloton)
+            # print(miembro.peloton)
             miembro.escuadra = array[8]
-            #print(miembro.escuadra)
-            miembro.rol = Rol.objects.get(abreviatura = array[9])
-            #print(miembro.rol)
+            # print(miembro.escuadra)
+            miembro.rol = Rol.objects.get(abreviatura=array[9])
+            # print(miembro.rol)
             miembro.save()
-            #print(miembro)
+            # print(miembro)
 
 
 def crea_mision_ofi(fecha, campana, i, miembros):
@@ -200,7 +427,6 @@ def crea_mision_ofi(fecha, campana, i, miembros):
             else:
                 a = Asistencia.objects.create(mision=mision, miembro=m, fecha=mision.fecha_finalizada,
                                               asistencia=Asistencia.ASIST_TARDE, tiempo_de_sesion=delta)
-
 
 
 def crea_mision_asp(fecha, camp_asp, ai, aspirantes):
@@ -258,7 +484,7 @@ def generar_misiones():
     # Genero campañas
     fecha = datetime.date(2019, 1, 1)
     fecha_fin = datetime.date(now().year, now().month, now().day)
-    #fecha_fin = datetime.date(2019, 2, 1)
+    # fecha_fin = datetime.date(2019, 2, 1)
     dia = datetime.timedelta(days=1)
     mes = 0
     miembros = Miembro.objects.all().exclude(rango__abreviatura='Asp')
@@ -298,8 +524,6 @@ def generar_misiones():
 
         fecha = fecha + dia  # Avanzo el dia en el calendario
     print("FINALIZADO AGREAGAR MISIONES Y ASISTENCIAS")
-
-
 
 
 def main():
