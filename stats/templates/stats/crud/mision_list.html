@@ -58,17 +58,17 @@
                         <th>Mapa</th>
                         <th>Estado</th>
                         <th>Autor</th>
-                        <th>Reporte</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for object in object_list %}
                     <tr>
                         <td>{{object.pk}}</td>
-                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre|truncatewords:4 }}</a></td>
+                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre|truncatewords:6 }}</a></td>
                         <td>{{object.print_tipo}}</td>
                         <td>{{ object.fecha_finalizada }}</td>
-                        <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre|truncatewords:4 }}</a></td>
+                        <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre|truncatewords:6 }}</a></td>
                         <td>{{ object.mapa }}</td>
                         {% if object.estado == object.ESTADO_FINALIZADA %}
                             <td class="success">{{ object.estado }}</td>
@@ -89,9 +89,15 @@
                         {% endif %}
                         <td>{{ object.autor }}</td>
                         {% if object.reporte %}
-                            <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
+                            <td>
+                                <span><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i></a></span>
+                                <span><a href="{% url 'stats:mision_delete' object.id %}"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i> </a></span>
+                            </td>
                         {% else %}
-                            <td>Sin reporte.</td>
+                            <td>
+                                <span><i class="fa fa-file text-muted" aria-hidden="true"></i></span>
+                                <span><a href="{% url 'stats:mision_delete' object.id %}"><i class="fa fa-trash-o" aria-hidden="true"></i> </a></span>
+                            </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
@@ -100,14 +106,6 @@
         </div>
     </section>
 </div>
-
-<div class="row">
-    <div class="col">
-        <a class="btn btn-success" href="{% url 'stats:mision_create' %}">Crear Misión</a>
-    </div>
-</div>
-
-
 {% endblock %}
 
 {% block extra_scripts %}

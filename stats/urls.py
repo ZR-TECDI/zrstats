@@ -99,6 +99,7 @@ urlpatterns += (
     path('mision/create/', views.MisionCreateView.as_view(), name='mision_create'),
     path('mision/detail/<int:pk>/', views.MisionDetailView.as_view(), name='mision_detail'),
     path('mision/update/<int:pk>/', views.MisionUpdateView.as_view(), name='mision_update'),
+    path('mision/delete/<int:pk>/', views.MisionDeleteView.as_view(), name='mision_delete'),
 )
 
 urlpatterns += (

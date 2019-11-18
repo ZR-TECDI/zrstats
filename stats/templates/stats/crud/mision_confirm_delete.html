@@ -1,0 +1,42 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Borrar Misión
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Misión</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Borrar Misión
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <form method="post">{% csrf_token %}
+            <p>Está seguro que desea borrar la misión "{{ object }}"?</p>
+            <p>También se perderá toda la asistencia relacionada a "{{ object }}"</p>
+            <input type="submit" value="Confirm">
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+{% endblock %}

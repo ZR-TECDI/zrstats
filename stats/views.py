@@ -4,7 +4,7 @@ from .forms import UploadReporteForm
 from .logics import procesar_resultado
 from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana
 from .logics import services
-from django.views.generic import DetailView, ListView, UpdateView, CreateView
+from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.views.generic.base import RedirectView
 from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, \
     AsistenciaForm, CampanaForm, MisionReporteForm
@@ -341,6 +341,12 @@ class MisionUpdateView(UpdateView):
     template_name = 'stats/crud/mision_form.html'
     model = Mision
     form_class = MisionForm
+
+
+class MisionDeleteView(DeleteView):
+    model = Mision
+    success_url = reverse_lazy('stats:mision_list')
+    template_name = 'stats/crud/mision_confirm_delete.html'
 
 
 class AsistenciaListView(ListView):

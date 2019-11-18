@@ -22,22 +22,89 @@
 {% endblock %}
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:asistencia_list' %}">Asistencia Listing</a></p>
-<table class="table">
-<tr>
-<td>ID</td><td>Link</td>
-    <td>fecha</td>
-    <td>tiempo_de_sesion</td>
-    <td>requiere_atencion</td>
-</tr>
-{% for object in object_list %}
-<tr>
-    <td>{{object.pk}}</td>
-    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-    <td>{{ object.fecha }}</td>
-    <td>{{ object.tiempo_de_sesion }}</td>
-    <td>{{ object.requiere_atencion }}</td>
-</tr>
-{% endfor %}
-</table><a class="btn btn-primary" href="{% url 'stats:asistencia_create' %}">Create new Asistencia</a>
+
+<div class="row">
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                <a href="#" class="fa fa-times"></a>
+            </div>
+            <h2 class="panel-title">Tabla de Asistencia Total</h2>
+        </header>
+        <div class="panel-body">
+            <table  class="table table-bordered table-striped mb-none" id="datatable-default">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">ID</th>
+                        <th>Miembro</th>
+                        <th>Asistencia</th>
+                        <th>Misión</th>
+                        <th>Fecha</th>
+                        <th>Tiempo de Sesión</th>
+                        <th>Requiere Atención</th>
+                        <th>Mensaje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td><a href="{{object.get_absolute_url}}">{{object.pk}}</a></td>
+                        <td><a href="{{object.miembro.get_absolute_url}}">{{ object.miembro}}</a></td>
+                        <td><a href="{{object.mision.get_absolute_url}}">{{ object.mision}}</a></td>
+                        {% if object.asistencia == object.ASIST_ASISTE %}
+                            <td class="success">{{ object.asistencia}}</td>
+                        {% elif object.asistencia == object.ASIST_FALTA %}
+                            <td class="danger">{{ object.asistencia}}</td>
+                        {% elif object.asistencia == object.ASIST_TARDE %}
+                            <td class="warning">{{ object.asistencia}}</td>
+                        {% else  %}
+                            <td class="primary">{{ object.asistencia}}</td>
+                        {% endif %}
+                        <td>{{object.fecha}}</td>
+                        <td>{{object.tiempo_de_sesion}}</td>
+                        <td>{{object.requiere_atencion}}</td>
+                        <td>{{object.mensaje_notificacion}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<div class="row">
+    <div class="col">
+        <a class="btn btn-primary" href="{% url 'stats:asistencia_create' %}">Create new Asistencia</a>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+
+<script>
+        $(document).ready( function () {
+            var table = $('#datatable-default').DataTable({
+                "order": [[0, "desc"]],
+            });
+
+            $('ul').on( 'click', 'a', function () {
+            table
+                .columns(2)
+                .search( $(this).text())
+                .draw();
+            });
+
+            $('ul').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(2)
+                .search('')
+                .draw();
+            });
+
+        });
+</script>
 {% endblock %}
