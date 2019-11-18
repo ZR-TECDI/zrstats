@@ -293,6 +293,12 @@ class MiembroListView(ListView):
     template_name = 'stats/crud/miembro_list.html'
     model = Miembro
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        paises = Nacionalidad.objects.raw('SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
+        context['paises'] = paises
+        return context
+
 
 class MiembroCreateView(CreateView):
     template_name = 'stats/crud/miembro_form.html'

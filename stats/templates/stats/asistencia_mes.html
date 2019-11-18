@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block head_title %}
-    Misiones
+    Asist. {{ fecha_mes|date:"F Y" }}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -42,10 +42,7 @@
 
     </header>
     <div class="panel-body">
-        <div class="text-right mb-md"></div>
-        <div class="row datatables-header form-inline"></div>
-        <div class="table-responsive table-condensed">
-            <table class="table table-condensed table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
+        <table class="table table-condensed table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
             <thead>
             <th style="width: 2%">#</th>
             <th style="width: 4%">Miembro</th>

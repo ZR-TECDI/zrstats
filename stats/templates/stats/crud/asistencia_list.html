@@ -24,6 +24,13 @@
 {% block content %}
 
 <div class="row">
+    <ul>
+        <a href="#" class="all"><li class="btn btn-default">Todas</li></a>
+        <a  href="#" class="true"><li class="btn btn-default">Requiere Atención</li></a>
+    </ul>
+</div>
+
+<div class="row">
     <section class="panel">
         <header class="panel-heading">
             <div class="panel-actions">
@@ -90,17 +97,17 @@
                 "order": [[0, "desc"]],
             });
 
-            $('ul').on( 'click', 'a', function () {
+            $('ul').on( 'click', 'a.true', function () {
             table
-                .columns(2)
-                .search( $(this).text())
+                .columns(6)
+                .search("True")
                 .draw();
             });
 
             $('ul').on('click', 'a.all', function() {
               table
                 .search('')
-                .columns(2)
+                .columns(6)
                 .search('')
                 .draw();
             });
