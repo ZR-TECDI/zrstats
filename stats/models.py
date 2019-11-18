@@ -55,8 +55,8 @@ class Rango(models.Model):
 
 
 class Nacionalidad(models.Model):
-    pais = models.CharField(max_length=20, verbose_name="Pais", blank=False, null=False)
-    abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
+    pais = models.CharField(max_length=40, verbose_name="Pais", blank=False, null=False)
+    abreviatura = models.CharField(max_length=2, verbose_name="Abrev.", blank=False, null=False)
 
     def __str__(self):
         return self.pais
