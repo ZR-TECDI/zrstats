@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from stats.views import index_view, upload_file, AsistenciaListView
+# from stats.views import index_view, upload_file, AsistenciaListView
 
 print("Testeando URLs\n")
 #TODO tenemos que hacer tests decentes, porque este no funciona bien
