@@ -168,12 +168,17 @@ class Miembro(models.Model):
                                blank=True, null=True, related_name='clase2')
     nacionalidad = models.ForeignKey(Nacionalidad, verbose_name="Nacionalidad", on_delete=models.DO_NOTHING,
                                      blank=True, null=True)
+    # Choices = ('Lo que se guarda', 'Lo que se muestra')
     ESTADO_CHOICES = (
-        ('Activo', 'Activo'),
-        ('Reserva', 'Reserva'),
-        ('Licencia', 'Licencia'),
-        ('No Miembro', 'No Miembro'),
+        ('ACTIVO', 'Activo'),
+        ('RESERVA', 'Reserva'),
+        ('LICENCIA', 'Licencia'),
+        ('NO_MIEMBRO', 'No Miembro'),
     )
+    ESTADO_ACTIVO = 'ACTIVO'
+    ESTADO_RESERVA = 'RESERVA'
+    ESTADO_LICENCIA = 'LICENCIA'
+    ESTADO_NO_MIEMBRO = 'NO_MIEMBRO'
     estado = models.CharField(max_length=20, verbose_name="Estado", blank=False, null=False,
                               choices=ESTADO_CHOICES, default=ESTADO_CHOICES[0])
     unidad = models.ForeignKey(Unidad, verbose_name="Unidad", on_delete=models.DO_NOTHING,  blank=True, null=True)
@@ -239,7 +244,7 @@ class Mision(models.Model):
         (True, 'Si'),
         (False, 'No'),
     )
-    oficial = models.BooleanField(verbose_name="Es Oficial? (Misión de Martes/Jueves)", blank=False, null=False,
+    oficial = models.BooleanField(verbose_name="Es Oficial?", blank=False, null=False,
                                   default=True, choices=OFICIAL_MISION_CHOICES)
     # Choices = ('Lo que se guarda', 'Lo que se muestra')
     TIPO_MISION_CHOICES = (
@@ -384,6 +389,7 @@ class Asistencia(models.Model):
                                   choices=ASISTENCIA_CHOICES)
     tiempo_de_sesion = models.DurationField(blank=False, null=False, default=0, verbose_name="Tiempo de Sesión")
     requiere_atencion = models.BooleanField(blank=False, null=False, verbose_name="Requiere Atención", default=False)
+    mensaje_notificacion = models.CharField(max_length=140, verbose_name="Notificacion", blank=True, null=True)
 
     def __str__(self):
         return str(self.miembro) + " " + self.asistencia + "( " + str(self.fecha) + ")"

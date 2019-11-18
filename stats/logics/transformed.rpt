@@ -3227,6 +3227,13 @@ if (VCM_FFEARTILLERY) then {nul = [] execVM >
 2019/02/05, 16:51:07 a3\weapons_f\binocular\nvg_proxy_off.p3d: No geometry and no visual shape
 2019/02/05, 16:51:07 OPC DATA [6.52172e+008,"76561198012558391","Asp.Zlidus",true,6]
 2019/02/05, 16:51:07 "ZRASISTENCIA: Asp.Zlidus conectado"
+2019/02/05, 17:58:20 "ZRSTATS: NOMBRE_MISION Mision de Prueba"
+2019/02/05, 17:58:20 "ZRSTATS: DESC_MISION campaña testing otra vez"
+2019/02/05, 17:58:20 "ZRSTATS: AUTOR_MISION Strix"
+2019/02/05, 17:58:20 "ZRSTATS: TIPO_MISION CAMPANA"
+2019/02/05, 17:58:20 "ZRSTATS: NOMBRE_CAMPA The KKK Took My Baby Away"
+2019/02/05, 17:58:20 "ZRSTATS: ES_OFICIAL True"
+2019/02/05, 17:58:20 "ZRSTATS: MAPA_MISION Altis"
 2019/02/05, 16:53:45 OPC DATA [2.83051e+008,"76561198351678090","Asp.Freddy",true,7]
 2019/02/05, 16:53:45 "ZRASISTENCIA: Asp.Freddy conectado"
 2019/02/05, 16:53:45 Server: Object 6:6 not found (message Type_121)

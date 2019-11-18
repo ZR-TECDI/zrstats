@@ -65,7 +65,8 @@ def handle_uploaded_file(mision, override_by_rpt=True):
         asiste.mision = mision
         asiste.miembro = miembro
         asiste.fecha = fecha_rpt
-        asiste.asistencia = 'Falta'
+        asiste.asistencia = Asistencia.ASIST_FALTA
+        asiste.mensaje_notificacion = ""
         t = datetime.strptime("0:0:0", '%H:%M:%S')
         delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
         asiste.tiempo_de_sesion = delta
@@ -78,12 +79,65 @@ def handle_uploaded_file(mision, override_by_rpt=True):
             if j1.upper() == j2:  # si coinciden es que se conectó al server y debo crear un Asistencia
                 asiste = Asistencia.objects.get(miembro=miembro, fecha=fecha_rpt)
                 print("ENCONTRE A "+j1+" LE PONGO ASISTENCIA")
-                asiste.asistencia = dict_jugador['asistencia']
-                t = datetime.strptime(
-                    dict_jugador['tiempo_sesion'], '%H:%M:%S')
-                delta = timedelta(
-                    hours=t.hour, minutes=t.minute, seconds=t.second)
-                asiste.tiempo_de_sesion = delta
                 asiste.requiere_atencion = dict_jugador['requiere_atencion']
+                # Si FALTA me fijo si está en licencia o reserva
+                if dict_jugador['asistencia'].lower() == Asistencia.ASIST_FALTA.lower():
+                    asiste.asistencia = Asistencia.ASIST_FALTA
+                    if miembro.estado == Miembro.ESTADO_LICENCIA:
+                        asiste.asistencia = Asistencia.ASIST_LICENCIA
+                    if miembro.estado == Miembro.ESTADO_RESERVA:
+                        asiste.asistencia = Asistencia.ASIST_RESERVA
+
+                # Si TARDE me fijo si está en licencia o reserva (para notificar)
+                elif dict_jugador['asistencia'].lower() == Asistencia.ASIST_TARDE.lower():
+                    asiste.asistencia = Asistencia.ASIST_TARDE
+                    if miembro.estado == Miembro.ESTADO_LICENCIA:
+                        asiste.requiere_atencion = True
+                        asiste.mensaje_notificacion = asiste.mensaje_notificacion + "\n" \
+                                                      + miembro.nombre + ": No estaba de Licencia?"
+                    if miembro.estado == Miembro.ESTADO_RESERVA:
+                        asiste.requiere_atencion = True
+                        asiste.mensaje_notificacion = asiste.mensaje_notificacion + "\n" \
+                                                      + miembro.nombre + ": No estaba en Reserva?"
+
+                # Si ASISTE me fijo si está en licencia o reserva (para notificar)
+                elif dict_jugador['asistencia'].lower() == Asistencia.ASIST_ASISTE.lower():
+                    asiste.asistencia = Asistencia.ASIST_ASISTE
+                    if miembro.estado == Miembro.ESTADO_LICENCIA:
+                        asiste.requiere_atencion = True
+                        asiste.mensaje_notificacion = asiste.mensaje_notificacion + "\n" \
+                                                      + miembro.nombre + ": No estaba de Licencia?"
+                    if miembro.estado == Miembro.ESTADO_RESERVA:
+                        asiste.requiere_atencion = True
+                        asiste.mensaje_notificacion = asiste.mensaje_notificacion + "\n" \
+                                                      + miembro.nombre + ": No estaba en Reserva?"
+
+                # El reporte nunca viene con JUSTIFICADA, no debería llegar aca
+                elif dict_jugador['asistencia'].lower() == Asistencia.ASIST_JUSTIFICADA.lower():
+                    asiste.asistencia = Asistencia.ASIST_JUSTIFICADA
+
+                # El reporte nunca viene con LICENCIA, no debería llegar aca
+                elif dict_jugador['asistencia'].lower() == Asistencia.ASIST_LICENCIA.lower():
+                    asiste.asistencia = Asistencia.ASIST_LICENCIA
+
+                # El reporte nunca viene con RESERVA, no debería llegar aca
+                elif dict_jugador['asistencia'].lower() == Asistencia.ASIST_RESERVA.lower():
+                    asiste.asistencia = Asistencia.ASIST_RESERVA
+
+                else:
+                    asiste.asistencia = "Oops!"  # Nunca debería llegar acá
+
+                # Le pongo la duración de la sesión
+                t = datetime.strptime(dict_jugador['tiempo_sesion'], '%H:%M:%S')
+                delta = timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+                asiste.tiempo_de_sesion = delta
+
                 # TODO comprobar diferencia en el rango ingame con el del miembro, podemos actualizar rangos aquí
+                if dict_jugador['rango'].lower() != miembro.rango.abreviatura.lower():
+                    asiste.requiere_atencion = True
+                    asiste.mensaje_notificacion = asiste.mensaje_notificacion + "\n" \
+                                                  + miembro.nombre + ": Comprobar rango." \
+                                                  + ". En sistema: " + miembro.rango.abreviatura \
+                                                  + ". En reporte: " + dict_jugador['rango'] + "."
+
                 asiste.save()

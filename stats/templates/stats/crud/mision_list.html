@@ -33,7 +33,7 @@
         <li class="btn btn-default"><a href="#">Entrenamiento</a></li>
         <li class="btn btn-default"><a href="#">Gala</a></li>
         <li class="btn btn-default"><a href="#">Cooperativs</a></li>
-        <li class="btn btn-default"><a href="#">Otro</a></li>
+        <li class="btn btn-default"><a href="#">Otros</a></li>
     </ul>
 </div>
 
@@ -55,9 +55,9 @@
                         <th>Tipo</th>
                         <th>Fecha</th>
                         <th>Campaña</th>
+                        <th>Mapa</th>
                         <th>Estado</th>
                         <th>Autor</th>
-                        <th>Editores</th>
                         <th>Reporte</th>
                     </tr>
                 </thead>
@@ -69,6 +69,7 @@
                         <td>{{object.print_tipo}}</td>
                         <td>{{ object.fecha_finalizada }}</td>
                         <td><a href="{{ object.campana.get_absolute_url }}">{{ object.campana.nombre|truncatewords:4 }}</a></td>
+                        <td>{{ object.mapa }}</td>
                         {% if object.estado == object.ESTADO_FINALIZADA %}
                             <td class="success">{{ object.estado }}</td>
                         {% elif object.estado == object.ESTADO_AGENDADA %}
@@ -87,7 +88,6 @@
                             <td class="danger">Oops!</td>
                         {% endif %}
                         <td>{{ object.autor }}</td>
-                        <td>{% for editor in object.editores.all %}{% if forloop.last %}{{ editor }}{% else %}{{ editor }}, {% endif %} {% endfor %}</td>
                         {% if object.reporte %}
                             <td><a href="{{ object.reporte.url }}"><i class="fa fa-file" aria-hidden="true"></i> </a></td>
                         {% else %}
