@@ -21,3 +21,15 @@ jobs:
       - npm install @semantic-release/changelog -D
       - npm install @semantic-release/git -D
       - npx semantic-release
+    - stage: build
+      language: python
+      python:
+        - '3.7'
+      branches:
+        only:
+        - master
+      install:
+      - pip install paramiko
+      - pip install spur
+      script:
+      - python3 builder.py
