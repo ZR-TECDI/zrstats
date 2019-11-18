@@ -17,7 +17,7 @@ print('************************************************************')
 print('Comenzando el despliegue del sitio en el servidor live: ')
 
 def stop():
-    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS)
+    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
     with shell:
         print('Deteniendo el servicio gunicorn...')
         result = shell.run(STOP, cwd=APP_PATH)
@@ -29,7 +29,7 @@ def stop():
     return 0
 
 def pull():
-    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS)
+    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
     with shell:
         print('Pulleando últimos cambios desde master...')
         result = shell.run(PULL, cwd=APP_PATH)
@@ -42,7 +42,7 @@ def pull():
 
 def start():
     print('Comenzando el servicio una vez más...')
-    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS)
+    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
     with shell:
         result = shell.run(START, cwd=APP_PATH)
         result = str(result.output)
