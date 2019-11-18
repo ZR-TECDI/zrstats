@@ -1,0 +1,236 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Miembro
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Miembro</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Miembro
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-6">
+        <span>Filtrar por Unidad</span>
+        <ul class="unidad" id="filtro_unidad">
+            <a href="#" class="all"><li class="btn btn-default">Todas</li></a>
+            <a href="#"><li class="btn btn-default">Alto Mando</li></a>
+            <a href="#"><li class="btn btn-default">Caballería</li></a>
+            <a href="#"><li class="btn btn-default">Espectro</li></a>
+            <a href="#"><li class="btn btn-default">Fuerza Aérea</li></a>
+            <a href="#"><li class="btn btn-default">Inf. de Marines</li></a>
+            <a href="#"><li class="btn btn-default">Paracaidistas</li></a>
+        </ul>
+    </div>
+    <div class="col-lg-6">
+        <span>Filtrar por Estado</span>
+        <ul class="estado" id="filtro_estado">
+            <a href="#" class="all"><li class="btn btn-default">Todos</li></a>
+            <a href="#"><li class="btn btn-default">Activo</li></a>
+            <a href="#"><li class="btn btn-default">Reserva</li></a>
+            <a href="#"><li class="btn btn-default">Licencia</li></a>
+            <a href="#"><li class="btn btn-default">No Miembro</li></a>
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <span>Filtrar por Nacionalidad</span>
+        <ul class="pais">
+            <a href="#" class="all"><span class="badge alert-default">Todos</span></a>
+            {% for pais in paises %}
+                <a href="#" class="{{ pais.abreviatura|lower }}" data-busqueda="{{ pais.pais }}"><span class="flag-icon flag-icon-{{ pais.abreviatura|lower }}"></span></a>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <section class="panel">
+        <header class="panel-heading">
+            <div class="panel-actions">
+            </div>
+            <h2 class="panel-title">Miembros
+            </h2>
+        </header>
+        <div class="panel-body">
+            <table  class="table table-bordered table-striped mb-none" id="datatable-default" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
+                <thead>
+                    <tr>
+                        <th style="width: 10px">ID</th>
+                        <th>Nombre</th>
+                        <th>Rango</th>
+                        <th>País</th>
+                        <th>Unidad</th>
+                        <th>Pelotón</th>
+                        <th>Escuadra</th>
+                        <th>Rol</th>
+                        <th>Clase 1</th>
+                        <th>Clase 2</th>
+                        <th>Estado</th>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                    <tr>
+                        <td>{{object.pk}}</td>
+                        <td><a href="{{object.get_absolute_url}}">{{ object.nombre}}</a></td>
+                        <td>{{object.rango.rango}}</td>
+                        <td><span class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span> {{ object.nacionalidad.pais }}</td>
+                        <td><a href="{{ object.unidad.get_absolute_url }}">{{ object.unidad.nombre}}</a></td>
+                        <td>{{ object.peloton }}</td>
+                        <td>{{ object.escuadra }}</td>
+                        <td>{{ object.rol }}</td>
+                        <td>{{ object.clase1 }}</td>
+                        <td>{{ object.clase2 }}</td>
+                        <td>{{ object.estado }}</td>
+                        <td>{{ object.user }}</td>
+                        <td>{{ object.email }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+<script>
+        $(document).ready( function () {
+            var table = $('#datatable-default').DataTable({
+                "order": [[1, "asc"]],
+                sDom: "B<'text-right mb-md'T>" + $.fn.dataTable.defaults.sDom,
+                oTableTools: {
+                    sSwfPath: $('#datatable-default').data('swf-path'),
+                    aButtons: [
+                        {
+                            sExtends: 'pdf',
+                            sButtonText: 'PDF'
+                        },
+                        {
+                            sExtends: 'csv',
+                            sButtonText: 'CSV'
+                        },
+                        {
+                            sExtends: 'xls',
+                            sButtonText: 'Excel'
+                        },
+                        {
+                            sExtends: 'print',
+                            sButtonText: 'Print',
+                            sInfo: 'Please press CTR+P to print or ESC to quit'
+                        }
+                    ]
+                },
+            });
+
+            $('ul.unidad').on( 'click', 'a', function () {
+            table
+                .columns(4)
+                .search( $(this).text())
+                .draw();
+            });
+
+            $('ul.unidad').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(4)
+                .search('')
+                .draw();
+            });
+
+            $('ul.estado').on( 'click', 'a', function () {
+            table
+                .columns(10)
+                .search( $(this).text())
+                .draw();
+            });
+
+            $('ul.estado').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(10)
+                .search('')
+                .draw();
+            });
+
+            $('ul.pais').on( 'click', 'a', function () {
+            table
+                .columns(3)
+                .search( $(this).data('busqueda'))
+                .draw();
+            });
+
+            $('ul.pais').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(3)
+                .search('')
+                .draw();
+            });
+
+
+
+        });
+        /* COLOREO LOS BOTONES DEL FILTRO UNIDAD */
+        var ul_unidad = document.getElementById("filtro_unidad");
+        var listItems_unidad = ul_unidad.getElementsByTagName("li");
+        for(li of listItems_unidad){
+          li.addEventListener('click', function(){
+            for(i of listItems_unidad){
+                if(i.classList.contains('btn-primary')){
+                    i.classList.remove('btn-primary');
+                    i.classList.add('btn-default')
+                }
+            }
+            if(this.classList.contains('btn-primary')){
+              this.classList.remove("btn-default");
+            } else {
+              this.classList.add("btn-primary");
+            }
+          })
+        }
+
+        /* COLOREO LOS BOTONES DEL FILTRO ESTADO */
+        var ul_estado = document.getElementById("filtro_estado");
+        var listItems_estado = ul_estado.getElementsByTagName("li");
+        for(li of listItems_estado){
+          li.addEventListener('click', function(){
+            for(i of listItems_estado){
+                if(i.classList.contains('btn-primary')){
+                    i.classList.remove('btn-primary');
+                    i.classList.add('btn-default')
+                }
+            }
+            if(this.classList.contains('btn-primary')){
+              this.classList.remove("btn-default");
+            } else {
+              this.classList.add("btn-primary");
+            }
+          })
+        }
+</script>
+{% endblock %}

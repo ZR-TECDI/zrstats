@@ -1,0 +1,39 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+    Nacionalidad
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Nacionalidad</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Nacionalidad
+{% endblock %}
+
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:nacionalidad_list' %}">Nacionalidad Listing</a></p>
+<p><a class="btn btn-default" href="{% url 'stats:asistencia_list' %}">Asistencia Listing</a></p>
+    <div class="row">
+        <div class="col-lg-2">
+            <form method="post">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button class="btn btn-primary" type="submit">Aceptar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

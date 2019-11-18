@@ -1,0 +1,32 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Clase
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Clase</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Clase
+{% endblock %}
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:clase_list' %}">Clase Listing</a></p>
+<table class="table">
+<tr><td>clase</td><td>{{ object.clase }}</td></tr>
+<tr><td>abreviatura</td><td>{{ object.abreviatura }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Clase</a>
+
+{% endblock %}

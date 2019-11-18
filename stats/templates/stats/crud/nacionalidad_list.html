@@ -1,0 +1,42 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Nacionalidad
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Nacionalidad</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Nacionalidad
+{% endblock %}
+
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:nacionalidad_list' %}">Nacionalidad Listing</a></p>
+<table class="table">
+<tr>
+<td>ID</td><td>Link</td>
+    <td>pais</td>
+    <td>abreviatura</td>
+</tr>
+{% for object in object_list %}
+<tr>
+    <td>{{object.pk}}</td>
+    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
+    <td>{{ object.pais }}</td>
+    <td>{{ object.abreviatura }}</td>
+</tr>
+{% endfor %}
+</table><a class="btn btn-primary" href="{% url 'stats:nacionalidad_create' %}">Create new Nacionalidad</a>
+{% endblock %}

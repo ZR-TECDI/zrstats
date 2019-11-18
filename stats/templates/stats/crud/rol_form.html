@@ -1,0 +1,37 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+    Rol
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Rol</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Rol
+{% endblock %}
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:rol_list' %}">Rol Listing</a></p>
+    <div class="row">
+        <div class="col-lg-2">
+            <form method="post">
+            {% csrf_token %}
+            {{form|crispy}}
+            <br>
+            <button class="btn btn-primary" type="submit">Aceptar</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

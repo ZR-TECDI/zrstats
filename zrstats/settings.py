@@ -12,6 +12,14 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+#Secretos e.e
+DB_USER= os.environ['DB_USER']
+DB_NAME= os.environ['DB_NAME']
+DB_PASS= os.environ['DB_PASS']
+DB_HOST= os.environ['DB_HOST']
+DJANGO_SECRET= os.environ['DJANGO_SECRET']
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,24 +28,29 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&)w-qt_gy!-$appa^s5s3^2ls9w2+*!7!&@jtt6sz_m2#r@p57'
+SECRET_KEY = DJANGO_SECRET
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'asistencia',
+    'stats',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts.apps.AccountsConfig',
+    'crispy_forms',
+    'django_extensions',
+    'django_select2',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -78,10 +91,10 @@ WSGI_APPLICATION = 'zrstats.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'zrstats',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASS,
+        'HOST': DB_HOST,
         'PORT': '',
         'OPTIONS': {
             'init_command': 'SET innodb_strict_mode=1',
@@ -125,5 +138,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL = 'upload/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'upload/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_URL = '/upload/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+
+LOGIN_REDIRECT_URL = 'stats:redirect_to_profile'
+LOGOUT_REDIRECT_URL = 'stats:index'
+
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+

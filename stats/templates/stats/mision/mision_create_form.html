@@ -1,0 +1,279 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_extra %}
+    {{ form.media }}
+{% endblock %}
+
+{% block head_title %}
+    Misión
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>Crear Misión</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Crear Misión
+{% endblock %}
+
+
+{% block content %}
+
+{% if form.errors %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+
+            <!-- Error messaging -->
+            <div id="errors">
+                <div class="inner">
+                    <p>There were some errors in the information you entered. Please correct the following:</p>
+                    {{ form.non_field_errors }}
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- /Error messaging -->
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-lg-6">
+    <form class="form form-bordered" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+                <h2 class="panel-title">Información Básica</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.nombre.label }}
+                            {{ form.nombre }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.tipo.label }}
+                            {{ form.tipo }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.autor.label }}
+                            <i class="pull-right">
+                                (El Autor no es necesariamente el editor)
+                            </i>
+                            {{ form.autor }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.oficial.label }}
+                            <i class="pull-right">
+                                (Misiones de Martes o Jueves)
+                            </i>
+                            {{ form.oficial }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.campana.label }}
+                            <i class="pull-right">
+                                (Cursos y Camadas de Asp. cuentan como campañas
+                                - Si no existe la campaña se debe <a href="{% url 'stats:campana_create' %}">crear</a> de antemano)
+                            </i>
+                            {{ form.campana }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.descripcion.label }}
+                            <i class="pull-right">
+                                Breve texto descriptivo de la misión a modo de sinopsis.
+                            </i>
+                            {{ form.descripcion }}
+                        </div>
+                    </div>
+                </div>
+                <hr class="col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.imagen.label }}
+                            <i>
+                                [Sube una imagen de portada para la misión]
+                            </i>
+                            {{ form.imagen }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        {% if object.imagen %}
+                        <img alt="" class="img-responsive img-rounded" src="{{ object.imagen.url }}">
+                        {% else %}
+                        <img alt="" class="img-responsive img-rounded" src="{% static 'stats/img/mision_default.jpg' %}">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+                <h2 class="panel-title">Edición</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.mapa.label }}
+                            {{ form.mapa }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.editores.label }}
+                            <i class="pull-right">
+                                Encargados de la edición, guionado, gráfica, etc.
+                            </i>
+                            {{ form.editores }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.responsables.label }}
+                            <i class="pull-right">
+                               Encargados de ejecutar la misión durante la simulación.
+                            </i>
+                            {{ form.responsables }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.notas_privadas.label }}
+                            <i class="pull-right">
+                                Texto privado, lo leerá el Mando que evalúe la misión.
+                            </i>
+                            {{ form.notas_privadas }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            {{ form.notas_editor.label }}
+                            <i class="pull-right">
+                                Comentarios e información relevante para los editores encargados.
+                            </i>
+                            {{ form.notas_editor }}
+                        </div>
+                    </div>
+                </div>
+                <hr class="col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.briefing.label }}
+                            <i>
+                                [Formato PDF]
+                            </i>
+                            {{ form.briefing }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        {% if object.briefing %}
+                            <embed src="{{ object.briefing.url }}#toolbar=0&navpanes=0&scrollbar=0&zoom=10&page=1" type="application/pdf">
+                        {% else %}
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+{% if user.is_staff %}
+        <section class="panel">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+                <h2 class="panel-title">Admninistrativo</h2>
+            </header>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.estado.label }}
+                            {{ form.estado }}
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            {{ form.fecha_programada.label }}
+                            <i>
+                                (Que día se jugará)
+                            </i>
+                            {{ form.fecha_programada }}
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </section>
+{% endif %}
+
+        <button class="btn btn-primary" type="submit">Aceptar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+
+{% endblock %}

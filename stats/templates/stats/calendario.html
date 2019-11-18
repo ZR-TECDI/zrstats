@@ -1,0 +1,151 @@
+{% extends 'stats/base.html' %}
+{% load static %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/core/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/daygrid/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/bootstrap/main.css' %}" />
+
+
+
+
+{% endblock %}
+
+{% block head_title %}
+    Calendario
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>Calendario</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Calendario
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <section class="panel panel-featured">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h4 class="panel-title">Acciones</h4>
+            </header>
+            <div class="panel-body">
+                <p><a href="{% url 'stats:crear-mision' %}"><i class="fa fa-plus mr-xs"></i> Nueva Misión</a></p>
+                <p><a href="{% url 'stats:crear-mision-reporte' %}"><i class="fa fa-plus mr-xs"></i> Subir Reporte</a></p>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-6">
+        <section class="panel panel-featured panel-featured-primary">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h2 class="panel-title">Calendario de Misiones</h2>
+            </header>
+            <div class="panel-body">
+                <div id="calendar"></div>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-3">
+        <section class="panel panel-featured">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                <a href="#" class="fa fa-caret-down"></a>
+                </div>
+                <h4 class="panel-title">Referencia</h4>
+            </header>
+            <div class="panel-body">
+                <h4>Colores</h4>
+                <ul class="simple-bullet-list mb-xlg">
+                    <li class="red">
+                        <span class="title">Misión Oficial (Martes y Jueves)</span>
+                        <span class="description truncate">Campañas, Entrenamientos y Galas</span>
+                    </li>
+                    <li class="blue">
+                        <span class="title">Curso</span>
+                        <span class="description truncate">Aspirantes, cursos, puertas abiertas, etc</span>
+                    </li>
+                    <li class="green">
+                        <span class="title">Improvisada</span>
+                        <span class="description truncate">Misiones en días no oficiales</span>
+                    </li>
+                    <li class="orange">
+                        <span class="title">Otro</span>
+                        <span class="description truncate">Cualquier otro tipo de misión</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'stats/fullcalendar/packages/core/main.js' %}"></script>
+    <script src="{% static 'stats/fullcalendar/packages/daygrid/main.js' %}"></script>
+    <script src="{% static 'stats/fullcalendar/packages/bootstrap/main.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'dayGrid','bootstrap' ],
+            defaultView: 'dayGridMonth',
+            locale: 'esLocale',
+            themeSystem: 'bootstrap',
+            customButtons: {
+                asistenciaButton: {
+                  text: 'Ver Asistencia',
+                  click: function() {
+                    var date = calendar.getDate();
+                    var mes = date.getMonth();
+                    mes = mes + 1;
+                    var year = date.getUTCFullYear();
+                    var url = '{% url 'stats:asistencia-mes' 1 13 %}'.replace(1, year);
+                    url = url.replace(13, mes);
+                    document.location.href = url;
+                  }
+               }
+            },
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'asistenciaButton'
+            },
+            events:
+                [
+                {% for m in mision_list %}
+                {
+                  title: "{{ m.title }}",
+                  start: '{{ m.start|date:"Y-m-d" }}',
+                  allDay: {{ m.allDay|lower }},
+                  url: '{{ m.url }}',
+                  className: '{{ m.className }}',
+                },
+                {% endfor %}
+                ]
+        });
+
+        calendar.render();
+      });
+    </script>
+
+{% endblock %}

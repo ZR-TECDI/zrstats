@@ -1,0 +1,34 @@
+{% extends "stats/base.html" %}
+{% load static %}
+
+{% block head_title %}
+    Rango
+{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>CRUDs</span></li>
+    <li><span>Rango</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Rango
+{% endblock %}
+
+
+{% block content %}
+<p><a class="btn btn-default" href="{% url 'stats:rango_list' %}">Rango Listing</a></p>
+<table class="table">
+<tr><td>rango</td><td>{{ object.rango }}</td></tr>
+<tr><td>abreviatura</td><td>{{ object.abreviatura }}</td></tr>
+<tr><td>orden</td><td>{{ object.orden }}</td></tr>
+</table>
+<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Rango</a>
+
+{% endblock %}

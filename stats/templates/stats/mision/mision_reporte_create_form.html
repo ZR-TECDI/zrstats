@@ -1,0 +1,54 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+
+{% block head_title %}
+    Nueva Misión
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<ol class="breadcrumbs">
+    <li>
+        <a href="{% url 'stats:index' %}">
+            <i class="fa fa-home"></i>
+        </a>
+    </li>
+    <li><span>Nueva Misión</span></li>
+</ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Nueva Misión
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-4">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Subir Reporte de Misión</h2>
+                </header>
+                <div class="panel-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <br>
+                        <button class="btn btn-primary pull-right" type="submit">Aceptar</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}
+
+
