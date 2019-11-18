@@ -29,7 +29,6 @@ jobs:
         only:
         - master
       install:
-      - pip install paramiko
-      - pip install spur
+      - pip install -r builder_req.txt
       script:
       - python3 builder.py
