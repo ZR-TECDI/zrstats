@@ -138,10 +138,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/root/public/static'
 
 MEDIA_URL = '/upload/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+MEDIA_ROOT = '/root/public/media'
 
 LOGIN_REDIRECT_URL = 'stats:redirect_to_profile'
 LOGOUT_REDIRECT_URL = 'stats:index'
