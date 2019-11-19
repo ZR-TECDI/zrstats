@@ -27,7 +27,8 @@ jobs:
         - '3.7'
       branches:
         only:
-        - master
+        # - master
+        - dev-branch
       install:
       - pip install -r builder_req.txt
       script:

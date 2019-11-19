@@ -11,7 +11,8 @@ LIVE_PASS = os.environ['LIVE_PASS']
 APP_PATH = os.environ['APP_PATH']
 
 STOP = ['systemctl', 'stop', 'gunicorn']
-PULL = ['git', 'pull', 'origin', 'master']
+# PULL = ['git', 'pull', 'origin', 'master']
+PULL = ['git', 'pull', 'origin', 'dev-branch']
 START = ['systemctl', 'start', 'gunicorn']
 
 print('************************************************************')
