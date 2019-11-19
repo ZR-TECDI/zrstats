@@ -206,11 +206,15 @@ class Miembro(models.Model):
             else:
                 return self.rango.abreviatura+'.'+self.nombre
 
-    def cantidad_asistencias(self):
-        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE).count()
+    def get_todas_las_asistencias(self):
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE)
 
-    def cantidad_faltas(self):
-        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA).count()
+    def get_todas_las_faltas(self):
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA)
+
+    def get_asistencia_del_mes(self, month, year):
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE, mision__fecha_finalizada__month=month,
+                                   mision__fecha_finalizada__year=year)
 
     def horas_de_servicio(self):
         asistencias = self.asistencia_set.all()

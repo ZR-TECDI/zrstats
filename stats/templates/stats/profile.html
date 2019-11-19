@@ -177,34 +177,25 @@
                 <div class="tab-content">
                     <div id="overview" class="tab-pane active">
                         <h4 class="mb-xlg">Linea de Tiempo</h4>
-
                         <div class="timeline timeline-simple mt-xlg mb-md">
                             <div class="tm-body">
                                 <div class="tm-title">
-                                    <h3 class="h5 text-uppercase">Noviembre 2018</h3>
+                                    <h3 class="h5 text-uppercase">{% now "F Y" %}</h3>
                                 </div>
                                 <ol class="tm-items">
+                                    {% for asistencia in asistencia_mensual %}
                                     <li>
                                         <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Misión Oficial]</a> el día 02/11/19</p>
+                                            <p class="text-muted mb-none">Asistencia a <a href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a> el día 02/11/19</p>
+                                            {% if asistencia.mision.campana %}
                                             <p>
-                                                Campaña <a>"Tormenta del Desierto"</a></span>
+                                                Campaña <a href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
                                             </p>
+                                            {% else %}
+                                            {% endif %}
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Gala de Ascensos Octubre 2019]</a> el día 28/10/19</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Improvisada]</a> el día 27/10/19</p>
-                                            <p>
-                                                Organizada por <a>Alf. Jaz</a>
-                                            </p>
-                                        </div>
-                                    </li>
+                                    {% endfor %}
                                 </ol>
                             </div>
                         </div>
@@ -214,16 +205,17 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-12 col-lg-3">
 
             <h4 class="mb-md">Estadísticas</h4>
             <ul class="simple-card-list mb-xlg">
                 <li class="primary">
-                    <h3>{{ asistencias.count }}</h3>
+                    <h3>{{ object.get_todas_las_asistencias.count }}</h3>
                     <p>Asistencias totales</p>
                 </li>
                 <li class="primary">
-                    <h3>{{ faltas.count }}</h3>
+                    <h3>{{ object.get_todas_las_faltas.count }}</h3>
                     <p>Faltas totales</p>
                 </li>
                 <li class="primary">

@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
 from datetime import datetime
+from django.utils import timezone
 import calendar
 
 
@@ -46,8 +47,6 @@ class MyProfileView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(id=self.kwargs['pk'])
         miembro = user.miembro
-        context['faltas'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_FALTA)
-        context['asistencias'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_ASISTE)
         return context
 
 
@@ -58,8 +57,8 @@ class PublicProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         miembro = Miembro.objects.get(id=self.kwargs['pk'])
-        context['faltas'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_FALTA)
-        context['asistencias'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_ASISTE)
+        hoy = timezone.now()
+        context['asistencia_mensual'] = miembro.get_asistencia_del_mes(hoy.month, hoy.year)
         return context
 
 
