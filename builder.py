@@ -2,6 +2,7 @@
 
 import os
 import spur
+import requests
 
 # Constantes
 LIVE_USER = os.environ['LIVE_USER']
@@ -50,11 +51,23 @@ def start():
 
     for line in result:
         print(line)
-    return 0  
+    return 0
+
+def chequeo_sitio():
+    print('Comprobando que el sitio ande...')
+    url = 'http://108.161.135.53/admin/'
+    req = requests.get(url) 
+    if req.ok:
+        print ('El sitio parece andar bien')
+        return  0
+    else:
+        print('Por alguna razón, el sitio no anda')
+        return 1
 
 if __name__ == '__main__':
     stop()
     pull()
     start()
+    chequeo_sitio()
     print('Despliegue del sitio en servidor live terminado')
     print('************************************************************')
