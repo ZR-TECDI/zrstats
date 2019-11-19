@@ -2,7 +2,7 @@
 {% load static %}
 
 
-{% block page_title %}Perfil de {{ user.miembro.nombre }}{% endblock %}
+{% block head_title %}Perfil de {{ object.nombre }}{% endblock %}
 
 {% block breadcrumbs %}
 <ol class="breadcrumbs">
@@ -11,12 +11,12 @@
             <i class="fa fa-home"></i>
         </a>
     </li>
-    <li><span>Perfil de {{ user.miembro }}</span></li>
+    <li><span>Perfil de {{ object.nombre }}</span></li>
 </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Perfil de {{ user.miembro.nombre }}
+    Perfil de {{ object.nombre }}
 {% endblock %}
 
 {% block content %}
@@ -26,36 +26,36 @@
             <section class="panel">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
-                        {% if user.avatar is not None %}
-                            <img src="{{ user.miembro.avatar.url }}" class="rounded img-responsive" alt="{{ user.username }} ">
+                        {% if object.avatar  %}
+                            <img src="{{ object.avatar.url }}" class="rounded img-responsive" alt="{{ object.objectname }} ">
                         {% else %}
-                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%" class="rounded img-responsive" alt="{{ user.username }}  ">
+                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%" class="rounded img-responsive" alt="{{ object.objectname }}  ">
                         {% endif %}
                         <div class="thumb-info-title">
-                            <span class="thumb-info-inner">{{ user.miembro }} </span>
-                            <span class="thumb-info-type">{{ user.miembro.unidad }}</span>
+                            <span class="thumb-info-inner">{{ object }}</span>
+                            <span class="thumb-info-type">{{ object.unidad }}</span>
                         </div>
                     </div>
 
                     <div class="widget-toggle-expand mb-md">
 
                         <ul class="simple-bullet-list mb-md">
-                            {% if user.miembro.estado == "Activo" %}
+                            {% if object.estado == "Activo" %}
                                 <li class="green">
                                     <span class="title">Activo</span>
                                     <span class="description truncate">Asiste regularmente</span>
                                 </li>
-                            {% elif user.miembro.estado == "Reserva" %}
+                            {% elif object.estado == "Reserva" %}
                                 <li class="red">
                                     <span class="title">Reserva</span>
                                     <span class="description truncate">No asiste indefinidamente</span>
                                 </li>
-                            {% elif user.miembro.estado == "Licencia" %}
+                            {% elif object.estado == "Licencia" %}
                                 <li class="red">
                                     <span class="title">Licencia</span>
                                     <span class="description truncate">No asiste temporalmente</span>
                                 </li>
-                            {% elif user.miembro.estado == "No Miembro" %}
+                            {% elif object.estado == "No Miembro" %}
                                 <li class="red">
                                     <span class="title">No Miembro</span>
                                     <span class="description truncate">Miembro dado de baja</span>
@@ -73,74 +73,89 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="widget-header">
+                            <h6>Progreso de Rango</h6>
+                        </div>
+                        <div>
+                            <div class="progress progress-indicator light">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                    60%
+                                </div>
+                            </div>
+                        </div>
                         <div>
                             <table class="table table-condensed table-hover">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-sitemap"></i> Rango</td>
-                                    <td><strong>Cabo</strong></td>
+                                    <td><strong>{{ object.rango.rango }}</strong></td>
                                 </tr>
                             </table>
                             <table class="table table-condensed table-hover">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"> Unidad</td>
-                                    <td><strong>Espectro</strong></td>
+                                    <td><strong>{{ object.unidad.nombre }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 20%" class="text-muted"> Rol</td>
-                                    <td><strong>ALPHA</strong></td>
+                                    <td><strong>{{ object.rol }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 20%" class="text-muted"> Pelotón</td>
-                                    <td><strong>1</strong></td>
+                                    <td><strong>{{ object.peloton }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 20%" class="text-muted"> Escuadra</td>
-                                    <td><strong>1</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Equipo</td>
-                                    <td><strong>Alpha</strong></td>
+                                    <td><strong>{{ object.escuadra }}</strong></td>
                                 </tr>
                             </table>
                             <table class="table table-condensed table-hover">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 1</td>
-                                    <td><strong>Tirador de Escuadra</strong></td>
+                                    <td><strong>{{ object.clase1 }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 2</td>
-                                    <td><strong>Granadero</strong></td>
+                                    <td><strong>{{ object.clase2 }}</strong></td>
                                 </tr>
                             </table>
 
                             <table class="table table-condensed">
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región</td>
-                                    <td><strong>Bariloche, Río Negro</strong></td>
+                                    <td style="width: 20%" class="text-muted"><i class="fa fa-globe"></i> País</td>
+                                    <td><strong>{{ object.nacionalidad.pais }} <span class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong></td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-globe"></i> País</td>
-                                    <td><strong>Argentina <span class="flag-icon flag-icon-ar"></span></strong></td>
+                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región</td>
+                                    <td><strong>{{ object.region |default_if_none:''}}</strong></td>
                                 </tr>
+
                             </table>
                         </div>
                     </div>
-
                     <hr class="dotted short">
-
                     <h6 class="text-muted">Mensaje</h6>
-                    <p>Este es un mensaje personal editable BLA BLA BLA para darle onda al perfil...
-                    asasdasdasd sdfsdf edfgdfg dfgdfg
-                    dsff rgfgfg...</p>
-
+                    <p>{{ object.mensaje_perfil|default_if_none:'' }}</p>
                     <hr class="dotted short">
-
                     <div class="social-icons-list">
-                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
-                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
-                        <a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+                        {% if object.redes_facebook %}
+                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com/{{ object.redes_facebook }}" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                        {% endif %}
+                        {% if object.redes_twitch %}
+                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com/{{ object.redes_twitch }}" data-original-title="Twitch"><i class="fa fa-twitch"></i><span>Twitch</span></a>
+                        {% endif %}
+                        {% if object.redes_instagram %}
+                        <a rel="tooltip" data-placement="bottom" href="http://www.instagram.com/{{ object.redes_instagram }}" data-original-title="Instagram"><i class="fa fa-instagram"></i><span>Instagram</span></a>
+                        {% endif %}
+                        {% if object.redes_youtube %}
+                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_youtube }}" data-original-title="Youtube"><i class="fa fa-youtube"></i><span>YouTube</span></a>
+                        {% endif %}
+                        {% if object.redes_steam %}
+                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_steam }}" data-original-title="Steam"><i class="fa fa-steam"></i><span>Steam</span></a>
+                        {% endif %}
+                        {% if object.redes_whatsapp %}
+                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_whatsapp }}" data-original-title="WhatsApp"><i class="fa fa-whatsapp"></i><span>WhatsApp</span></a>
+                        {% endif %}
                     </div>
-
                 </div>
             </section>
 
@@ -195,81 +210,6 @@
                         </div>
                     </div>
                     <div id="edit" class="tab-pane">
-
-                        <form class="form-horizontal" method="get">
-                            <h4 class="mb-xlg">Personal Information</h4>
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileFirstName">First Name</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileFirstName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileLastName">Last Name</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileLastName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileAddress">Address</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileAddress">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileCompany">Company</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileCompany">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <hr class="dotted tall">
-                            <h4 class="mb-xlg">About Yourself</h4>
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileBio">Biographical Info</label>
-                                    <div class="col-md-8">
-                                        <textarea class="form-control" rows="3" id="profileBio"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-3 control-label mt-xs pt-none">Public</label>
-                                    <div class="col-md-8">
-                                        <div class="checkbox-custom checkbox-default checkbox-inline mt-xs">
-                                            <input type="checkbox" checked="" id="profilePublic">
-                                            <label for="profilePublic"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <hr class="dotted tall">
-                            <h4 class="mb-xlg">Change Password</h4>
-                            <fieldset class="mb-xl">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileNewPassword">New Password</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileNewPassword">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileNewPasswordRepeat">Repeat New Password</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileNewPasswordRepeat">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="col-md-9 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                        <button type="reset" class="btn btn-default">Reset</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-
                     </div>
                 </div>
             </div>
@@ -279,16 +219,16 @@
             <h4 class="mb-md">Estadísticas</h4>
             <ul class="simple-card-list mb-xlg">
                 <li class="primary">
-                    <h3>236</h3>
+                    <h3>{{ asistencias.count }}</h3>
                     <p>Asistencias totales</p>
                 </li>
                 <li class="primary">
-                    <h3>12</h3>
+                    <h3>{{ faltas.count }}</h3>
                     <p>Faltas totales</p>
                 </li>
                 <li class="primary">
-                    <h3>513</h3>
-                    <p>Horas acumuladas</p>
+                    <h3>{{ object.horas_de_servicio }}</h3>
+                    <p>Horas de Servicio</p>
                 </li>
             </ul>
 

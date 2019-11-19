@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django.urls import reverse
 from django.db.models.signals import post_save, post_init
+from datetime import date, datetime, time, timedelta
 
 
 class Clase(models.Model):
@@ -168,6 +169,14 @@ class Miembro(models.Model):
                                blank=True, null=True, related_name='clase2')
     nacionalidad = models.ForeignKey(Nacionalidad, verbose_name="Nacionalidad", on_delete=models.DO_NOTHING,
                                      blank=True, null=True)
+    region = models.CharField(max_length=20, verbose_name="Región", blank=True, null=True)
+    mensaje_perfil = models.CharField(max_length=280, verbose_name="Mensaje de Perfil", blank=True, null=True)
+    redes_facebook = models.CharField(max_length=140, verbose_name="Perfil de Facebook", blank=True, null=True)
+    redes_steam = models.CharField(max_length=140, verbose_name="Usuario de Steam", blank=True, null=True)
+    redes_twitch = models.CharField(max_length=140, verbose_name="Canal de Twitch", blank=True, null=True)
+    redes_youtube = models.CharField(max_length=140, verbose_name="Canal de YouTube", blank=True, null=True)
+    redes_instagram = models.CharField(max_length=140, verbose_name="Usuario de Instagram", blank=True, null=True)
+    redes_whatsapp = models.CharField(max_length=140, verbose_name="Numero de WhatsApp", blank=True, null=True)
     # Choices = ('Lo que se guarda', 'Lo que se muestra')
     ESTADO_CHOICES = (
         ('ACTIVO', 'Activo'),
@@ -198,10 +207,22 @@ class Miembro(models.Model):
                 return self.rango.abreviatura+'.'+self.nombre
 
     def cantidad_asistencias(self):
-        return self.asistencia_set.filter(asistencia__icontains='asiste').count()
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE).count()
 
     def cantidad_faltas(self):
-        return self.asistencia_set.filter(asistencia__icontains='falta').count()
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA).count()
+
+    def horas_de_servicio(self):
+        asistencias = self.asistencia_set.all()
+        duracion = timedelta(hours=0, minutes=0, seconds=0)
+        for a in asistencias:
+            duracion += a.tiempo_de_sesion
+
+        seconds = duracion.total_seconds()
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
+        return '{}'.format(int(hours))
 
     def porcentaje_asistencia(self):
         cantidad_misiones = Mision.objects.all().count()

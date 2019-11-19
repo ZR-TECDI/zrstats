@@ -31,15 +31,36 @@ class RedirectToProfile(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             user_id = self.request.user.id
-            return reverse('stats:profile', kwargs={'pk': user_id})
+            miembro = Miembro.objects.get(user_id=user_id)
+            return reverse('stats:profile', kwargs={'pk': miembro.id})
         else:
             reverse('stats:index')
 
 
 # Vista para renderizar el perfil de alguien
-class ProfileView(LoginRequiredMixin, DetailView):
+class MyProfileView(LoginRequiredMixin, DetailView):
     template_name = 'stats/profile.html'
     model = User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(id=self.kwargs['pk'])
+        miembro = user.miembro
+        context['faltas'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_FALTA)
+        context['asistencias'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_ASISTE)
+        return context
+
+
+class PublicProfileView(DetailView):
+    template_name = 'stats/profile.html'
+    model = Miembro
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        miembro = Miembro.objects.get(id=self.kwargs['pk'])
+        context['faltas'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_FALTA)
+        context['asistencias'] = miembro.asistencia_set.filter(asistencia=Asistencia.ASIST_ASISTE)
+        return context
 
 
 # Vista para el formulario de crear misiones

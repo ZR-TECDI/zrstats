@@ -13,7 +13,10 @@ urlpatterns = [
     path('to-profile', views.RedirectToProfile.as_view(), name='redirect_to_profile'),
 
     # /stats/profile/<user_id>
-    path('profile/<int:pk>', views.ProfileView.as_view(), name='profile'),
+    path('myprofile/<int:pk>', views.MyProfileView.as_view(), name='my-profile'),
+
+    # /stats/profile/<miembro_id>
+    path('profile/<int:pk>', views.PublicProfileView.as_view(), name='profile'),
 
     # /stats/lista
     path('lista', views.AsistenciaListView.as_view(), name='stats-list'),

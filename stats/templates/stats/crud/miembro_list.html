@@ -105,7 +105,7 @@
                         <td>{{ object.estado }}</td>
                         <td>{{ object.user }}</td>
                         <td>{{ object.email }}</td>
-                        <td></td>
+                        <td><span><a href="{% url 'stats:profile' object.id %}"><i class="fa fa-user" aria-hidden="true"></i></a></span></td>
                     </tr>
                 {% endfor %}
                 </tbody>
