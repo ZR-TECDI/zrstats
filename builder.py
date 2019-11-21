@@ -11,6 +11,7 @@ LIVE_PASS = os.environ['LIVE_PASS']
 APP_PATH = os.environ['APP_PATH']
 
 STOP = ['systemctl', 'stop', 'gunicorn']
+CHECKOUT = ['git', 'checkout', '.']
 # PULL = ['git', 'pull', 'origin', 'master']
 PULL = ['git', 'pull', 'origin', 'dev-branch']
 START = ['systemctl', 'start', 'gunicorn']
@@ -29,6 +30,19 @@ def stop():
     for line in result:
         print(line)
     return 0
+
+def checkout():
+    shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
+    with shell:
+        print('Deteniendo el servicio gunicorn...')
+        result = shell.run(CHECKOUT, cwd=APP_PATH)
+        result = str(result.output)
+        result = result.split('\n')
+
+    for line in result:
+        print(line)
+    return 0
+
 
 def pull():
     shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
