@@ -16,47 +16,21 @@
 
 		<!-- Web Fonts  -->
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
-
-		<!-- Vendor CSS -->
-		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js' %}"></script>
+        <!-- Octopus Vendor CSS -->
         <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap/css/bootstrap.css' %}" />
 
-        <script src="{% static 'stats/octopus/assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
 
-        <link rel="stylesheet" href="{% static 'stats/select2/css/select2.min.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}" />
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'stats/DataTables/datatables.min.css'%}"/>
-
-
-		<!-- Theme CSS -->
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme.css' %}" />
-
-		<!-- Skin CSS -->
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/skins/default.css' %}" />
 
 		<!-- Theme Custom CSS -->
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme-custom.css' %}">
 
-		<!-- Head Libs -->
-		<script src="{% static 'stats/octopus/assets/vendor/modernizr/modernizr.js' %}"></script>
-
-
-
-
         <!-- Flag Icon CSS -->
         <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
-
-        <!-- Select2 CSS y JS -->
-        <script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
-
-
-
-
-
-
-
 
         {% block head_extra %}
         {% endblock %}
@@ -489,17 +463,23 @@
 			</aside>
             {% endblock %}
 		</section>
+        <!-- JQUERY -->
+        <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+		<script src="{% static 'stats/octopus/assets/vendor/jquery/jquery.js' %}"></script>
+
+
+        <!-- Head Libs -->
+		<script src="{% static 'stats/octopus/assets/vendor/modernizr/modernizr.js' %}"></script>
 
 		<!-- Vendor-->
-
-
-
         <script src="{% static 'stats/octopus/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js' %}"></script>
+        <script src="{% static 'stats/octopus/assets/vendor/bootstrap/js/bootstrap.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/nanoscroller/nanoscroller.js' %}"></script>
+        <script src="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/js/moment.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.js' %}"></script>
 		<script src="{% static 'stats/octopus/assets/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
-        <script type="text/javascript" src="{% static 'stats/DataTables/datatables.min.js'%}"></script>
+
 
 		<!-- Theme Base, Components and Settings -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.js' %}"></script>
@@ -507,16 +487,9 @@
 		<!-- Theme Custom -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.custom.js' %}"></script>
 
-
-
 		<!-- Theme Initialization Files -->
 		<script src="{% static 'stats/octopus/assets/javascripts/theme.init.js' %}"></script>
 
-        <script type="text/javascript" src="{% static '/stats/django_select2/django_select2.js' %}"></script>
-        <link rel="stylesheet" href="{% static 'stats/select2-bootstrap-theme/dist/select2-bootstrap.min.css' %}" />
-        <script>
-            $.fn.select2.defaults.set( "theme", "bootstrap" );
-        </script>
 
         {% block extra_scripts %}
         {% endblock %}
