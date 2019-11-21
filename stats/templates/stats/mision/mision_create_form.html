@@ -3,7 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block head_extra %}
-    {{ form.media }}
+    {{ form.media.css }}
+    <link rel="stylesheet" href="{% static 'stats/select2/css/select2.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/select2-bootstrap-theme/dist/select2-bootstrap.min.css' %}" />
 {% endblock %}
 
 {% block head_title %}
@@ -275,5 +277,11 @@
 {% endblock %}
 
 {% block extra_scripts %}
+{{ form.media.js }}
+<script src="{% static 'stats/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'stats/django_select2/django_select2.js' %}"></script>
+<script>
+    $.fn.select2.defaults.set( "theme", "bootstrap" );
+</script>
 
 {% endblock %}

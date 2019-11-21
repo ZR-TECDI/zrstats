@@ -1,6 +1,11 @@
 {% extends "stats/base.html" %}
 {% load static %}
 
+{% block head_extra %}
+<!-- DATATABLES -->
+<link rel="stylesheet" href="{% static 'stats/DataTables/datatables.min.css'%}"/>
+{% endblock %}
+
 {% block head_title %}
     Miembro
 {% endblock %}
@@ -118,11 +123,14 @@
 
 {% block extra_scripts %}
 
+<!-- DATATABLES -->
+<script src="{% static 'stats/DataTables/datatables.min.js'%}"></script>
+<script src="{% static 'stats/DataTables/dataTables.bootstrap.min.js'%}"></script>
+
 <script>
         $(document).ready( function () {
             var table = $('#datatable-default').DataTable({
                 "order": [[1, "asc"]],
-                sDom: "B<'text-right mb-md'T>" + $.fn.dataTable.defaults.sDom,
                 oTableTools: {
                     sSwfPath: $('#datatable-default').data('swf-path'),
                     aButtons: [
