@@ -3,6 +3,7 @@
 import os
 import spur
 import requests
+import time
 
 # Constantes
 LIVE_USER = os.environ['LIVE_USER']
@@ -34,7 +35,7 @@ def stop():
 def checkout():
     shell = spur.SshShell(hostname=LIVE_HOST, username=LIVE_USER, password=LIVE_PASS, missing_host_key=spur.ssh.MissingHostKey.accept)
     with shell:
-        print('Deteniendo el servicio gunicorn...')
+        print('Sanando la carpeta del live server...')
         result = shell.run(CHECKOUT, cwd=APP_PATH)
         result = str(result.output)
         result = result.split('\n')
@@ -71,6 +72,7 @@ def start():
 def chequeo_sitio():
     print('Comprobando que el sitio ande...')
     url = 'http://108.161.135.53/admin/'
+    time.sleep(3)
     req = requests.get(url) 
     if req.ok:
         print ('El sitio parece andar bien')
@@ -81,6 +83,7 @@ def chequeo_sitio():
 
 if __name__ == '__main__':
     stop()
+    checkout()
     pull()
     start()
     chequeo_sitio()
