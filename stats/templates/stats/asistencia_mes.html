@@ -44,7 +44,6 @@
     <div class="panel-body">
         <table class="table table-condensed table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
             <thead>
-            <th style="width: 2%">#</th>
             <th style="width: 4%">Miembro</th>
             {% for mision in misiones_mes %}
                 {% if mision.tipo == "CAMPANA" or mision.tipo == "ENTRENAMIENTO" or mision.tipo == "GALA"  %}
@@ -68,7 +67,6 @@
             </thead>
             {% for m in asistencia %}
                 <tr>
-                <td>{{ forloop.counter }}</td>
                 <td><a href="{{ m.miembro.get_absolute_url }}">{{ m.miembro }}</a></td>
                 {% for r in m.asistencia %}
 
