@@ -533,12 +533,12 @@ def main():
     crear_clase()
     crear_naciones()
     agregar_miembros()
-    generar_misiones()
     # Le pongo permisos al usuario admin
     user = User.objects.get(username="Admin")
     user.is_staff = True
     user.is_superuser = True
     user.save()
+    generar_misiones()
     print("FINALIZADO DATOS INICIALES")
 
 
