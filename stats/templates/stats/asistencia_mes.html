@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block head_extra %}
-
-
+<!-- DATATABLES -->
+<link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
 {% endblock %}
 
 {% block head_title %}
@@ -107,14 +107,11 @@
 {% endblock %}
 {% block extra_scripts %}
 
-<script src="{% static 'stats/octopus/assets/vendor/jquery-datatables/media/js/jquery.dataTables.js'%}" type="5eb393367aac6321591bedac-text/javascript"></script>
-<script src="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/js/dataTables.tableTools.min.js'%}" type="5eb393367aac6321591bedac-text/javascript"></script>
-<script src="{% static 'stats/octopus/assets/vendor/jquery-datatables-bs3/assets/js/datatables.js'%}" type="5eb393367aac6321591bedac-text/javascript"></script>
-
+<!-- DATATABLES -->
+<script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
+<script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
 
 <script>
-
-
 (function( $ ) {
 
 	'use strict';
