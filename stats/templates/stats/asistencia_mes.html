@@ -4,6 +4,7 @@
 {% block head_extra %}
 <!-- DATATABLES -->
 <link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
+<link rel="stylesheet" href="{% static 'stats/datatables/Buttons-1.5.6/css/buttons.bootstrap.css'%}"/>
 {% endblock %}
 
 {% block head_title %}
@@ -29,20 +30,19 @@
 {% block content %}
 <section class="panel">
     <header class="panel-heading">
-    <div class="panel-actions">
-    </div>
     <h2 class="panel-title">Tabla de Asistencia Mensual [{{ fecha_mes|date:"F Y" }}]
-        <span class="pull-right text-muted">Referencia:
-            <span class="badge alert-danger">Misión Oficial</span>
-            <span class="badge alert-info">Curso</span>
-            <span class="badge alert-success">Impro</span>
-            <span class="badge alert-warning">Otros</span>
-        </span>
+        <ul class="tipo_mision pull-right text-muted" id="filtro_tipo_mision">Filtrar:
+            <li class="badge alert-default">Todo</li>
+            <li class="badge alert-danger">Misión Oficial</li>
+            <li class="badge alert-info">Curso</li>
+            <li class="badge alert-success">Impro</li>
+            <li class="badge alert-warning">Otros</li>
+        </ul>
     </h2>
 
     </header>
     <div class="panel-body">
-        <table class="table table-condensed table-bordered" id="datatable-tabletools" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
+        <table class="table table-condensed table-bordered" id="datatable-tabletools" style="width:100%;">
             <thead>
             <th style="width: 4%">Miembro</th>
             {% for mision in misiones_mes %}
@@ -67,39 +67,35 @@
             </thead>
             {% for m in asistencia %}
                 <tr>
-                <td><a href="{{ m.miembro.get_absolute_url }}">{{ m.miembro }}</a></td>
-                {% for r in m.asistencia %}
-
-                    {% if r.asistencia == "FALTA" %}
-                       <td class="danger text-center">
-                           <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                               <span class="input-group-addon btn-danger">F</span>
-                           </a>
-                       </td>
-                    {% elif r.asistencia == "ASISTE" %}
-                        <td class="success text-center">
-                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                               <span class="input-group-addon btn-success">A</span>
-                           </a>
-                        </td>
-                    {% elif r.asistencia == "TARDE" %}
-                        <td class="warning text-center">
-                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                               <span class="input-group-addon btn-warning">T</span>
-                           </a>
-                        </td>
-                    {% else %}
-                        <td>{{ r.asistencia }}</td>
-                    {% endif %}
-
-                {% endfor %}
-
+                    <td><a href="{{ m.miembro.get_absolute_url }}">{{ m.miembro }}</a></td>
+                    {% for r in m.asistencia %}
+                        {% if r.asistencia == "FALTA" %}
+                           <td class="danger text-center">
+                               <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                   <span class="input-group-addon btn-danger">F</span>
+                               </a>
+                           </td>
+                        {% elif r.asistencia == "ASISTE" %}
+                            <td class="success text-center">
+                                <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                   <span class="input-group-addon btn-success">A</span>
+                               </a>
+                            </td>
+                        {% elif r.asistencia == "TARDE" %}
+                            <td class="warning text-center">
+                                <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                   <span class="input-group-addon btn-warning">T</span>
+                               </a>
+                            </td>
+                        {% else %}
+                            <td>{{ r.asistencia }}</td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div class="row datatables-footer"></div>
+            {% endfor %}
+        </table>
     </div>
+
 </section>
 
 {% endblock %}
@@ -108,6 +104,12 @@
 <!-- DATATABLES -->
 <script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
 <script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js'%}"></script>
 
 <script>
 (function( $ ) {
@@ -119,37 +121,22 @@
 
 		$table.dataTable({
             ordering: false,
+            scrollX: true,
             pageLength: 50,
-			sDom: "B<'text-right mb-md'T>" + $.fn.dataTable.defaults.sDom,
-			oTableTools: {
-				sSwfPath: $table.data('swf-path'),
-				aButtons: [
-					{
-						sExtends: 'pdf',
-						sButtonText: 'PDF'
-					},
-					{
-						sExtends: 'csv',
-						sButtonText: 'CSV'
-					},
-					{
-						sExtends: 'xls',
-						sButtonText: 'Excel'
-					},
-					{
-						sExtends: 'print',
-						sButtonText: 'Print',
-						sInfo: 'Please press CTR+P to print or ESC to quit'
-					}
-				]
-			}
+            dom: "<'#botones.row'<'col-sm-12'B>>" +"<'br'>"+ "<'row'<'col-sm-8'l><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                'colvis', 'copy', 'excel', 'pdf',
+            ]
 		});
 
 	};
 
+
 	$(function() {
 		datatableInit();
 	});
+
+	$('#botones').addClass('pull-right');
 
 }).apply( this, [ jQuery ]);
 
