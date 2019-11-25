@@ -38,6 +38,9 @@ urlpatterns = [
 
     # /stats/asistencia-mes/2019/6
     path('asistencia-mes/<int:year>/<int:month>', views.AsistenciaMes.as_view(), name='asistencia-mes'),
+
+    # /stats/asistencia_mes_datatables/
+    path('asistencia_mes_datatables/<int:year>/<int:month>', views.asistencia_datatables_ajax, name='asistencia_mes_datatables'),
 ]
 
 urlpatterns += (

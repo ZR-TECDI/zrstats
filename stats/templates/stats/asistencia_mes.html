@@ -5,6 +5,27 @@
 <!-- DATATABLES -->
 <link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
 <link rel="stylesheet" href="{% static 'stats/datatables/Buttons-1.5.6/css/buttons.bootstrap.css'%}"/>
+<style>
+.dt-button{
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #ebebeb;
+    border-color: #e3e3e3;
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+#datatable-tabletools_filter label {
+    float: left;
+}
+</style>
 {% endblock %}
 
 {% block head_title %}
@@ -105,11 +126,12 @@
 <script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
 <script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
 <script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.jqueryui.min.js'%}"></script>
 <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js'%}"></script>
 <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js'%}"></script>
 <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js'%}"></script>
 <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js'%}"></script>
 
 <script>
 (function( $ ) {
@@ -123,22 +145,31 @@
             ordering: false,
             scrollX: true,
             pageLength: 50,
-            dom: "<'#botones.row'<'col-sm-12'B>>" +"<'br'>"+ "<'row'<'col-sm-8'l><'col-sm-4'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            dom:   "<'row' <'col-sm-4'l> <'#botones'<'col-sm-4'B>> <'col-sm-4'<'#busqueda'f>> >" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
             buttons: [
-                'colvis', 'copy', 'excel', 'pdf',
-            ]
+                { extend: 'colvis', text: 'Mostrar/Ocultar Columnas'},
+                'copy', 'excel', 'pdf',
+            ],
+             ajax: {
+                url: '{% url 'stats:asistencia_mes_datatables' fecha_mes.year fecha_mes.month %}',
+                    dataSrc: function ( json ) {
+                    return json;
+                }
+            },
 		});
 
 	};
 
-
 	$(function() {
 		datatableInit();
+		$('#botones');
+		$('#busqueda').addClass('pull-right');
 	});
 
-	$('#botones').addClass('pull-right');
 
 }).apply( this, [ jQuery ]);
+
+
 
 </script>
 {% endblock %}

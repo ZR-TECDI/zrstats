@@ -4,6 +4,28 @@
 {% block head_extra %}
 <!-- DATATABLES -->
 <link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
+<link rel="stylesheet" href="{% static 'stats/datatables/Buttons-1.5.6/css/buttons.bootstrap.css'%}"/>
+<style>
+.dt-button{
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #ebebeb;
+    border-color: #e3e3e3;
+    border-radius: 10px;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+#datatable-default_filter label {
+    float: left;
+}
+</style>
 {% endblock %}
 
 {% block head_title %}
@@ -75,7 +97,7 @@
             </h2>
         </header>
         <div class="panel-body">
-            <table  class="table table-bordered table-striped mb-none" id="datatable-default" data-swf-path="{% static 'stats/octopus/assets/vendor/jquery-datatables/extras/TableTools/swf/copy_csv_xls_pdf.swf'%}">
+            <table  class="table table-bordered table-striped mb-none" id="datatable-default"  style="width:100%;">
                 <thead>
                     <tr>
                         <th style="width: 10px">ID</th>
@@ -126,34 +148,30 @@
 <!-- DATATABLES -->
 <script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
 <script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.jqueryui.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js'%}"></script>
+<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js'%}"></script>
 
 <script>
         $(document).ready( function () {
             var table = $('#datatable-default').DataTable({
                 "order": [[1, "asc"]],
-                oTableTools: {
-                    sSwfPath: $('#datatable-default').data('swf-path'),
-                    aButtons: [
-                        {
-                            sExtends: 'pdf',
-                            sButtonText: 'PDF'
-                        },
-                        {
-                            sExtends: 'csv',
-                            sButtonText: 'CSV'
-                        },
-                        {
-                            sExtends: 'xls',
-                            sButtonText: 'Excel'
-                        },
-                        {
-                            sExtends: 'print',
-                            sButtonText: 'Print',
-                            sInfo: 'Please press CTR+P to print or ESC to quit'
-                        }
-                    ]
-                },
+                ordering: false,
+                scrollX: true,
+                pageLength: 50,
+                dom:   "<'row' <'col-sm-4'l> <'#botones'<'col-sm-4'B>> <'col-sm-4'<'#busqueda'f>> >" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    { extend: 'colvis', text: 'Mostrar/Ocultar Columnas'},
+                    'copy', 'excel', 'pdf',
+                ],
             });
+
+            $('#botones');
+		    $('#busqueda').addClass('pull-right');
 
             $('ul.unidad').on( 'click', 'a', function () {
             table

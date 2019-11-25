@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from datetime import datetime
 from django.utils import timezone
 import calendar
+from django.core.paginator import Paginator
 
 
 def index_view(request):
@@ -172,6 +173,23 @@ class AsistenciaMes(ListView):
         context['fecha_mes'] = datetime(year, month, 1)
         return context
 
+
+def asistencia_datatables_ajax(request, year, month):
+    miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
+    misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
+                                         fecha_finalizada__month=month).order_by('fecha_finalizada', 'id')
+
+    lista_asistencia = []
+    for m in miembros:
+        asist_miem = services.asistencia_miembro(m, month, year)
+        lista_asistencia.append(asist_miem)
+
+    paginator = Paginator(lista_asistencia, request.GET.get('page_length', 25))  # Show 25 contacts per page
+
+    page = request.GET.get('page')  # Add option in ajax or somewhere
+    all_asistencia_list = paginator.get_page(page)  # Return objects list you can make json from this or list
+
+    return JsonResponse(all_asistencia_list, safe=False)
 
 # ======================================================================================================================
 #                      Funciones CRUD (Create, Read, Update and Delete) básicas de los Models
