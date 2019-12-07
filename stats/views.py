@@ -22,6 +22,7 @@ import random
 def index_view(request):
     context = {}
     context['fondo'] = random.randint(1, 11)
+    context['hide_title_bar'] = True
 
     return render(request, 'stats/index.html', context)
 
@@ -37,11 +38,8 @@ class TestPage(ListView):
         return context
 
 
-
-
 # Vista para redireccionar al user a su propio perfil
 class RedirectToProfile(RedirectView):
-
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             user_id = self.request.user.id
