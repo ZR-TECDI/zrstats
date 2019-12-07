@@ -26,6 +26,14 @@ class TestPage(ListView):
     template_name = 'stats/test_page.html'
     model = Miembro
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from django.core.management import call_command
+        #call_command('datos_iniciales')
+        return context
+
+
+
 
 # Vista para redireccionar al user a su propio perfil
 class RedirectToProfile(RedirectView):

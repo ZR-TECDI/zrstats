@@ -7,16 +7,18 @@ class Command(BaseCommand):
     help = 'Carga datos iniciales'
 
     def handle(self, *args, **options):
+        datos_iniciales.borra_todo()
         datos_iniciales.crear_unidades()
         datos_iniciales.crear_rango()
         datos_iniciales.crear_rol()
         datos_iniciales.crear_clase()
         datos_iniciales.crear_naciones()
-        datos_iniciales.agregar_miembros()
-        # Le pongo permisos al usuario admin
-        user = User.objects.get(username="Admin")
-        user.is_staff = True
-        user.is_superuser = True
-        user.save()
+        #datos_iniciales.agregar_miembros()
+        #datos_iniciales.procesa_xsl()
+        # # Le pongo permisos al usuario admin
+        #user = User.objects.get(username="Admin")
+        # user.is_staff = True
+        # user.is_superuser = True
+        # user.save()
         print("FINALIZADO DATOS INICIALES")
 
