@@ -14,7 +14,7 @@ class Command(BaseCommand):
         datos_iniciales.crear_clase()
         datos_iniciales.crear_naciones()
         #datos_iniciales.agregar_miembros()
-        #datos_iniciales.procesa_xsl()
+        datos_iniciales.procesa_xsl()
         # # Le pongo permisos al usuario admin
         #user = User.objects.get(username="Admin")
         # user.is_staff = True
