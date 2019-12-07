@@ -55,15 +55,6 @@
 				<!-- start: search & user box -->
 				<div class="header-right">
 
-					<form action="" class="search nav-form">
-						<div class="input-group input-search">
-							<input type="text" class="form-control" name="q" id="q" placeholder="Search...">
-							<span class="input-group-btn">
-								<button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-							</span>
-						</div>
-					</form>
-
 					<span class="separator"></span>
 
 					<ul class="notifications">
@@ -229,44 +220,63 @@
 
 					<span class="separator"></span>
 
+                    {% if user.is_authenticated %}
 					<div id="userbox" class="userbox">
-						<a href="#" data-toggle="dropdown">
-							<figure class="profile-picture">
-								<img src="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
-							</figure>
-							<div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
-								<span class="name">{{ user.miembro.rango }}.{{ user.miembro.nombre }}</span>
-								<span class="role">{{ user.username }}</span>
-							</div>
-
-							<i class="fa custom-caret"></i>
-						</a>
-
+                        <a href="#" data-toggle="dropdown">
+                            <figure class="profile-picture">
+                                {% if user.miembro.unidad.abreviatura == "ECHO" %}
+                                    <img src="{% static 'stats/img/ESPECTROS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% elif user.miembro.unidad.abreviatura == "ALTM" %}
+                                    <img src="{% static 'stats/img/ALTO_MANDO.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% elif user.miembro.unidad.abreviatura == "IMZR" %}
+                                    <img src="{% static 'stats/img/INFANTERIA.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% elif user.miembro.unidad.abreviatura == "PAR" %}
+                                    <img src="{% static 'stats/img/PARACAIDISTAS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% elif user.miembro.unidad.abreviatura == "CAB" %}
+                                    <img src="{% static 'stats/img/BLINDADOS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% elif user.miembro.unidad.abreviatura == "FAZR" %}
+                                    <img src="{% static 'stats/img/FAZR.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% else %}
+                                    <img src="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" alt="Joseph Doe" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                {% endif %}
+                            </figure>
+                            <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
+                                <span class="name">{{ user.miembro.rango }}.{{ user.miembro.nombre }}</span>
+                                <span class="role">{{ user.miembro.unidad.nombre }}</span>
+                            </div>
+                            <i class="fa custom-caret"></i>
+                        </a>
 						<div class="dropdown-menu">
 							<ul class="list-unstyled">
 								<li class="divider"></li>
-								<li>
-									<a role="menuitem" tabindex="-1" href="{% url 'stats:redirect_to_profile' %}"><i class="fa fa-user"></i> My Profile</a>
-								</li>
-                                {% if user.is_authenticated %}
-                                    <li>
-									    <a role="menuitem" tabindex="-1" href="{% url 'password_reset' %}"><i class="fa fa-lock"></i> Reiniciar contraseña</a>
-								    </li>
-                                    <li>
-									    <a role="menuitem" tabindex="-1" href="{% url 'password-change' %}"><i class="fa fa-lock"></i> Cambiar contraseña</a>
-								    </li>
-                                    <li>
-                                        <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a>
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a role="menuitem" tabindex="-1" href="{% url 'login' %}"><i class="fa fa-power-off"></i> Login</a>
-                                    </li>
-                                {% endif %}
-
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="{% url 'stats:redirect_to_profile' %}"><i class="fa fa-user"></i> Mi Perfil</a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="{% url 'password_reset' %}"><i class="fa fa-lock"></i> Reiniciar contraseña</a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="{% url 'password-change' %}"><i class="fa fa-lock"></i> Cambiar contraseña</a>
+                                </li>
+                                <li>
+                                    <a role="menuitem" tabindex="-1" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Logout</a>
+                                </li>
 							</ul>
 						</div>
 					</div>
+                    {% else %}
+                        <div id="userbox" class="userbox">
+                            <a href="{% url 'login' %}">
+                                <div class="profile-picture">
+                                    <span style="font-size: 2em"><i class="fa fa-power-off"></i></span>
+                                </div>
+
+                                 <div class="profile-info">
+                                      <span class="name">Acceder</span>
+                                 </div>
+                            </a>
+                        </div>
+                    {% endif %}
 				</div>
 				<!-- end: search & user box -->
                 {% endblock %}
