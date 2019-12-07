@@ -16,10 +16,14 @@ from datetime import datetime
 from django.utils import timezone
 import calendar
 from django.core.paginator import Paginator
+import random
 
 
 def index_view(request):
-    return render(request, 'stats/index.html', {})
+    context = {}
+    context['fondo'] = random.randint(1, 11)
+
+    return render(request, 'stats/index.html', context)
 
 
 class TestPage(ListView):

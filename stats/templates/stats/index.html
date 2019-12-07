@@ -1,12 +1,33 @@
 {% extends 'stats/base.html' %}
 {% load static %}
 
-
 {% block page_title %}INDEX{% endblock %}
+
+{% block head_extra %}
+    <style>
+    .body{
+        background: url('{% static 'stats/img/fondos' %}/bg ({{ fondo }}).png') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+    .panel-default .panel-heading{
+        background: #ddddddd6;
+    }
+    .panel-default .panel-body{
+        background: #fdfdfdd6;
+    }
+
+    </style>
+{% endblock %}
 
 
 {% block content %}
-    CONTENIDO
+
+
+
 {% endblock %}
 
 {% block extra_scripts %}
