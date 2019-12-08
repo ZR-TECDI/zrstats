@@ -4,6 +4,8 @@
 {% block page_title %}INDEX{% endblock %}
 
 {% block head_extra %}
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/owl-carousel/owl.carousel.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/owl-carousel/owl.theme.css' %}" />
     <style>
     .body{
         background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
@@ -44,36 +46,21 @@
             </header>
             <div class="panel-body">
                 Content. 1
-                <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
+                <br><br>
             </div>
         </section>
     </div>
@@ -86,37 +73,50 @@
                             <a href="#" class="fa fa-caret-down"></a>
                             <a href="#" class="fa fa-times"></a>
                         </div>
-                        <h2 class="panel-title">Carrousel</h2>
-                        <p class="panel-subtitle">Subtitle</p>
+                        <h2 class="panel-title">Autoplay</h2>
                     </header>
                     <div class="panel-body">
-                        Content. 2
-                        Carrousel con varias secciones ->
-                        * Mini calendario
-                        * Sección Noticias / Anuncios
-                        * Sección Campaña Actual
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                    </div>
-                </section>
-            </div>
+                        <div class="owl-carousel">
+                            <div style="width:250px">
+                                SECCION CALENDARIO
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                            </div>
+                            <div style="width:250px">
+                                SECCION NOTICIAS
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                            </div>
+                            <div style="width:250px">
+                                SECCION CAMPAÑA ACTUAl
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                                <br><br>
+                            </div>
+                        </div>
+                    </div> <!-- cierra panel body -->
+                </section> <!-- cierra panel -->
+            </div> <!-- cierra col -->
 
             <div class="col-md-3">
                 <section class="panel panel-default">
@@ -206,4 +206,16 @@
 {% endblock %}
 
 {% block extra_scripts %}
+<script src="{% static 'stats/octopus/assets/vendor/owl-carousel/owl.carousel.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        $(".owl-carousel").owlCarousel({
+            autoWidth:true,
+            items:1,
+            autoplay:true,
+            autoplayTimeout:100,
+            autoplayHoverPause:true
+        });
+    });
+</script>
 {% endblock %}
