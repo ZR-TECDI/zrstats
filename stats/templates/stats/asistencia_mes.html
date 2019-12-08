@@ -150,12 +150,6 @@
                 { extend: 'colvis', text: 'Mostrar/Ocultar Columnas'},
                 'copy', 'excel', 'pdf',
             ],
-             ajax: {
-                url: '{% url 'stats:asistencia_mes_datatables' fecha_mes.year fecha_mes.month %}',
-                    dataSrc: function ( json ) {
-                    return json;
-                }
-            },
 		});
 
 	};

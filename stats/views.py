@@ -16,20 +16,31 @@ from datetime import datetime
 from django.utils import timezone
 import calendar
 from django.core.paginator import Paginator
+import random
 
 
 def index_view(request):
-    return render(request, 'stats/index.html', {})
+    context = {}
+    context['fondo'] = random.randint(1, 11)
+    context['hide_title_bar'] = True
+    context['hide_left_bar'] = True
+
+    return render(request, 'stats/index.html', context)
 
 
 class TestPage(ListView):
     template_name = 'stats/test_page.html'
     model = Miembro
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from django.core.management import call_command
+        #call_command('datos_iniciales')
+        return context
+
 
 # Vista para redireccionar al user a su propio perfil
 class RedirectToProfile(RedirectView):
-
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             user_id = self.request.user.id

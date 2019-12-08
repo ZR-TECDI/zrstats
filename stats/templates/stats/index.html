@@ -1,35 +1,208 @@
 {% extends 'stats/base.html' %}
 {% load static %}
 
-
-{% block page_title %}{% endblock %}
+{% block page_title %}INDEX{% endblock %}
 
 {% block head_extra %}
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap/css/bootstrap.css' %}" />
+    <style>
+    .body{
+        background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
+    .panel-default .panel-heading{
+        background: #ddddddd6;
+    }
+    .panel-default .panel-body{
+        background: #fdfdfdd6;
+    }
 
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}" />
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}" />
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}" />
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme.css' %}" />
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/skins/default.css' %}" />
-<link rel="stylesheet" href="{% static 'stats/octupus/assets/stylesheets/zrstylesheet.css%'}"/>
+    .header{
+        width: 65%;
+        margin-left: 15%;
+    }
 
-<!-- Theme Custom CSS -->
-<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme-custom.css' %}">
-
-<!-- Flag Icon CSS -->
-<link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
-
+    </style>
 {% endblock %}
 
 
-
-
-
-
 {% block content %}
-    asd
+
+<div class="row">
+    <div class="col-md-3">
+        <section class="panel panel-default">
+            <header class="panel-heading">
+                <div class="panel-actions">
+                    <a href="#" class="fa fa-caret-down"></a>
+                    <a href="#" class="fa fa-times"></a>
+                </div>
+                <h2 class="panel-title">{{ user.miembro.rango.rango }} {{ user.miembro.nombre }}</h2>
+                <p class="panel-subtitle">{{ user.miembro.unidad }}</p>
+            </header>
+            <div class="panel-body">
+                Content. 1
+                <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+            </div>
+        </section>
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-9">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">Carrousel</h2>
+                        <p class="panel-subtitle">Subtitle</p>
+                    </header>
+                    <div class="panel-body">
+                        Content. 2
+                        Carrousel con varias secciones ->
+                        * Mini calendario
+                        * Sección Noticias / Anuncios
+                        * Sección Campaña Actual
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-md-3">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">Perfil Destacado</h2>
+                        <p class="panel-subtitle">Miembro destacado</p>
+                    </header>
+                    <div class="panel-body">
+                        Content. 3
+                        Acá el perfil de un miembro elegido al azar de un pool a decidir.
+                        (Quizá los que vienen con buena asitencia, recién ascendidos, etc)
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">Carrousel (?) MI UNIDAD</h2>
+                        <p class="panel-subtitle">Subtitle</p>
+                    </header>
+                    <div class="panel-body">
+                        Content. 4
+                        Mostrar stats de mi unidad, Organigrama, miembros, etc
+                        Podría estar dividido en varias paginas de carrousel
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            <a href="#" class="fa fa-caret-down"></a>
+                            <a href="#" class="fa fa-times"></a>
+                        </div>
+                        <h2 class="panel-title">A definir</h2>
+                        <p class="panel-subtitle">Subtitle</p>
+                    </header>
+                    <div class="panel-body">
+                        Content. 5
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 {% endblock %}
 
 {% block extra_scripts %}
