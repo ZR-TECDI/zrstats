@@ -23,6 +23,7 @@ def index_view(request):
     context = {}
     context['fondo'] = random.randint(1, 11)
     context['hide_title_bar'] = True
+    context['hide_left_bar'] = True
 
     return render(request, 'stats/index.html', context)
 
