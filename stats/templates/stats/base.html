@@ -6,7 +6,7 @@
 
 		<!-- Basic -->
 		<meta charset="UTF-8">
-        <title>{% block head_title %}TITULO{% endblock %}</title>
+        <title>{% block head_title %}Zona Roja Stats{% endblock %}</title>
 		<meta name="keywords" content="ZR Stats" />
 		<meta name="description" content="Backend de Estadísticas ZR Army">
 		<meta name="author" content="Strix">
@@ -27,12 +27,14 @@
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/skins/default.css' %}" />
 
 		<!-- Theme Custom CSS -->
-		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme-custom.css' %}">
+		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme-custom.css' %}"/>
+		<link rel="stylesheet"  href="{% static 'stats/octupus/assets/stylesheets/zrstylesheet.css' %}"/>
 
         <!-- Flag Icon CSS -->
-        <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
+        <link rel="stylesheet"  href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
 
-        {% block head_extra %}
+		{% block head_extra %}
+		
         {% endblock %}
 
 
@@ -368,7 +370,7 @@
 
 				<section role="main" class="content-body">
 					<header class="page-header">
-						<h2>{% block titulo_pagina %}TITULO{% endblock %}</h2>
+						<h2 class="zrPageHeaders">{% block titulo_pagina %}HOME{% endblock %}</h2>
 
                         <div class="right-wrapper pull-right">
                         {% block breadcrumbs %}
