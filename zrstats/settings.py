@@ -13,11 +13,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 #Secretos e.e
-DB_USER= os.environ['DB_USER']
-DB_NAME= os.environ['DB_NAME']
-DB_PASS= os.environ['DB_PASS']
-DB_HOST= os.environ['DB_HOST']
-DJANGO_SECRET= os.environ['DJANGO_SECRET']
+DB_USER = 'root'
+DB_NAME = 'zrstats'
+DB_PASS = ''
+DB_HOST = 'localhost'
+DJANGO_SECRET = '&)w-qt_gy!-$appa^s5s3^2ls9w2+*!7!&@jtt6sz_m2#r@p57'
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
