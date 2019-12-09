@@ -28,9 +28,8 @@
         margin: 0 auto;
     }
     .panel {
-        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
-        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
-        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
     }
 
     .panel-default .panel-heading{
@@ -72,8 +71,10 @@
          height: 32px;
          margin-right: 10px;
      }
-
     </style>
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/core/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/daygrid/main.css' %}" />
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/bootstrap/main.css' %}" />
 {% endblock %}
 
 
@@ -87,8 +88,13 @@
                     <a href="#" class="fa fa-caret-down"></a>
                     <a href="#" class="fa fa-times"></a>
                 </div>
+                {% if user.is_authenticated %}
                 <h2 class="panel-title">{{ user.miembro.rango.rango }} {{ user.miembro.nombre }}</h2>
                 <p class="panel-subtitle-image"><img class="imagenUnidad" src= "{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">{{ user.miembro.unidad }}</p>
+                {% else %}
+                <h2 class="panel-title">Regístrate</h2>
+                <p class="panel-subtitle-image">¡Forma parte de Zona Roja Army!</p>
+                {% endif %}
             </header>
             <div class="panel-body" style="padding: 0;">
                     <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%" height="100%">
@@ -105,7 +111,7 @@
                             <a href="#" class="fa fa-caret-down"></a>
                             <a href="#" class="fa fa-times"></a>
                         </div>
-                        <h2 class="panel-title">Actividades</h2>
+                        <h2 class="panel-title">ACTIVIDADES</h2>
                         <p class="panel-subtitle"><br></p>
                     </header>
                     <div class="panel-body" style="padding: 0">
