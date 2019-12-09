@@ -24,12 +24,19 @@
         background-size: cover;
     }
 
+    .panel {
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
+        box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.47);
+    }
+
     .panel-default .panel-heading{
         background: #fc5c5c85;
         border-bottom: 0;
     }
     .panel-default .panel-body{
         background: #0000007e;
+        color: ghostwhite;
     }
     .panel-default .panel-subtitle{
         color:#1d2127;
@@ -84,7 +91,7 @@
                 <h2 class="panel-title">{{ user.miembro.rango.rango }} {{ user.miembro.nombre }}</h2>
                 <p class="panel-subtitle-image"><img class="imagenUnidad" src= "{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">{{ user.miembro.unidad }}</p>
             </header>
-            <div class="panel-body">
+            <div class="panel-body" style="padding: 0; min-height: 52em">
                     <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%" height="100%">
                 <br>
             </div>
@@ -92,29 +99,27 @@
     </div>
     <div class="col-md-8">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <section class="panel panel-default">
                     <header class="panel-heading">
                         <div class="panel-actions">
                             <a href="#" class="fa fa-caret-down"></a>
                             <a href="#" class="fa fa-times"></a>
                         </div>
-                        <h2 class="panel-title">Noticias</h2>
-                        <p class="panel-subtitle">Meter subtitulo dependiendo el carousel ? </p>
+                        <h2 class="panel-title">Actividades</h2>
+                        <p class="panel-subtitle"><br></p>
                     </header>
-                    <div class="panel-body">
-                        <br>
+                    <div class="panel-body" style="padding: 0">
                         <div id="myCarousel" class="carousel slide" data-ride="carousel">
                           <!-- Indicators -->
                           <ol class="carousel-indicators">
                             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
                             <li data-target="#myCarousel" data-slide-to="1"></li>
                             <li data-target="#myCarousel" data-slide-to="2"></li>
-                            <li data-target="#myCarousel" data-slide-to="3"></li>
                           </ol>
 
                           <!-- Wrapper for slides -->
-                          <div class="carousel-inner" role="listbox">
+                          <div class="carousel-inner" role="listbox" style="min-height: 37em">
 
                             <div class="item active">
                               <img src="{% static 'stats/img/PAR.png' %}" alt="item1" width="460" height="345">
@@ -133,13 +138,6 @@
                               <div class="carousel-caption">
                               </div>
                             </div>
-
-                            <div class="item">
-                              <img src="{% static 'stats/img/CAB.png' %}" alt="item4" width="460" height="345">
-                              <div class="carousel-caption">
-                              </div>
-                            </div>
-
                           </div>
 
                           <!-- Left and right controls -->
@@ -156,7 +154,7 @@
                 </section>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <section class="panel panel-default">
                     <header class="panel-heading">
                         <div class="panel-actions">
@@ -166,7 +164,7 @@
                         <h2 class="panel-title">Perfil Destacado</h2>
                         <p class="panel-subtitle">Miembro destacado</p>
                     </header>
-                    <div class="panel-body">
+                    <div class="panel-body" style="min-height: 37em">
                         Content. 3
                         Acá el perfil de un miembro elegido al azar de un pool a decidir.
                         (Quizá los que vienen con buena asitencia, recién ascendidos, etc)
