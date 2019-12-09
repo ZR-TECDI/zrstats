@@ -39,7 +39,15 @@
 	</head>
 	<body>
 		<section class="body">
-			<nav class="navbar navbar-default">
+
+        {% if navbartop_sin_header %}
+            <!-- Esta se usa solo en home donde la barra superior es flotante -->
+            <nav class="navbar navbar-default">
+        {% else %}
+            <!-- Esta se usa dentro del sitio para que la navbar se mantenga pegada al resto del frame-->
+            <nav class="navbar navbar-default header">
+        {% endif %}
+
               <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -152,7 +160,12 @@
               </div><!-- /.container-fluid -->
             </nav>
 
-			<div class="inner-wrapper" style="margin-top: 0; padding-top: 0">
+        {% if margin_cero_inner_wrapper %}
+            <div class="inner-wrapper" style="padding-top: 0">
+        {% else %}
+            <div class="inner-wrapper">
+        {% endif %}
+
                 {% if hide_left_bar %}
                 {% else %}
 				<!-- start: sidebar -->
