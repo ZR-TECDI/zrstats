@@ -27,7 +27,6 @@
 
 		<!-- Theme Custom CSS -->
 		<link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme-custom.css' %}"/>
-		<link rel="stylesheet"  href="{% static 'stats/octupus/assets/stylesheets/zrstylesheet.css' %}"/>
 
         <!-- Flag Icon CSS -->
         <link rel="stylesheet"  href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}" />
@@ -267,15 +266,15 @@
                         <a href="#" data-toggle="dropdown">
                             <figure class="profile-picture">
                                 {% if user.miembro.unidad.abreviatura == "ECHO" %}
-                                    <img src="{% static 'stats/img/ESPECTROS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                    <img src="{% static 'stats/img/ECHO.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% elif user.miembro.unidad.abreviatura == "ALTM" %}
-                                    <img src="{% static 'stats/img/ALTO_MANDO.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                    <img src="{% static 'stats/img/ALTM.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% elif user.miembro.unidad.abreviatura == "IMZR" %}
-                                    <img src="{% static 'stats/img/INFANTERIA.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                    <img src="{% static 'stats/img/IMZR.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% elif user.miembro.unidad.abreviatura == "PAR" %}
-                                    <img src="{% static 'stats/img/PARACAIDISTAS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                    <img src="{% static 'stats/img/PAR.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% elif user.miembro.unidad.abreviatura == "CAB" %}
-                                    <img src="{% static 'stats/img/BLINDADOS.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
+                                    <img src="{% static 'stats/img/CAB.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% elif user.miembro.unidad.abreviatura == "FAZR" %}
                                     <img src="{% static 'stats/img/FAZR.png' %}" class="img-circle" data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}" />
                                 {% else %}
