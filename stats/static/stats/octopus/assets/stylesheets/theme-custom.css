@@ -20,7 +20,7 @@ body {
 }
 
 a {
-	color: #cccccc;
+	color: rgb(33, 36, 241);
 }
 
 a:hover, a:focus {
@@ -39,12 +39,12 @@ a:active {
 
 /* Layout Base - Header */
 .header {
-    background-color: #1d2127;
 	height: 60px;
 	left: 0;
 	position: absolute;
 	right: 0;
 	top: 0;
+	
 }
 
 /* Layout Base - Inner Wrapper */
@@ -78,6 +78,7 @@ a:active {
 	height: 50px;
 	margin: -40px -40px 40px -40px;
 	padding: 0;
+	font-family: Orbitron;
 }
 
 /* Layout Base - Sidebar Left */
@@ -238,7 +239,7 @@ a:active {
 /* Layout Boxed - small than min-width */
 @media only screen and (max-width: 1199px) {
 	html.boxed .header {
-		border-color: #1d2127;
+		border-color: #cccccc;
 	}
 }
 /* Layout Boxed - larger or equal min width */
@@ -258,7 +259,7 @@ a:active {
 
 	/* Layout Boxed - Header */
 	html.boxed .header {
-		border-top: 3px solid #1d2127;
+		border-top: 3px solid #cccccc;
 		height: 63px;
 		position: absolute;
 		top: 25px;
@@ -347,8 +348,7 @@ a:active {
 	}
 
 	.header {
-        background-color: #121234;
-        color: #121234;
+		background: none;
 		border: none;
 		height: auto;
 		position: static;
@@ -364,7 +364,7 @@ a:active {
 	}
 
 	.header .header-right {
-		background: #FFF;
+		background: #cccccc;
 		float: none !important;
 		height: 60px;
 		margin-top: 60px;
@@ -1405,11 +1405,11 @@ html.fixed .visible-xl-inline-block {
 
 /* Header */
 .header {
-	background-color: #1d2127;
-	background-image: -webkit-linear-gradient(#1d2127 0%, #1d2127 45%);
-	background-image: linear-gradient(#1d2127 0%, #1d2127 45%);
-	border-bottom: 1px solid #1d2127;
-	border-top: 3px solid #1d2127;
+	background-color: #f6f6f6;
+	background-image: -webkit-linear-gradient(#f6f6f6 0%, white 45%);
+	background-image: linear-gradient(#f6f6f6 0%, white 45%);
+	border-bottom: 1px solid #E9E9E6;
+	border-top: 3px solid #EDEDED;
 	z-index: 1000;
 }
 
@@ -1423,9 +1423,9 @@ html.fixed .visible-xl-inline-block {
 }
 
 .header .separator {
-	background-color: #1d2127;
-	background-image: -webkit-linear-gradient(#1d2127 60%, #1d2127);
-	background-image: linear-gradient(#1d2127 60%, #1d2127);
+	background-color: #f6f6f6;
+	background-image: -webkit-linear-gradient(#f6f6f6 60%, #ededed);
+	background-image: linear-gradient(#f6f6f6 60%, #ededed);
 	display: inline-block;
 	height: 100%;
 	margin: 0 25px 0;
@@ -1440,7 +1440,7 @@ html.fixed .visible-xl-inline-block {
 }
 
 .header .toggle-sidebar-left {
-	background: #1d2127;;
+	background: #cccccc;
 	border-radius: 100px;
 	color: white;
 	height: 30px;
