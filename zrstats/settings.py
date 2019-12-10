@@ -143,7 +143,7 @@ STATIC_ROOT = '/root/public/static'
 MEDIA_URL = '/upload/'
 MEDIA_ROOT = '/root/public/media'
 
-LOGIN_REDIRECT_URL = 'stats:redirect_to_profile'
+LOGIN_REDIRECT_URL = 'stats:index'
 LOGOUT_REDIRECT_URL = 'stats:index'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
