@@ -4,15 +4,61 @@
 
 {% block head_title %}Perfil de {{ object.nombre }}{% endblock %}
 
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
+    <style>
+        .body {
+            background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .panel {
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .panel-default .panel-heading {
+            background: whitesmoke;
+            border-bottom: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .panel-default .panel-body {
+            background: #0000007e;
+            color: ghostwhite;
+        }
+
+        .panel-default .panel-subtitle {
+            color: #1d2127;
+            font-size: 100%;
+            font-weight: 700;
+        }
+
+        .panel-default .panel-title {
+            color: #1d2127;
+            font-family: Orbitron, sans-serif;
+            letter-spacing: 1px;
+            font-size: 150%;
+            font-weight: 100;
+
+        }
+
+    </style>
+{% endblock %}
+
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>Perfil de {{ object.nombre }}</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>Perfil de {{ object.nombre }}</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
@@ -23,13 +69,15 @@
     <div class="row">
         <div class="col-md-4 col-lg-3">
 
-            <section class="panel">
+            <section class="panel panel-default">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
-                        {% if object.avatar  %}
-                            <img src="{{ object.avatar.url }}" class="rounded img-responsive" alt="{{ object.objectname }} ">
+                        {% if object.avatar %}
+                            <img src="{{ object.avatar.url }}" class="rounded img-responsive"
+                                 alt="{{ object.objectname }} ">
                         {% else %}
-                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%" class="rounded img-responsive" alt="{{ object.objectname }}  ">
+                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%"
+                                 class="rounded img-responsive" alt="{{ object.objectname }}  ">
                         {% endif %}
                         <div class="thumb-info-title">
                             <span class="thumb-info-inner">{{ object }}</span>
@@ -42,22 +90,22 @@
                         <ul class="simple-bullet-list mb-md">
                             {% if object.estado == "Activo" %}
                                 <li class="green">
-                                    <span class="title">Activo</span>
+                                    <span>Activo</span>
                                     <span class="description truncate">Asiste regularmente</span>
                                 </li>
                             {% elif object.estado == "Reserva" %}
                                 <li class="red">
-                                    <span class="title">Reserva</span>
+                                    <span>Reserva</span>
                                     <span class="description truncate">No asiste indefinidamente</span>
                                 </li>
                             {% elif object.estado == "Licencia" %}
                                 <li class="red">
-                                    <span class="title">Licencia</span>
+                                    <span>Licencia</span>
                                     <span class="description truncate">No asiste temporalmente</span>
                                 </li>
                             {% elif object.estado == "No Miembro" %}
                                 <li class="red">
-                                    <span class="title">No Miembro</span>
+                                    <span>No Miembro</span>
                                     <span class="description truncate">Miembro dado de baja</span>
                                 </li>
                             {% endif %}
@@ -68,7 +116,8 @@
                         </div>
                         <div>
                             <div class="progress progress-indicator light">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 60%;">
                                     60%
                                 </div>
                             </div>
@@ -78,19 +127,20 @@
                         </div>
                         <div>
                             <div class="progress progress-indicator light">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 60%;">
                                     60%
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensedhover">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-sitemap"></i> Rango</td>
                                     <td><strong>{{ object.rango.rango }}</strong></td>
                                 </tr>
                             </table>
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensed">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"> Unidad</td>
                                     <td><strong>{{ object.unidad.nombre }}</strong></td>
@@ -108,7 +158,7 @@
                                     <td><strong>{{ object.escuadra }}</strong></td>
                                 </tr>
                             </table>
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensed">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 1</td>
                                     <td><strong>{{ object.clase1 }}</strong></td>
@@ -122,11 +172,14 @@
                             <table class="table table-condensed">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-globe"></i> País</td>
-                                    <td><strong>{{ object.nacionalidad.pais }} <span class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong></td>
+                                    <td><strong>{{ object.nacionalidad.pais }} <span
+                                            class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región</td>
-                                    <td><strong>{{ object.region |default_if_none:''}}</strong></td>
+                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región
+                                    </td>
+                                    <td><strong>{{ object.region |default_if_none:'' }}</strong></td>
                                 </tr>
 
                             </table>
@@ -138,113 +191,143 @@
                     <hr class="dotted short">
                     <div class="social-icons-list">
                         {% if object.redes_facebook %}
-                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com/{{ object.redes_facebook }}" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                            <a rel="tooltip" data-placement="bottom" target="_blank"
+                               href="http://www.facebook.com/{{ object.redes_facebook }}"
+                               data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
                         {% endif %}
                         {% if object.redes_twitch %}
-                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com/{{ object.redes_twitch }}" data-original-title="Twitch"><i class="fa fa-twitch"></i><span>Twitch</span></a>
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.twitter.com/{{ object.redes_twitch }}" data-original-title="Twitch"><i
+                                    class="fa fa-twitch"></i><span>Twitch</span></a>
                         {% endif %}
                         {% if object.redes_instagram %}
-                        <a rel="tooltip" data-placement="bottom" href="http://www.instagram.com/{{ object.redes_instagram }}" data-original-title="Instagram"><i class="fa fa-instagram"></i><span>Instagram</span></a>
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.instagram.com/{{ object.redes_instagram }}"
+                               data-original-title="Instagram"><i class="fa fa-instagram"></i><span>Instagram</span></a>
                         {% endif %}
                         {% if object.redes_youtube %}
-                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_youtube }}" data-original-title="Youtube"><i class="fa fa-youtube"></i><span>YouTube</span></a>
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_youtube }}" data-original-title="Youtube"><i
+                                    class="fa fa-youtube"></i><span>YouTube</span></a>
                         {% endif %}
                         {% if object.redes_steam %}
-                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_steam }}" data-original-title="Steam"><i class="fa fa-steam"></i><span>Steam</span></a>
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_steam }}" data-original-title="Steam"><i
+                                    class="fa fa-steam"></i><span>Steam</span></a>
                         {% endif %}
                         {% if object.redes_whatsapp %}
-                        <a rel="tooltip" data-placement="bottom" href="http://www.youtube.com/{{ object.redes_whatsapp }}" data-original-title="WhatsApp"><i class="fa fa-whatsapp"></i><span>WhatsApp</span></a>
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_whatsapp }}" data-original-title="WhatsApp"><i
+                                    class="fa fa-whatsapp"></i><span>WhatsApp</span></a>
                         {% endif %}
                     </div>
                 </div>
             </section>
 
 
-
-
         </div>
         <div class="col-md-8 col-lg-6">
 
-            <div class="tabs">
-                <ul class="nav nav-tabs tabs-primary">
-                    <li class="active">
-                        <a href="#overview" data-toggle="tab">Overview</a>
-                    </li>
-                    <li>
-                        <a href="#edit" data-toggle="tab">Edit</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="overview" class="tab-pane active">
-                        <h4 class="mb-xlg">Linea de Tiempo</h4>
+
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Línea de Tiempo</h2>
+                </header>
+                <div class="panel-body" style="padding: 0">
+                    <div class="panel-body">
                         <div class="timeline timeline-simple mt-xlg mb-md">
                             <div class="tm-body">
-                                <div class="tm-title">
+                                <div class="tm-title" style="background: black">
                                     <h3 class="h5 text-uppercase">{% now "F Y" %}</h3>
                                 </div>
                                 <ol class="tm-items">
                                     {% for asistencia in asistencia_mensual %}
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a> el día 02/11/19</p>
-                                            {% if asistencia.mision.campana %}
-                                            <p>
-                                                Campaña <a href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
-                                            </p>
-                                            {% else %}
-                                            {% endif %}
-                                        </div>
-                                    </li>
+                                        <li>
+                                            <div class="tm-box" style="background: #3C3A3A">
+                                                <p class="text-muted mb-none">Asistencia a <a
+                                                        href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
+                                                    el día {{ asistencia.fecha }}</p>
+                                                {% if asistencia.mision.campana %}
+                                                    <p>
+                                                        Campaña <a
+                                                            href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
+                                                    </p>
+                                                {% else %}
+                                                {% endif %}
+                                            </div>
+                                        </li>
                                     {% endfor %}
                                 </ol>
                             </div>
                         </div>
                     </div>
-                    <div id="edit" class="tab-pane">
-                    </div>
                 </div>
-            </div>
+            </section>
+
+
         </div>
 
         <div class="col-md-12 col-lg-3">
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Estadísticas</h2>
+                </header>
+                <div class="panel-body" style="padding: 0">
+                    <div class="panel-body">
+                        <ul class="simple-card-list mb-xlg">
+                            <li class="primary">
+                                <h3>{{ object.get_todas_las_asistencias.count }}</h3>
+                                <p>Asistencias totales</p>
+                            </li>
+                            <li class="primary">
+                                <h3>{{ object.get_todas_las_faltas.count }}</h3>
+                                <p>Faltas totales</p>
+                            </li>
+                            <li class="primary">
+                                <h3>{{ object.horas_de_servicio }}</h3>
+                                <p>Horas de Servicio</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-            <h4 class="mb-md">Estadísticas</h4>
-            <ul class="simple-card-list mb-xlg">
-                <li class="primary">
-                    <h3>{{ object.get_todas_las_asistencias.count }}</h3>
-                    <p>Asistencias totales</p>
-                </li>
-                <li class="primary">
-                    <h3>{{ object.get_todas_las_faltas.count }}</h3>
-                    <p>Faltas totales</p>
-                </li>
-                <li class="primary">
-                    <h3>{{ object.horas_de_servicio }}</h3>
-                    <p>Horas de Servicio</p>
-                </li>
-            </ul>
-
-            <h4 class="mb-md">Condecoraciones</h4>
-            <ul class="simple-bullet-list mb-xlg">
-                <li class="red">
-                    <span class="title">Cinta del Mérito Académico</span>
-                    <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
-                </li>
-                <li class="green">
-                    <span class="title">Cinta Acto Distinguido 1era. Clase</span>
-                    <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
-                </li>
-                <li class="blue">
-                    <span class="title">Barra Mérito en Conducta 3era. Clase</span>
-                    <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
-                </li>
-                <li class="orange">
-                    <span class="title">Cinta Campaña</span>
-                    <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
-                </li>
-            </ul>
-
-
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Condecoraciones</h2>
+                </header>
+                <div class="panel-body" style="padding: 0">
+                    <div class="panel-body">
+                        <ul class="simple-bullet-list mb-xlg">
+                            <li class="red">
+                                <span>Cinta del Mérito Académico</span>
+                                <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
+                            </li>
+                            <li class="green">
+                                <span>Cinta Acto Distinguido 1era. Clase</span>
+                                <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
+                            </li>
+                            <li class="blue">
+                                <span>Barra Mérito en Conducta 3era. Clase</span>
+                                <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
+                            </li>
+                            <li class="orange">
+                                <span>Cinta Campaña</span>
+                                <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 {% endblock %}

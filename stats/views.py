@@ -62,6 +62,7 @@ class MyProfileView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(id=self.kwargs['pk'])
         miembro = user.miembro
+        context['hide_left_bar'] = True
         return context
 
 
@@ -73,7 +74,9 @@ class PublicProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         miembro = Miembro.objects.get(id=self.kwargs['pk'])
         hoy = timezone.now()
-        context['asistencia_mensual'] = miembro.get_asistencia_del_mes(hoy.month, hoy.year)
+        context['asistencia_mensual'] = miembro.get_asistencia_del_mes(7, 2019)
+        context['hide_left_bar'] = True
+        context['fondo'] = random.randint(1, 11)
         return context
 
 
