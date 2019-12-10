@@ -26,7 +26,7 @@ def index_view(request):
     context['hide_left_bar'] = True
     context['navbartop_sin_header'] = True
     context['margin_cero_inner_wrapper'] = True
-
+    context['mision_list'] = services.genera_calendario()
 
     return render(request, 'stats/index.html', context)
 
@@ -140,28 +140,7 @@ class CalendarView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        misiones = Mision.objects.all()
-
-        mision_list = []
-        for mision in misiones:
-            m = {}
-            m['title'] = mision.nombre
-            m['start'] = mision.fecha_finalizada
-            m['end'] = mision.fecha_finalizada
-            m['allDay'] = True
-            m['url'] = mision.get_absolute_url()
-            if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or \
-                    mision.tipo == Mision.TIPO_GALA:
-                m['className'] = "fc-event-danger"
-            if mision.tipo == Mision.TIPO_IMPROVISADA:
-                m['className'] = "fc-event-success"
-            if mision.tipo == Mision.TIPO_CURSO:
-                m['className'] = "fc-event-info"
-            if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
-                m['className'] = "fc-event-warning"
-            mision_list.append(m)
-
-        context['mision_list'] = mision_list
+        context['mision_list'] = services.genera_calendario()
         return context
 
 

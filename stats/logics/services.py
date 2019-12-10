@@ -18,3 +18,27 @@ def asistencia_miembro(miembro, month, year):
     result['asistencia'] = asistencia
     return result
 
+
+def genera_calendario():
+    misiones = Mision.objects.all()
+
+    mision_list = []
+    for mision in misiones:
+        m = {}
+        m['title'] = mision.nombre
+        m['start'] = mision.fecha_finalizada
+        m['end'] = mision.fecha_finalizada
+        m['allDay'] = True
+        m['url'] = mision.get_absolute_url()
+        if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or \
+                mision.tipo == Mision.TIPO_GALA:
+            m['className'] = "fc-event-danger"
+        if mision.tipo == Mision.TIPO_IMPROVISADA:
+            m['className'] = "fc-event-success"
+        if mision.tipo == Mision.TIPO_CURSO:
+            m['className'] = "fc-event-info"
+        if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
+            m['className'] = "fc-event-warning"
+        mision_list.append(m)
+    return mision_list
+
