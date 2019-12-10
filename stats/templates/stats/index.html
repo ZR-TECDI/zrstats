@@ -91,6 +91,11 @@
             background: red;
         }
 
+        .carousel-control.left, .carousel-control.right {
+            background-image: none !important;
+            filter: none !important;
+        }
+
         .panel-default .panel-subtitle-image {
             color: #1d2127;
             font-size: 150%;
@@ -117,17 +122,20 @@
             <section class="panel panel-default">
                 <header class="panel-heading">
                     <div class="panel-actions">
+                        <img class="imagenUnidad"
+                             src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">
                         <a href="#" class="fa fa-caret-down"></a>
-                        <a href="#" class="fa fa-times"></a>
                     </div>
                     {% if user.is_authenticated %}
-                        <h2 class="panel-title">{{ user.miembro.rango.rango }} {{ user.miembro.nombre }}</h2>
-                        <p class="panel-subtitle-image"><img class="imagenUnidad" src="
-                                {% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">{{ user.miembro.unidad }}
+                        <h2 class="panel-title">
+                            {{ user.miembro.rango.abreviatura }}. {{ user.miembro.nombre }}
+                        </h2>
+                        <p class="panel-subtitle">
+                            {{ user.miembro.unidad }}
                         </p>
                     {% else %}
                         <h2 class="panel-title">Regístrate</h2>
-                        <p class="panel-subtitle-image">¡Forma parte de Zona Roja Army!</p>
+                        <p class="panel-subtitle">¡Forma parte de Zona Roja Army!</p>
                     {% endif %}
                 </header>
                 <div class="panel-body" style="padding: 0;">
@@ -141,14 +149,6 @@
             <div class="row">
                 <div class="col-md-8">
                     <section class="panel panel-default">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
-                            </div>
-                            <h2 class="panel-title">ACTIVIDADES</h2>
-                            <p class="panel-subtitle"><br></p>
-                        </header>
                         <div class="panel-body" style="padding: 0">
                             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                 <!-- Indicators -->
@@ -161,36 +161,147 @@
                                 <!-- Wrapper for slides -->
                                 <div class="carousel-inner" role="listbox" style="min-height: 37em">
 
+
+                                    <!-- CALENDARIO -->
                                     <div class="item active">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-caret-down"></a>
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Calendario</h2>
+                                            <p class="panel-subtitle">Navega el calendario para ver las últimas y
+                                                próximas actividades</p>
+                                        </header>
                                         <div class="panel-body">
                                             <div id="calendar" style="width: 90%;" class="center-block"></div>
-                                        </div>
-                                        <p class="center-block" style="width:90%;padding: 5px;justify-content: space-between;display: flex">
+                                            <p class="center-block"
+                                               style="width:90%;padding: 5px;justify-content: space-between;display: flex">
                                             <span>
                                                 <span class="text-danger"><i class="fa fa-square"></i></span>
                                                 <span>Misión Oficial (Martes y Jueves)</span>
                                             </span>
-                                            <span>
+                                                <span>
                                                 <span class="text-primary"><i class="fa fa-square"></i></span>
                                                 <span>Curso</span>
                                             </span>
-                                            <span>
+                                                <span>
                                                 <span class="text-success"><i class="fa fa-square"></i></span>
                                                 <span>Improvisada</span>
                                             </span>
-                                            <span>
+                                                <span>
                                                 <span class="text-warning"><i class="fa fa-square"></i></span>
                                                 <span>Otros</span>
                                             </span>
-                                        </p>
+                                            </p>
+                                        </div>
                                     </div>
 
+                                    <!-- NOTICIAS -->
                                     <div class="item">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-caret-down"></a>
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Noticias</h2>
+                                            <p class="panel-subtitle">Entérate de las últimas novedades del clan.</p>
+                                        </header>
+                                        <div class="panel-body" style="min-height: 515px">
+                                            <div style="width: 90%;" class="center-block">
+                                                <p class="center-block"
+                                                   style="width:90%;padding: 5px;justify-content: space-between;display: flex">
+                                                <span>
+                                                    <span class="text-danger"><i class="fa fa-square"></i></span>
+                                                    <span>Anuncios Oficiales</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-primary"><i class="fa fa-square"></i></span>
+                                                    <span>Noticias</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-success"><i class="fa fa-square"></i></span>
+                                                    <span>Reportajes</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-warning"><i class="fa fa-square"></i></span>
+                                                    <span>Otros</span>
+                                                </span>
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table mb-none">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Noticias</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>Lista de Mods actualizada! (Versión 6)</td>
+                                                            <td><span class="label label-danger">Anuncio</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Entrevista al Sgto. 1° Arcanoy</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Encuesta: ¿Cuál es tu camuflaje preferido?</td>
+                                                            <td><span class="label label-warning">Otros</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>El Capitán Marino y el roleplay</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tutorial de Edición (Parte 2)</td>
+                                                            <td><span class="label label-warning">Otros</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Comienza la campaña "Extinción"</td>
+                                                            <td><span class="label label-danger">Anuncio</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Crónica: Misión Final de "Caballero Templario"</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
 
+                                            </div>
+                                        </div>
                                     </div>
 
+                                    <!-- CAMPAÑA ACTUAL -->
                                     <div class="item">
-
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-caret-down"></a>
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Campaña Actual</h2>
+                                            <p class="panel-subtitle">Información sobre la campaña en curso</p>
+                                        </header>
+                                        <div class="panel-body" style="min-height: 515px">
+                                            <div style="width: 90%;" class="center-block">
+                                                <p class="text-lg">Campaña: <b>Extinción</b></p>
+                                                <p>Autor: <b>Sgto1. Arcanoy</b></p>
+                                                <img src="{% static 'stats/img/campa_default.png' %}"
+                                                     width="100%"
+                                                     height="100%">
+                                                <p><i>Lorem ipsum dolor sit amet consectetur adipiscing elit rhoncus
+                                                    dapibus,
+                                                    conubia hac imperdiet luctus molestie volutpat nascetur maecenas,
+                                                    morbi
+                                                    magnis class dis semper tristique sem ornare. Turpis tempor placerat
+                                                    gravida suscipit a, eros tortor sed parturient feugiat lobortis, eu
+                                                    vivamus habitant magna. Faucibus magna tempor platea mus ut leo
+                                                    tortor
+                                                    auctor parturient fames sem ornare, libero purus ad in eleifend
+                                                    duis.</i></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -207,89 +318,34 @@
                                 </a>
                             </div>
                         </div>
-                    </section>
-                </div>
+                    </section><!-- FIN PANEL CAROUSEL -->
+                </div><!-- fin col -->
+
 
                 <div class="col-md-4">
                     <section class="panel panel-default">
                         <header class="panel-heading">
                             <div class="panel-actions">
                                 <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
                             </div>
                             <h2 class="panel-title">Perfil Destacado</h2>
-                            <p class="panel-subtitle">Miembro destacado</p>
+                            <p class="panel-subtitle">Cbo1. Chama - Espectro</p>
                         </header>
-                        <div class="panel-body" style="min-height: 37em">
-                            Content. 3
-                            Acá el perfil de un miembro elegido al azar de un pool a decidir.
-                            (Quizá los que vienen con buena asitencia, recién ascendidos, etc)
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body" style="padding: 0">
+                                <img src="{% static 'stats/img/default_destacado.png' %}" width="100%" height="100%">
+                                <p>
+                                <div class="btn-group" style="width: 100%; text-align: center">
+                                    <span class="center-block">
+                                        <a class="btn btn-dark"> <i class="fa fa-user"></i> Ver Perfil</a>
+                                    </span>
+                                </div>
+                                </p>
+                            </div>
                         </div>
                     </section>
                 </div>
             </div>
-
-
-            <div class="row">
-                <div class="col-md-6">
-                    <section class="panel panel-default">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
-                            </div>
-                            <h2 class="panel-title">Carrousel (?) MI UNIDAD</h2>
-                            <p class="panel-subtitle">Subtitle</p>
-                        </header>
-                        <div class="panel-body">
-                            Content. 4
-                            Mostrar stats de mi unidad, Organigrama, miembros, etc
-                            Podría estar dividido en varias paginas de carrousel
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-6">
-                    <section class="panel panel-default">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                                <a href="#" class="fa fa-times"></a>
-                            </div>
-                            <h2 class="panel-title">A definir</h2>
-                            <p class="panel-subtitle">Subtitle</p>
-                        </header>
-                        <div class="panel-body">
-                            Content. 5
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                        </div>
-                    </section>
-                </div>
-            </div>
-
         </div>
     </div>
 
