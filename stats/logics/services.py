@@ -25,7 +25,7 @@ def genera_calendario():
     mision_list = []
     for mision in misiones:
         m = {}
-        m['title'] = mision.nombre
+        m['title'] = mision.print_tipo
         m['start'] = mision.fecha_finalizada
         m['end'] = mision.fecha_finalizada
         m['allDay'] = True
