@@ -122,8 +122,10 @@
             <section class="panel panel-default">
                 <header class="panel-heading">
                     <div class="panel-actions">
+                        {% if user.is_authenticated %}
                         <img class="imagenUnidad"
                              src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">
+                        {% endif %}
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
                     {% if user.is_authenticated %}
