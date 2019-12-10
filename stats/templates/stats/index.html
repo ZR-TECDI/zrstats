@@ -123,33 +123,38 @@
 
     <div class="row">
         <div class="col-md-3">
-            <section class="panel panel-default">
-                <header class="panel-heading">
-                    <div class="panel-actions">
+                <section class="panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-actions">
+                            {% if user.is_authenticated %}
+                                <img class="imagenUnidad"
+                                     src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">
+                            {% endif %}
+                            <a href="#" class="fa fa-caret-down"></a>
+                        </div>
                         {% if user.is_authenticated %}
-                        <img class="imagenUnidad"
-                             src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">
+                            <a href="{% url 'stats:profile' user.id %}" style="text-decoration: none">
+                            <h2 class="panel-title">
+                                {{ user.miembro.rango.abreviatura }}. {{ user.miembro.nombre }}
+                            </h2>
+                            <p class="panel-subtitle">
+                                {{ user.miembro.unidad }}
+                            </p>
+                            </a>
+                        {% else %}
+                            <h2 class="panel-title">Regístrate</h2>
+                            <p class="panel-subtitle">¡Forma parte de Zona Roja Army!</p>
                         {% endif %}
-                        <a href="#" class="fa fa-caret-down"></a>
+                    </header>
+                    <div class="panel-body" style="padding: 0;">
+                        <a href="{% url 'stats:profile' user.id %}">
+                        <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%"
+                             height="100%">
+                        </a>
+                        <br>
                     </div>
-                    {% if user.is_authenticated %}
-                        <h2 class="panel-title">
-                            {{ user.miembro.rango.abreviatura }}. {{ user.miembro.nombre }}
-                        </h2>
-                        <p class="panel-subtitle">
-                            {{ user.miembro.unidad }}
-                        </p>
-                    {% else %}
-                        <h2 class="panel-title">Regístrate</h2>
-                        <p class="panel-subtitle">¡Forma parte de Zona Roja Army!</p>
-                    {% endif %}
-                </header>
-                <div class="panel-body" style="padding: 0;">
-                    <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%"
-                         height="100%">
-                    <br>
-                </div>
-            </section>
+                </section>
+
         </div>
         <div class="col-md-8">
             <div class="row">
@@ -343,7 +348,8 @@
                                 <p>
                                 <div class="btn-group" style="width: 100%; text-align: center">
                                     <span class="center-block">
-                                        <a class="btn btn-dark"> <i class="fa fa-user"></i> Ver Perfil</a>
+                                        <a class="btn btn-dark" href="{% url 'stats:profile' 118 %}"> <i
+                                                class="fa fa-user"></i> Ver Perfil</a>
                                     </span>
                                 </div>
                                 </p>
