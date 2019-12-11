@@ -36,7 +36,7 @@ def genera_calendario():
         if mision.tipo == Mision.TIPO_IMPROVISADA:
             m['className'] = "fc-event-success"
         if mision.tipo == Mision.TIPO_CURSO:
-            m['className'] = "fc-event-info"
+            m['className'] = "fc-event-primary"
         if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
             m['className'] = "fc-event-warning"
         mision_list.append(m)

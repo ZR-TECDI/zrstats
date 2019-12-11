@@ -138,23 +138,17 @@
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-sitemap"></i> Rango</td>
                                     <td><strong>{{ object.rango.rango }}</strong></td>
+                                    <td style="width: 20%" class="text-muted"> Unidad</td>
+                                    <td><strong>{{ object.unidad.nombre }}</strong></td>
                                 </tr>
                             </table>
                             <table class="table table-condensed">
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"> Unidad</td>
-                                    <td><strong>{{ object.unidad.nombre }}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Rol</td>
+                                    <td style="width: 10%" class="text-muted"> Rol</td>
                                     <td><strong>{{ object.rol }}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Pelotón</td>
+                                    <td style="width: 10%" class="text-muted"> Pelotón</td>
                                     <td><strong>{{ object.peloton }}</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Escuadra</td>
+                                    <td style="width: 10%" class="text-muted"> Escuadra</td>
                                     <td><strong>{{ object.escuadra }}</strong></td>
                                 </tr>
                             </table>
@@ -162,8 +156,6 @@
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 1</td>
                                     <td><strong>{{ object.clase1 }}</strong></td>
-                                </tr>
-                                <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 2</td>
                                     <td><strong>{{ object.clase2 }}</strong></td>
                                 </tr>
@@ -175,11 +167,12 @@
                                     <td><strong>{{ object.nacionalidad.pais }} <span
                                             class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región
                                     </td>
                                     <td><strong>{{ object.region |default_if_none:'' }}</strong></td>
+                                </tr>
+                                <tr>
+
                                 </tr>
 
                             </table>
