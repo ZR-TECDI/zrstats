@@ -109,7 +109,6 @@
 {% block content %}
     <div class="row">
         <div class="col-lg-4">
-
             <section class="panel panel-default">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
@@ -257,51 +256,125 @@
                     </div>
                 </div>
             </section>
-
-
         </div>
 
         <div class="col-lg-8">
             <div class="row">
-                <!-- Linea de tiempo -->
                 <div class="col-lg-8">
+                    <!-- Linea de tiempo -->
                     <section class="panel panel-default">
-                <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
-                    <h2 class="panel-title">Línea de Tiempo</h2>
-                </header>
-                <div class="panel-body" style="padding: 0">
-                    <div class="panel-body">
-                        <div class="timeline timeline-simple mt-xlg mb-md">
-                            <div class="tm-body">
-                                <div class="tm-title" style="background: black">
-                                    <h3 class="h5 text-uppercase">{{ asistencia_mensual.first.mision.fecha_finalizada | date:'F Y' }}</h3>
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Línea de Tiempo</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="timeline timeline-simple mt-xlg mb-md">
+                                    <div class="tm-body">
+                                        <div class="tm-title" style="background: black">
+                                            <h3 class="h5 text-uppercase">{{ asistencia_mensual.first.mision.fecha_finalizada | date:'F Y' }}</h3>
+                                        </div>
+                                        <ol class="tm-items">
+                                            {% for asistencia in asistencia_mensual %}
+                                                <li>
+                                                    <div class="tm-box">
+                                                        <p class="mb-none">Asistencia a <a
+                                                                href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
+                                                            el día {{ asistencia.fecha }}</p>
+                                                        {% if asistencia.mision.campana %}
+                                                            <p>
+                                                                Campaña <a
+                                                                    href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
+                                                            </p>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ol>
+                                    </div>
                                 </div>
-                                <ol class="tm-items">
-                                    {% for asistencia in asistencia_mensual %}
-                                        <li>
-                                            <div class="tm-box">
-                                                <p class="mb-none">Asistencia a <a
-                                                        href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
-                                                    el día {{ asistencia.fecha }}</p>
-                                                {% if asistencia.mision.campana %}
-                                                    <p>
-                                                        Campaña <a
-                                                            href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
-                                                    </p>
-                                                {% else %}
-                                                {% endif %}
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    </section>
+
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Carrera</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Fecha</th>
+                                            <th>Evento</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>03/06/2019</td>
+                                            <td>Ascenso a Rango de Cabo</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-tag"></i></td>
+                                            <td>12/04/2019</td>
+                                            <td>Obtención de clase TE</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>06/02/2019</td>
+                                            <td>Ascenso a Rango de Distinguido</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>08/12/2018</td>
+                                            <td>Asignación a Unidad ECHO</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-tag"></i></td>
+                                            <td>12/10/2018</td>
+                                            <td>Obtención de clase GL</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>03/09/2018</td>
+                                            <td>Ascenso a Rango de Infante</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>25/07/2018</td>
+                                            <td>Asignación a Unidad PARACA</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>08/07/2018</td>
+                                            <td>Asignación a Unidad IMZR</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>05/07/2018</td>
+                                            <td>Ascenso a Rango de Recluta</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-graduation-cap"></i></td>
+                                            <td>03/06/2018</td>
+                                            <td>Ingreso al Programa Aspirante</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
                 <div class="col-lg-4">
@@ -335,43 +408,52 @@
 
                     <!-- Campañas -->
                     <section class="panel panel-default">
-                <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
-                    <h2 class="panel-title">Participación en Campañas</h2>
-                </header>
-                <div class="panel-body" style="padding: 0">
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-condensed mb-none">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Campaña</th>
-                                    <th>Asistencia</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for campana in campanas_asistidas %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ campana.campana.nombre }}</td>
-                                    {% if campana.porcentaje <= 50 %}
-                                        <td class="text-danger">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
-                                    {% elif campana.porcentaje <= 70 %}
-                                        <td class="text-warning">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
-                                    {% else %}
-                                        <td class="text-success">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
-                                    {% endif %}
-                                </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Participación en Campañas</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Campaña</th>
+                                            <th>Asistencia</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for campana in campanas_asistidas %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ campana.campana.nombre }}</td>
+                                                {% if campana.porcentaje <= 50 %}
+                                                    <td class="text-danger">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% elif campana.porcentaje <= 70 %}
+                                                    <td class="text-warning">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% else %}
+                                                    <td class="text-success">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                    </section>
 
                     <!-- Condecoraciones -->
                     <section class="panel panel-default">
@@ -405,10 +487,8 @@
                         </div>
                     </section>
                 </div>
-
             </div>
         </div>
-
 
 
     </div>
