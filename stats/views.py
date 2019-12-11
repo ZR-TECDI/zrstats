@@ -77,6 +77,17 @@ class PublicProfileView(DetailView):
         context['asistencia_mensual'] = miembro.get_asistencia_del_mes(7, 2019)
         context['hide_left_bar'] = True
         context['fondo'] = random.randint(1, 11)
+
+        campanas_asistidas = miembro.campanas_asistidas()
+        campanas = []
+        for camp in campanas_asistidas:
+            camp_tupla = {}
+            camp_tupla['campana'] = camp
+            camp_tupla['asistencias'] = miembro.asistencia_en_campana(camp.id)
+            camp_tupla['porcentaje'] = int((int(miembro.asistencia_en_campana(camp.id)) / int(camp.mision_set.count())) * 100)
+            campanas.append(camp_tupla)
+
+        context['campanas_asistidas'] = campanas
         return context
 
 

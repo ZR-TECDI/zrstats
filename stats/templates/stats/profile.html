@@ -47,6 +47,47 @@
 
         }
 
+        /********************************************/
+        /*          LINEA DE TIEMPO                 */
+        /********************************************/
+        .timeline.timeline-simple .tm-body .tm-title {
+            border: 1px solid darkred;
+        }
+
+        .timeline .tm-items > li .tm-box {
+            background: #0000007e;
+            border-color: rgba(139, 0, 0, 0.51);
+        }
+
+        .timeline .tm-items > li .tm-box:after {
+            border-width: 0px;
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li .tm-box:before {
+            left: -17px;
+            border: solid transparent;
+            border-right-color: rgba(139, 0, 0, 0.51);
+            border-width: 8px;
+            margin-top: -8px;
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li:before {
+            left: 29px;
+            background: rgba(139, 0, 0, 1);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0), 0 0 0 6px rgba(139, 0, 0, 0);
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li:before {
+            border-radius: 0;
+        }
+
+        .timeline .tm-body:after {
+            width: 1px;
+            background: -webkit-linear-gradient(
+                    top, rgba(80, 80, 80, 1) 0%, #fff 8%, #fff 92%, rgba(80, 80, 80, 0) 100%);
+        }
+
+
     </style>
 {% endblock %}
 
@@ -67,7 +108,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-4 col-lg-3">
+        <div class="col-lg-4">
 
             <section class="panel panel-default">
                 <div class="panel-body">
@@ -219,10 +260,12 @@
 
 
         </div>
-        <div class="col-md-8 col-lg-6">
 
-
-            <section class="panel panel-default">
+        <div class="col-lg-8">
+            <div class="row">
+                <!-- Linea de tiempo -->
+                <div class="col-lg-8">
+                    <section class="panel panel-default">
                 <header class="panel-heading">
                     <div class="panel-actions">
                         <a href="#" class="fa fa-caret-down"></a>
@@ -234,13 +277,13 @@
                         <div class="timeline timeline-simple mt-xlg mb-md">
                             <div class="tm-body">
                                 <div class="tm-title" style="background: black">
-                                    <h3 class="h5 text-uppercase">{% now "F Y" %}</h3>
+                                    <h3 class="h5 text-uppercase">{{ asistencia_mensual.first.mision.fecha_finalizada | date:'F Y' }}</h3>
                                 </div>
                                 <ol class="tm-items">
                                     {% for asistencia in asistencia_mensual %}
                                         <li>
-                                            <div class="tm-box" style="background: #3C3A3A">
-                                                <p class="text-muted mb-none">Asistencia a <a
+                                            <div class="tm-box">
+                                                <p class="mb-none">Asistencia a <a
                                                         href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
                                                     el día {{ asistencia.fecha }}</p>
                                                 {% if asistencia.mision.campana %}
@@ -259,68 +302,115 @@
                     </div>
                 </div>
             </section>
+                </div>
 
+                <div class="col-lg-4">
+                    <!-- Estadísticas -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Estadísticas</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <ul class="simple-card-list mb-xlg">
+                                    <li class="primary">
+                                        <h3>{{ object.get_todas_las_asistencias.count }}</h3>
+                                        <p>Asistencias totales</p>
+                                    </li>
+                                    <li class="primary">
+                                        <h3>{{ object.get_todas_las_faltas.count }}</h3>
+                                        <p>Faltas totales</p>
+                                    </li>
+                                    <li class="primary">
+                                        <h3>{{ object.horas_de_servicio }}</h3>
+                                        <p>Horas de Servicio</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
 
-        </div>
-
-        <div class="col-md-12 col-lg-3">
-            <section class="panel panel-default">
+                    <!-- Campañas -->
+                    <section class="panel panel-default">
                 <header class="panel-heading">
                     <div class="panel-actions">
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
-                    <h2 class="panel-title">Estadísticas</h2>
+                    <h2 class="panel-title">Participación en Campañas</h2>
                 </header>
                 <div class="panel-body" style="padding: 0">
                     <div class="panel-body">
-                        <ul class="simple-card-list mb-xlg">
-                            <li class="primary">
-                                <h3>{{ object.get_todas_las_asistencias.count }}</h3>
-                                <p>Asistencias totales</p>
-                            </li>
-                            <li class="primary">
-                                <h3>{{ object.get_todas_las_faltas.count }}</h3>
-                                <p>Faltas totales</p>
-                            </li>
-                            <li class="primary">
-                                <h3>{{ object.horas_de_servicio }}</h3>
-                                <p>Horas de Servicio</p>
-                            </li>
-                        </ul>
+                        <div class="table-responsive">
+                            <table class="table table-condensed mb-none">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Campaña</th>
+                                    <th>Asistencia</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for campana in campanas_asistidas %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ campana.campana.nombre }}</td>
+                                    {% if campana.porcentaje <= 50 %}
+                                        <td class="text-danger">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
+                                    {% elif campana.porcentaje <= 70 %}
+                                        <td class="text-warning">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
+                                    {% else %}
+                                        <td class="text-success">{{ campana.porcentaje }}% ({{ campana.asistencias }} de {{ campana.campana.mision_set.count }})</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="panel panel-default">
-                <header class="panel-heading">
-                    <div class="panel-actions">
-                        <a href="#" class="fa fa-caret-down"></a>
-                    </div>
-                    <h2 class="panel-title">Condecoraciones</h2>
-                </header>
-                <div class="panel-body" style="padding: 0">
-                    <div class="panel-body">
-                        <ul class="simple-bullet-list mb-xlg">
-                            <li class="red">
-                                <span>Cinta del Mérito Académico</span>
-                                <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
-                            </li>
-                            <li class="green">
-                                <span>Cinta Acto Distinguido 1era. Clase</span>
-                                <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
-                            </li>
-                            <li class="blue">
-                                <span>Barra Mérito en Conducta 3era. Clase</span>
-                                <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
-                            </li>
-                            <li class="orange">
-                                <span>Cinta Campaña</span>
-                                <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- Condecoraciones -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Condecoraciones</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <ul class="simple-bullet-list mb-xlg">
+                                    <li class="red">
+                                        <span>Cinta del Mérito Académico</span>
+                                        <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
+                                    </li>
+                                    <li class="green">
+                                        <span>Cinta Acto Distinguido 1era. Clase</span>
+                                        <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
+                                    </li>
+                                    <li class="blue">
+                                        <span>Barra Mérito en Conducta 3era. Clase</span>
+                                        <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
+                                    </li>
+                                    <li class="orange">
+                                        <span>Cinta Campaña</span>
+                                        <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </section>
+
+            </div>
         </div>
+
+
+
     </div>
+
 {% endblock %}

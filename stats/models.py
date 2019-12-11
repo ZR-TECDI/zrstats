@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from django.urls import reverse
 from django.db.models.signals import post_save, post_init
 from datetime import date, datetime, time, timedelta
+from django.db.models import Q
 
 
 class Clase(models.Model):
@@ -231,6 +232,26 @@ class Miembro(models.Model):
     def porcentaje_asistencia(self):
         cantidad_misiones = Mision.objects.all().count()
         cantidad_asistencias = self.asistencia_set.count()
+
+    def campanas_asistidas(self):
+        return Campana.objects.filter(Q(mision__asistencia__asistencia=Asistencia.ASIST_ASISTE)
+                                      | Q(mision__asistencia__asistencia=Asistencia.ASIST_TARDE),
+                                      mision__asistencia__miembro=self).distinct()
+
+    def asistencia_en_campana(self, id_campana):
+        campana = Campana.objects.get(id=id_campana)
+        misiones = campana.mision_set.all()
+        total = misiones.count()
+        asistidas = 0
+        for mision in misiones:
+            asistencia = mision.asistencia_set.get(miembro=self)
+            if asistencia.asistencia in [Asistencia.ASIST_ASISTE, Asistencia.ASIST_TARDE]:
+                asistidas += 1
+        return asistidas
+
+
+
+
 
     # Estas dos funciones crean automáticamente el Miembro cuando un nuevo User se registra
     @receiver(post_save, sender=User)
