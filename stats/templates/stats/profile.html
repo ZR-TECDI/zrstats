@@ -108,7 +108,8 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
+            <!-- Panel Datos -->
             <section class="panel panel-default">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
@@ -256,11 +257,40 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Estadísticas -->
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Estadísticas</h2>
+                </header>
+                <div class="panel-body" style="padding: 0">
+                    <div class="panel-body">
+                        <ul class="simple-card-list mb-xlg">
+                            <li class="primary">
+                                <h3>{{ object.get_todas_las_asistencias.count }}</h3>
+                                <p>Asistencias totales</p>
+                            </li>
+                            <li class="primary">
+                                <h3>{{ object.get_todas_las_faltas.count }}</h3>
+                                <p>Faltas totales</p>
+                            </li>
+                            <li class="primary">
+                                <h3>{{ object.horas_de_servicio }}</h3>
+                                <p>Horas de Servicio</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
+
                     <!-- Linea de tiempo -->
                     <section class="panel panel-default">
                         <header class="panel-heading">
@@ -271,35 +301,60 @@
                         </header>
                         <div class="panel-body" style="padding: 0">
                             <div class="panel-body">
-                                <div class="timeline timeline-simple mt-xlg mb-md">
-                                    <div class="tm-body">
-                                        <div class="tm-title" style="background: black">
-                                            <h3 class="h5 text-uppercase">{{ asistencia_mensual.first.mision.fecha_finalizada | date:'F Y' }}</h3>
-                                        </div>
-                                        <ol class="tm-items">
-                                            {% for asistencia in asistencia_mensual %}
-                                                <li>
-                                                    <div class="tm-box">
-                                                        <p class="mb-none">Asistencia a <a
-                                                                href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
-                                                            el día {{ asistencia.fecha }}</p>
-                                                        {% if asistencia.mision.campana %}
-                                                            <p>
-                                                                Campaña <a
-                                                                    href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
-                                                            </p>
-                                                        {% else %}
-                                                        {% endif %}
+                                <div class="panel-group" id="accordionDanger">
+                                    {% for mes in asistencia_mensual %}
+                                        <div class="panel panel-accordion panel-accordion-dark">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle collapsed" data-toggle="collapse"
+                                                       data-parent="#accordionDanger"
+                                                       href="#collapseDanger{{ forloop.counter }}"
+                                                       aria-expanded="false">
+                                                        {{ mes.first.mision.fecha_finalizada | date:'F Y' }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseDanger{{ forloop.counter }}"
+                                                 class="accordion-body collapse"
+                                                 aria-expanded="false"
+                                                 style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <div class="timeline timeline-simple mt-xlg mb-md">
+                                                        <div class="tm-body">
+                                                            <ol class="tm-items">
+                                                                {% for asistencia in mes %}
+                                                                    <li>
+                                                                        <div class="tm-box">
+                                                                            <p class="mb-none">Asistencia a <a
+                                                                                    href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
+                                                                                el día {{ asistencia.fecha }}</p>
+                                                                            {% if asistencia.mision.campana %}
+                                                                                <p>
+                                                                                    Campaña <a
+                                                                                        href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
+                                                                                </p>
+                                                                            {% else %}
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ol>
+                                                        </div>
                                                     </div>
-                                                </li>
-                                            {% endfor %}
-                                        </ol>
-                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </section>
 
+
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Carrera Militar -->
                     <section class="panel panel-default">
                         <header class="panel-heading">
                             <div class="panel-actions">
@@ -372,36 +427,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="col-lg-4">
-                    <!-- Estadísticas -->
-                    <section class="panel panel-default">
-                        <header class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="fa fa-caret-down"></a>
-                            </div>
-                            <h2 class="panel-title">Estadísticas</h2>
-                        </header>
-                        <div class="panel-body" style="padding: 0">
-                            <div class="panel-body">
-                                <ul class="simple-card-list mb-xlg">
-                                    <li class="primary">
-                                        <h3>{{ object.get_todas_las_asistencias.count }}</h3>
-                                        <p>Asistencias totales</p>
-                                    </li>
-                                    <li class="primary">
-                                        <h3>{{ object.get_todas_las_faltas.count }}</h3>
-                                        <p>Faltas totales</p>
-                                    </li>
-                                    <li class="primary">
-                                        <h3>{{ object.horas_de_servicio }}</h3>
-                                        <p>Horas de Servicio</p>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </section>

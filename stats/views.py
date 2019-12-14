@@ -74,7 +74,13 @@ class PublicProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         miembro = Miembro.objects.get(id=self.kwargs['pk'])
         hoy = timezone.now()
-        context['asistencia_mensual'] = miembro.get_asistencia_del_mes(7, 2019)
+        asistencia_mensual = []
+        for i in range(12):
+            mes = None
+            mes = miembro.get_asistencia_del_mes(i+1, 2019)
+            if mes.count() > 0:
+                asistencia_mensual.append(mes)
+        context['asistencia_mensual'] = asistencia_mensual
         context['hide_left_bar'] = True
         context['fondo'] = random.randint(1, 11)
 
