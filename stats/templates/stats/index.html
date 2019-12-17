@@ -128,7 +128,7 @@
                     <div class="panel-actions">
                         {% if user.is_authenticated %}
                             <img class="imagenUnidad"
-                                 src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png">
+                                 src="{{ user.miembro.unidad.imagen.url }}">
                         {% endif %}
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>

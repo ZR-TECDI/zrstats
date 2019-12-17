@@ -114,7 +114,7 @@
                            data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                             <div class="userbox">
                                 <div class="profile-picture">
-                                    <img src="{% static 'stats/img/' %}{{ user.miembro.unidad.abreviatura }}.png"
+                                    <img src="{{ user.miembro.unidad.imagen }}"
                                          class="img-circle"
                                          data-lock-picture="{% static 'stats/octopus/assets/images/!logged-user.jpg' %}"/>
                                 </div>

@@ -5,8 +5,11 @@ from collections import defaultdict
 import os
 import random
 import datetime
+from urllib.request import urlopen
 from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 from zrstats import settings
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 def borra_todo():
@@ -18,12 +21,12 @@ def borra_todo():
 
 def crear_unidades():
     unidades_dict = {
-        'altm': ['Alto Mando', 'ALTM'],
-        'infm': ['Inf. de Marines', 'IMZR'],
-        'paraca': ['Paracaidistas', 'PAR'],
-        'echo': ['Espectro', 'ECHO'],
-        'cab': ['Caballería', 'CAB'],
-        'fazr': ['Fuerza Aérea', 'FAZR'],
+        'altm': ['Alto Mando', 'ALTM', 'http://www.zrarmy.com/images/Estrella_Dorada2.png'],
+        'infm': ['Inf. de Marines', 'IMZR', 'http://www.zrarmy.com/images/INFANTERIA.png'],
+        'paraca': ['Paracaidistas', 'PAR', 'http://www.zrarmy.com/images/PARACAIDISTAS.png'],
+        'echo': ['Espectro', 'ECHO', 'http://www.zrarmy.com/images/SPECTRO.png'],
+        'cab': ['Caballería', 'CAB', 'http://www.zrarmy.com/images/BLINDADOS.png'],
+        'fazr': ['Fuerza Aérea', 'FAZR', 'http://www.zrarmy.com/images/FAZR.png'],
     }
 
     print('Creando Unidades...')
@@ -32,7 +35,10 @@ def crear_unidades():
         var = Unidad.objects.create()
         var.nombre = array[0]
         var.abreviatura = array[1]
-        var.imagen = "path/"+array[1]+".png"
+        img_temp = NamedTemporaryFile()
+        img_temp.write(urlopen(array[2]).read())
+        img_temp.flush()
+        var.imagen.save(array[1]+".png", File(img_temp))
         var.save()
 
 
@@ -534,7 +540,7 @@ def generar_misiones():
 
 
 def procesa_xsl():
-
+    print("Procesando planillas de asistencia")
     crea_misiones_xls()  # Crea las misiones del año
 
     from openpyxl import load_workbook

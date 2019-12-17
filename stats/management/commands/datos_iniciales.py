@@ -14,11 +14,12 @@ class Command(BaseCommand):
         datos_iniciales.crear_clase()
         datos_iniciales.crear_naciones()
         #datos_iniciales.agregar_miembros() # Deprecado, ahora los sacamos del excel de asistencia
-        datos_iniciales.procesa_xsl()
-        # Le pongo permisos al usuario admin
-        user = User.objects.create()
-        user.username = "Admin"
-        user.password = "admin"
+        #datos_iniciales.procesa_xsl()
+
+
+        # CREO USUARIO ADMIN
+        user = User.objects.create_user(username="Admin", email="admin@zrarmy.com",
+                                        password="Admin".lower())
         user.miembro.nombre = "Admin"
         user.is_staff = True
         user.is_superuser = True
