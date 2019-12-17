@@ -695,15 +695,16 @@ def crea_misiones_xls():
         mision.fecha_creacion = mision_fecha
         if mision_fecha.weekday() in [1, 3]:  # SI ES MARTES O JUEVES ES OFICIAL
             mision.tipo = Mision.TIPO_CAMPANA
+            # Asigno campaña a mision
+            mes = mision_fecha.month
+            campana = Campana.objects.get(descripcion=mes)
+            mision.campana = campana
         else:
             mision.tipo = Mision.TIPO_IMPROVISADA
         mision.estado = Mision.ESTADO_FINALIZADA
         mision.descripcion = "Misión Oficial del día " + str(mision_fecha)
-        # Asigno campaña a mision
-        mes = mision_fecha.month
-        campana = Campana.objects.get(descripcion=mes)
-        mision.campana = campana
         mision.save()
+
 
 def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, rol):
     try:
