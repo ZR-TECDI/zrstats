@@ -14,7 +14,7 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 def borra_todo():
     lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase, User, Asistencia, Mision, Campana]
-    #lista = [Miembro, User, Asistencia, Mision, Campana]
+    # lista = [Miembro, User, Asistencia, Mision, Campana]
     for item in lista:
         item.objects.all().delete()
 
@@ -38,7 +38,7 @@ def crear_unidades():
         img_temp = NamedTemporaryFile()
         img_temp.write(urlopen(array[2]).read())
         img_temp.flush()
-        var.imagen.save(array[1]+".png", File(img_temp))
+        var.imagen.save(array[1] + ".png", File(img_temp))
         var.save()
 
 
@@ -674,6 +674,11 @@ def crea_misiones_xls():
             mes = 10
         elif sheet.title == "Septiembre":
             mes = 9
+
+        # Creo una campaña Mensual
+        camp = Campana.objects.create(nombre="Camp. " + sheet.title, tipo=Campana.TIPO_CAMPANA,
+                                      estado=Campana.ESTADO_FINALIZADA, descripcion=str(mes))
+
         # RECORRO LOS DIAS DE CADA MES (columnas entre "K" y la primera columna con signo "%")
         max_col = sheet.max_column
         # TODO AJUSTAR ACÁ EL RANGO DONDE ESTAN COLUMNAS DE LOS DIAS
@@ -688,14 +693,17 @@ def crea_misiones_xls():
         mision.nombre = "Mision (" + str(mision_fecha) + ")"
         mision.fecha_finalizada = mision_fecha
         mision.fecha_creacion = mision_fecha
-        if mision_fecha.weekday() in [1, 3]:    # SI ES MARTES O JUEVES ES OFICIAL
+        if mision_fecha.weekday() in [1, 3]:  # SI ES MARTES O JUEVES ES OFICIAL
             mision.tipo = Mision.TIPO_CAMPANA
         else:
             mision.tipo = Mision.TIPO_IMPROVISADA
         mision.estado = Mision.ESTADO_FINALIZADA
         mision.descripcion = "Misión Oficial del día " + str(mision_fecha)
+        # Asigno campaña a mision
+        mes = mision_fecha.month
+        campana = Campana.objects.get(descripcion=mes)
+        mision.campana = campana
         mision.save()
-
 
 def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, rol):
     try:
@@ -746,5 +754,3 @@ def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, ro
         miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
         miembro.peloton = 1
     miembro.save()
-
-
