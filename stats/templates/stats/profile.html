@@ -126,7 +126,7 @@
                         </div>
                     </div>
 
-                    <div class="widget-toggle-expand mb-md">
+                    <div class="widget-toggle-expand mb-md" style="white-space: nowrap;">
 
                         <ul class="simple-bullet-list mb-md">
                             {% if object.estado == "Activo" %}
@@ -208,12 +208,12 @@
                                     <td><strong>{{ object.nacionalidad.pais }} <span
                                             class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong>
                                     </td>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región
-                                    </td>
-                                    <td><strong>{{ object.region |default_if_none:'' }}</strong></td>
+
                                 </tr>
                                 <tr>
-
+                                    <td style="width: 20%; border: 0;" class="text-muted"><i class="fa fa-map-marker"></i> Región
+                                    </td>
+                                    <td style="border: 0"><strong>{{ object.region |default_if_none:'' }}</strong></td>
                                 </tr>
 
                             </table>

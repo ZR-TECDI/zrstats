@@ -38,6 +38,7 @@ class Rango(models.Model):
     rango = models.CharField(max_length=20, verbose_name="Rango", blank=False, null=False)
     abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
     orden = models.IntegerField(verbose_name="Orden", blank=False, null=False, default=0)
+    imagen = models.ImageField(upload_to='rango_img/', blank=True, null=True, verbose_name="Imagen")
     objects = RangoManager()
 
     def __str__(self):
@@ -99,6 +100,7 @@ class Rol(models.Model):
 class Unidad(models.Model):
     nombre = models.CharField(max_length=20, verbose_name="Unidad", blank=False, null=False)
     abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
+    imagen = models.ImageField(upload_to='unidad_img/', blank=True, null=True, verbose_name="Imagen")
 
     def __str__(self):
         return self.nombre

@@ -5,6 +5,7 @@ from collections import defaultdict
 import os
 import random
 import datetime
+from django.core.files import File
 from zrstats import settings
 
 
@@ -31,6 +32,7 @@ def crear_unidades():
         var = Unidad.objects.create()
         var.nombre = array[0]
         var.abreviatura = array[1]
+        var.imagen = "path/"+array[1]+".png"
         var.save()
 
 
@@ -543,61 +545,53 @@ def procesa_xsl():
     mes = 0
     lista_valores = ['A', 'F', 'J', 'L', 'R', 'O', 'T', 'NP', None]
     for sheet in workbook.worksheets:
-        if sheet.title == "Enero":
-            mes = 1
-        if sheet.title == "Febrero":
-            mes = 2
-        if sheet.title == "Marzo":
-            mes = 3
         if sheet.title == "Abril":
             mes = 4
-        if sheet.title == "Mayo":
-            mes = 5
-        if sheet.title == "Junio":
-            mes = 6
-        if sheet.title == "Julio":
-            mes = 7
-        if sheet.title == "Agosto":
+        elif sheet.title == "Agosto":
             mes = 8
-        if sheet.title == "Septiembre":
-            mes = 9
-        if sheet.title == "Octubre":
-            mes = 10
-        if sheet.title == "Noviembre":
-            mes = 11
-        if sheet.title == "Diciembre":
+        elif sheet.title == "Diciembre":
             mes = 12
-
+        elif sheet.title == "Enero":
+            mes = 1
+        elif sheet.title == "Febrero":
+            mes = 2
+        elif sheet.title == "Julio":
+            mes = 7
+        elif sheet.title == "Junio":
+            mes = 6
+        elif sheet.title == "Marzo":
+            mes = 3
+        elif sheet.title == "Mayo":
+            mes = 5
+        elif sheet.title == "Noviembre":
+            mes = 11
+        elif sheet.title == "Octubre":
+            mes = 10
+        elif sheet.title == "Septiembre":
+            mes = 9
         max_row = sheet.max_row
         max_col = sheet.max_column
         for i in range(2, max_row + 1):  # itera rows, empiezo del 2do porque el 1ro tiene los titulos de columna
             for j in range(1, max_col + 1):  # itera columnas
                 cell = sheet.cell(row=i, column=j)  # obtiene cell
-                print("["+str(i)+","+str(j)+"] "+str(cell.value))
-
-                if cell.value is not None:
-                    valorcell = str(cell.value).strip()
-                else:
-                    valorcell = cell.value
-
+                valorcell = str(cell.value).strip() if cell.value is not None else cell.value
                 if j == 1:
                     x_rango = valorcell
                     x_rango = str(x_rango).strip('.')
-                if j == 2:
+                elif j == 2:
                     x_nombre = valorcell
-                if j == 3:
+                elif j == 3:
                     x_c1 = valorcell
-                if j == 4:
+                elif j == 4:
                     x_c2 = valorcell
-                if j == 5:
+                elif j == 5:
                     x_pais = valorcell
-                if j == 6:
+                elif j == 6:
                     x_estado = valorcell
-                if j == 7:
+                elif j == 7:
                     x_escuadra = valorcell
-                if j == 8:
+                elif j == 8:
                     x_rol = valorcell
-
                 if j == 9:
                     crea_miembro_if_not_exists(x_rango, x_nombre, x_c1, x_c2, x_pais, x_estado, x_escuadra, x_rol)
 
@@ -650,31 +644,30 @@ def crea_misiones_xls():
     mes = 0
     lista_fechas_mision = []
     for sheet in workbook.worksheets:
-        if sheet.title == "Enero":
-            mes = 1
-        if sheet.title == "Febrero":
-            mes = 2
-        if sheet.title == "Marzo":
-            mes = 3
         if sheet.title == "Abril":
             mes = 4
-        if sheet.title == "Mayo":
-            mes = 5
-        if sheet.title == "Junio":
-            mes = 6
-        if sheet.title == "Julio":
-            mes = 7
-        if sheet.title == "Agosto":
+        elif sheet.title == "Agosto":
             mes = 8
-        if sheet.title == "Septiembre":
-            mes = 9
-        if sheet.title == "Octubre":
-            mes = 10
-        if sheet.title == "Noviembre":
-            mes = 11
-        if sheet.title == "Diciembre":
+        elif sheet.title == "Diciembre":
             mes = 12
-
+        elif sheet.title == "Enero":
+            mes = 1
+        elif sheet.title == "Febrero":
+            mes = 2
+        elif sheet.title == "Julio":
+            mes = 7
+        elif sheet.title == "Junio":
+            mes = 6
+        elif sheet.title == "Marzo":
+            mes = 3
+        elif sheet.title == "Mayo":
+            mes = 5
+        elif sheet.title == "Noviembre":
+            mes = 11
+        elif sheet.title == "Octubre":
+            mes = 10
+        elif sheet.title == "Septiembre":
+            mes = 9
         # RECORRO LOS DIAS DE CADA MES (columnas entre "K" y la primera columna con signo "%")
         max_col = sheet.max_column
         # TODO AJUSTAR ACÁ EL RANGO DONDE ESTAN COLUMNAS DE LOS DIAS
@@ -689,7 +682,7 @@ def crea_misiones_xls():
         mision.nombre = "Mision (" + str(mision_fecha) + ")"
         mision.fecha_finalizada = mision_fecha
         mision.fecha_creacion = mision_fecha
-        if mision_fecha.weekday() == 1 or mision_fecha.weekday() == 3:  # SI ES MARTES O JUEVES ES OFICIAL
+        if mision_fecha.weekday() in [1, 3]:    # SI ES MARTES O JUEVES ES OFICIAL
             mision.tipo = Mision.TIPO_CAMPANA
         else:
             mision.tipo = Mision.TIPO_IMPROVISADA
@@ -723,28 +716,22 @@ def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, ro
 
     if estado == 'A':
         miembro.estado = Miembro.ESTADO_ACTIVO
-    elif estado == 'R':
-        miembro.estado = Miembro.ESTADO_RESERVA
     else:
         miembro.estado = Miembro.ESTADO_RESERVA
-
-    if escuadra == "ALTM":
-        miembro.unidad = Unidad.objects.get(abreviatura="ALTM")
-        miembro.peloton = 1
-    elif escuadra == "1° P - 1°M":
-        miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
-        miembro.peloton = 1
-    elif escuadra == "1° P - 2°M":
+    if escuadra == "1° P - 2°M":
         miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
         miembro.peloton = 2
     elif escuadra == "1° PP - 1°Pa":
         miembro.unidad = Unidad.objects.get(abreviatura="PAR")
         miembro.peloton = 1
-    elif escuadra == "Espectro":
-        miembro.unidad = Unidad.objects.get(abreviatura="ECHO")
+    elif escuadra == "ALTM":
+        miembro.unidad = Unidad.objects.get(abreviatura="ALTM")
         miembro.peloton = 1
     elif escuadra == "Caballeria":
         miembro.unidad = Unidad.objects.get(abreviatura="CAB")
+        miembro.peloton = 1
+    elif escuadra == "Espectro":
+        miembro.unidad = Unidad.objects.get(abreviatura="ECHO")
         miembro.peloton = 1
     elif escuadra == "FAZR":
         miembro.unidad = Unidad.objects.get(abreviatura="FAZR")
@@ -753,3 +740,5 @@ def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, ro
         miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
         miembro.peloton = 1
     miembro.save()
+
+
