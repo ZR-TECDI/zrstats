@@ -417,7 +417,7 @@ class Mision(models.Model):
 
 class Asistencia(models.Model):
     mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
-    miembro = models.ForeignKey(Miembro, verbose_name="Miembro", on_delete=models.DO_NOTHING, null=False)
+    miembro = models.ForeignKey(Miembro, verbose_name="Miembro", on_delete=models.CASCADE, null=False)
     fecha = models.DateField(blank=False, null=False, default=now)
     ASISTENCIA_CHOICES = (
         ('ASISTE', 'Asiste'),

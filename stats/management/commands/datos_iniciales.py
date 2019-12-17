@@ -14,7 +14,7 @@ class Command(BaseCommand):
         datos_iniciales.crear_clase()
         datos_iniciales.crear_naciones()
         #datos_iniciales.agregar_miembros() # Deprecado, ahora los sacamos del excel de asistencia
-        #datos_iniciales.procesa_xsl()
+        datos_iniciales.procesa_xsl()
 
 
         # CREO USUARIO ADMIN
