@@ -42,3 +42,10 @@ def genera_calendario():
         mision_list.append(m)
     return mision_list
 
+
+def calcula_porcentaje(parte, total):
+    if total == 0:
+        return 0
+    else:
+        return int((parte/total)*100)
+

@@ -213,7 +213,40 @@ class Miembro(models.Model):
         return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE)
 
     def get_todas_las_faltas(self):
-        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA)
+        faltas = self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA)
+        faltas_oficiales = faltas.exclude(mision__tipo=Mision.TIPO_IMPROVISADA)
+        faltas_oficiales = faltas_oficiales.exclude(mision__tipo=Mision.TIPO_OTRO)
+        faltas_oficiales = faltas_oficiales.exclude(mision__oficial=False)
+        return faltas_oficiales
+
+    def get_asistencia_tipo_campana(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_CAMPANA)
+
+    def get_asistencia_tipo_curso(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_CURSO)
+
+    def get_asistencia_tipo_entrenamiento(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_ENTRENAMIENTO)
+
+    def get_asistencia_tipo_cooperativa(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_COOPERATIVA)
+
+    def get_asistencia_tipo_gala(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_GALA)
+
+    def get_asistencia_tipo_improvisada(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_IMPROVISADA)
+
+    def get_asistencia_tipo_otro(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_OTRO)
+
+    def get_todas_las_asistencias_oficiales(self):
+        # Devuelvo todas las asistencias que NO son IMPRO ni OTRO
+        solo_oficiales = self.get_todas_las_asistencias().exclude(mision__tipo=Mision.TIPO_IMPROVISADA)
+        solo_oficiales = solo_oficiales.exclude(mision__tipo=Mision.TIPO_OTRO)
+        solo_oficiales = solo_oficiales.exclude(mision__tipo=Mision.TIPO_CURSO)
+        solo_oficiales = solo_oficiales.exclude(mision__oficial=False)
+        return solo_oficiales
 
     def get_asistencia_del_mes(self, month, year):
         return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE, mision__fecha_finalizada__month=month,

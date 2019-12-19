@@ -38,7 +38,7 @@ class TestPage(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         from django.core.management import call_command
-        #call_command('datos_iniciales')
+        # call_command('datos_iniciales')
         return context
 
 
@@ -77,7 +77,7 @@ class PublicProfileView(DetailView):
         asistencia_mensual = []
         for i in range(12):
             mes = None
-            mes = miembro.get_asistencia_del_mes(i+1, 2019)
+            mes = miembro.get_asistencia_del_mes(i + 1, 2019)
             if mes.count() > 0:
                 asistencia_mensual.append(mes)
         context['asistencia_mensual'] = asistencia_mensual
@@ -90,10 +90,40 @@ class PublicProfileView(DetailView):
             camp_tupla = {}
             camp_tupla['campana'] = camp
             camp_tupla['asistencias'] = miembro.asistencia_en_campana(camp.id)
-            camp_tupla['porcentaje'] = int((int(miembro.asistencia_en_campana(camp.id)) / int(camp.mision_set.count())) * 100)
+            camp_tupla['porcentaje'] = services.calcula_porcentaje(miembro.asistencia_en_campana(camp.id),
+                                                                   camp.mision_set.count())
             campanas.append(camp_tupla)
 
         context['campanas_asistidas'] = campanas
+        context['total_campana'] = Mision.objects.filter(tipo=Mision.TIPO_CAMPANA).count()
+        context['total_improvisada'] = Mision.objects.filter(tipo=Mision.TIPO_IMPROVISADA).count()
+        context['total_gala'] = Mision.objects.filter(tipo=Mision.TIPO_GALA).count()
+        context['total_entrenamiento'] = Mision.objects.filter(tipo=Mision.TIPO_ENTRENAMIENTO).count()
+        context['total_otro'] = Mision.objects.filter(tipo=Mision.TIPO_OTRO).count()
+        context['total_curso'] = Mision.objects.filter(tipo=Mision.TIPO_CURSO).count()
+        context['total_cooperativa'] = Mision.objects.filter(tipo=Mision.TIPO_COOPERATIVA).count()
+
+        context['porc_campana'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_campana().count(),
+                                                              context['total_campana'])
+
+        context['porc_improvisada'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_improvisada().count(),
+                                                                  context['total_improvisada'])
+
+        context['porc_gala'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_gala().count(),
+                                                           context['total_gala'])
+
+        context['porc_entrenamiento'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_entrenamiento(),
+                                                                    context['total_entrenamiento'])
+
+        context['porc_otro'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_otro().count(),
+                                                           context['total_otro'])
+
+        context['porc_curso'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_curso().count(),
+                                                            context['total_curso'])
+
+        context['porc_cooperativa'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_cooperativa().count(),
+                                                                  context['total_cooperativa'])
+
         return context
 
 
@@ -203,6 +233,7 @@ def asistencia_datatables_ajax(request, year, month):
     all_asistencia_list = paginator.get_page(page)  # Return objects list you can make json from this or list
 
     return JsonResponse(all_asistencia_list, safe=False)
+
 
 # ======================================================================================================================
 #                      Funciones CRUD (Create, Read, Update and Delete) básicas de los Models
@@ -346,7 +377,8 @@ class MiembroListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paises = Nacionalidad.objects.raw('SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
+        paises = Nacionalidad.objects.raw(
+            'SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
         context['paises'] = paises
         return context
 
@@ -427,7 +459,6 @@ class AsistenciaUpdateView(UpdateView):
     model = Asistencia
     form_class = AsistenciaForm
 
-
 # ESTAS FUNCIONES COMENTADAS LAS GUARDO SOLO COMO REFERENCIA/DOCUMENTACION
 
 # def upload_file(request):
@@ -452,4 +483,3 @@ class AsistenciaUpdateView(UpdateView):
 #         context['miembros'] = Miembro.objects.all()
 #         context['reportes'] = Mision.objects.all()
 #         return context
-

@@ -211,7 +211,8 @@
 
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%; border: 0;" class="text-muted"><i class="fa fa-map-marker"></i> Región
+                                    <td style="width: 20%; border: 0;" class="text-muted"><i
+                                            class="fa fa-map-marker"></i> Región
                                     </td>
                                     <td style="border: 0"><strong>{{ object.region |default_if_none:'' }}</strong></td>
                                 </tr>
@@ -264,24 +265,73 @@
                     <div class="panel-actions">
                         <a href="#" class="fa fa-caret-down"></a>
                     </div>
-                    <h2 class="panel-title">Estadísticas</h2>
+                    <h2 class="panel-title">Asistencias</h2>
                 </header>
                 <div class="panel-body" style="padding: 0">
                     <div class="panel-body">
-                        <ul class="simple-card-list mb-xlg">
-                            <li class="primary">
-                                <h3>{{ object.get_todas_las_asistencias.count }}</h3>
-                                <p>Asistencias totales</p>
-                            </li>
-                            <li class="primary">
-                                <h3>{{ object.get_todas_las_faltas.count }}</h3>
-                                <p>Faltas totales</p>
-                            </li>
-                            <li class="primary">
-                                <h3>{{ object.horas_de_servicio }}</h3>
-                                <p>Horas de Servicio</p>
-                            </li>
-                        </ul>
+                        <div class="table-responsive">
+                            <table class="table table-condensed mb-none">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tipo</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>Misiones de Campaña</td>
+                                    <td>{{ porc_campana }}% ({{ object.get_asistencia_tipo_campana.count }} de {{ total_campana }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Entrenamientos</td>
+                                    <td>{{ porc_entrenamiento }}% ({{ object.get_asistencia_tipo_entrenamiento.count }} de {{ total_entrenamiento }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Cursos</td>
+                                    <td>{{ porc_curso }}% ({{ object.get_asistencia_tipo_curso.count }} de {{ total_curso }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Galas</td>
+                                    <td>{{ porc_gala }}% ({{ object.get_asistencia_tipo_gala.count }} de {{ total_gala }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Cooperativas</td>
+                                    <td>{{ porc_cooperativa }}% ({{ object.get_asistencia_tipo_cooperativa.count }} de {{ total_cooperativa }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Improvisadas</td>
+                                    <td>{{ porc_improvisada }}% ({{ object.get_asistencia_tipo_improvisada.count }} de {{ total_improvisada }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Otros</td>
+                                    <td>{{ porc_otro }}% ({{ object.get_asistencia_tipo_otro.count }} de {{ total_otro }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Asistencias Totales</td>
+                                    <td>{{ object.get_todas_las_asistencias.count }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Faltas Oficiales</td>
+                                    <td>{{ object.get_todas_las_faltas.count }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Horas de Servicio</td>
+                                    <td>{{ object.horas_de_servicio }} Hs</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
