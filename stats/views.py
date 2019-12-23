@@ -423,6 +423,8 @@ class MisionDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['unidades'] = Unidad.objects.all().order_by('nombre')
+        context['hide_left_bar'] = True
+        context['fondo'] = random.randint(1, 11)
         return context
 
 

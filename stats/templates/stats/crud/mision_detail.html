@@ -7,16 +7,61 @@
     Misión
 {% endblock %}
 
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
+    <style>
+        .body {
+            background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .panel {
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .panel-default .panel-heading {
+            background: whitesmoke;
+            border-bottom: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .panel-default .panel-body {
+            background: #0000007e;
+            color: ghostwhite;
+        }
+
+        .panel-default .panel-subtitle {
+            color: #1d2127;
+            font-size: 100%;
+            font-weight: 700;
+        }
+
+        .panel-default .panel-title {
+            color: #1d2127;
+            font-family: Orbitron, sans-serif;
+            letter-spacing: 1px;
+            font-size: 150%;
+            font-weight: 100;
+
+        }
+    </style>
+{% endblock %}
+
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>CRUDs</span></li>
-    <li><span>Misión</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>CRUDs</span></li>
+        <li><span>Misión</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
@@ -25,129 +70,156 @@
 
 
 {% block content %}
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Información Misión -->
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="panel-body panel-body-nopadding">
-            <div class="img-responsive">
-                {% if object.imagen %}
-                <img alt="" class="img-responsive img-rounded" src="{{ object.imagen.url }}">
-                {% else %}
-                <img alt="" class="img-responsive img-rounded" src="{% static 'stats/img/mision_default.jpg' %}">
-                {% endif %}
-            </div>
+                    </div>
+                    <h2 class="panel-title">Operación: <b>{{ mision.nombre }}</b></h2>
+                </header>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="img-responsive" style="margin-bottom: 10px">
+                                <img alt="" class="img-responsive img-rounded"
+                                     src="{% static 'stats/img/campa_default.png' %}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <table class="table">
+                                <tr>
+                                    <td>Nombre</td>
+                                    <td><b>Op. Tormenta del Desierto</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Tipo</td>
+                                    <td><b>Campaña</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha</td>
+                                    <td><b>05/12/19</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Mapa</td>
+                                    <td><b>Chernarus Winter</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Campaña</td>
+                                    <td><b>Extinción</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Autor</td>
+                                    <td><b>Sgto1. Arcanoy</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Estado</td>
+                                    <td class="text-success"><b>Finalizada</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Editores</td>
+                                    <td><b>Cbo1. Riquelme, Cbo1. Nikquitu, Dis. Connal</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Responsables</td>
+                                    <td><b>Alf. Jaz, Sgto1. Arcanoy, Sgto1 Disluk, Sgto1. Ghaos</b></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p class="text-muted">
+                                Nullam quiris risus eget urna mollis ornare vel eu leo. Cum soccis natoque penatibus et
+                                magnis dis parturient montes. Urna mollis ornare vel eu leo. Cum soccis natoque
+                                penatibus et magnis dis parturient montes. Soccis natoque penatibus et magnis dis
+                                parturient montes.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
         </div>
-        <div class="p-md">
-            <h4 class="text-semibold mt-none">Descripción</h4>
-            <p> {{ object.descripcion }}
-                Nullam quiris risus eget urna mollis ornare vel eu leo. Cum soccis natoque penatibus et magnis dis parturient montes. Urna mollis ornare vel eu leo. Cum soccis natoque penatibus et magnis dis parturient montes. Soccis natoque penatibus et magnis dis parturient montes.</p>
-        </div>
-    </div>
-    <div class="col-md-2">
-        <section class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                <a href="#" class="fa fa-caret-down"></a>
-                </div>
-                <h2 class="panel-title">Misión: {{ object.nombre }}</h2>
-            </header>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table-condensed">
-                        <tr>
-                            <td>Mapa:</td><td>{{ object.mapa }}</td>
-                        </tr>
-                        <tr>
-                            <td>Fecha:</td><td>{{ object.fecha_finalizada }}</td>
-                        </tr>
-                        <tr>
-                            <td>Tipo de Misión:</td><td>{{ object.tipo }}</td>
-                        </tr>
-                        {% if object.tipo == mision.TIPO_CAMPANA %}
-                        <tr>
-                            <td>Campaña:</td><td>{{ object.campana }}</td>
-                        </tr>
-                        {% endif %}
-                    </table>
-                </div>
-            </div>
-        </section>
-    </div>
-    <div class="col-md-2">
-        <section class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                <a href="#" class="fa fa-caret-down"></a>
-                </div>
-                <h2 class="panel-title">Asistencia</h2>
-            </header>
-            <div class="panel-body" style="max-height: 600px;overflow-y: scroll;">
-                <div class="table-responsive">
-                    <table class="table-condensed">
-                        {% for unidad in unidades %}
-                            <tr><td><h4 class="text-center">{{ unidad }}</h4></td></tr>
-                            {% for a in object.asistencia_set.all.order_by  %}
-                                {% if a.miembro.unidad.id == unidad.id %}
-                                    {% if a.asistencia == a.ASIST_ASISTE %}
-                                        <tr>
-                                            <td>{{ a.miembro }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %}
+        <div class="col-lg-4">
+            <!-- Galería -->
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-upload text-primary"></a>
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+
+                    </div>
+                    <h2 class="panel-title">Gelería colaborativa</h2>
+
+                </header>
+                <div class="panel-body">
+                    <div class="popup-gallery">
+                        {% for i in "x"|rjust:"12" %}
+                            <a class="pull-left mb-xs mr-xs"
+                               href="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png" title="Project 1">
+                                <div class="img-responsive">
+                                    <img src="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png" width="105">
+                                </div>
+                            </a>
                         {% endfor %}
-                    </table>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
-</div>
 
-
-
-<div class="row">
-    <div class="col-xs-4">
-        <section class="panel">
-            <header class="panel-heading">
-                <div class="panel-actions">
-                <a href="#" class="fa fa-caret-down"></a>
-                <a href="#" class="fa fa-times"></a>
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- Asistencia -->
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Despliegue</h2>
+                </header>
+                <div class="panel-body">
+                    {% for unidad in unidades %}
+                        <div class="col-lg-2">
+                            <table class="table">
+                                <thead>
+                                <th>{{ unidad.nombre }}</th>
+                                </thead>
+                                <tbody>
+                                {% for a in mision.asistencia_set.all.order_by %}
+                                    {% if a.miembro.unidad.id == unidad.id %}
+                                        {% if a.asistencia == a.ASIST_ASISTE or a.asistencia == a.ASIST_TARDE %}
+                                            <tr>
+                                                <td>{{ a.miembro }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
                 </div>
-                <h2 class="panel-title">Detalle de Misión</h2>
-            </header>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>hola</th>
-                            <th>valor</th>
-                        </tr>
-                        </thead>
-                        <tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
-                        <tr><td>fecha_creacion</td><td>{{ object.fecha_creacion }}</td></tr>
-                        <tr><td>fecha_aprobacion</td><td>{{ object.fecha_aprobacion }}</td></tr>
-                        <tr><td>campana</td><td>{{ object.campana }}</td></tr>
-                        <tr><td>descripcion</td><td>{{ object.descripcion }}</td></tr>
-                        <tr><td>notas_privadas</td><td>{{ object.notas_privadas }}</td></tr>
-                        <tr><td>notas_editor</td><td>{{ object.notas_editor }}</td></tr>
-                        <tr><td>imagen</td><td>{{ object.imagen }}</td></tr>
-                        <tr><td>briefing</td><td>{{ object.briefing }}</td></tr>
-                        <tr><td>mapa</td><td>{{ object.mapa }}</td></tr>
-                        <tr><td>fecha_programada</td><td>{{ object.fecha_programada }}</td></tr>
-                        <tr><td>fecha_finalizada</td><td>{{ object.fecha_finalizada }}</td></tr>
-                        <tr><td>reporte</td><td>{{ object.reporte }}</td></tr>
-                    </table>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
-</div>
 
 
+    <!--
 <a class="btn btn-primary" href="{{object.get_update_url}}">Edit Mision</a>
 <a class="btn btn-primary" href="{% url 'stats:actualizar-mision' object.id %}">Editar Mision</a>
-
+-->
 
 {% endblock %}
 
+{% block extra_scripts %}
+    <script src="{% static 'stats/octopus/assets/javascripts/ui-elements/examples.lightbox.js' %}"></script>
+{% endblock %}
