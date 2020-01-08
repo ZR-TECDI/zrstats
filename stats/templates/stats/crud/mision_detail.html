@@ -192,7 +192,8 @@
                         </div>
                     </div>
                     <hr class="solid short" style="width: 100%">
-                    <div class="panel-group" id="accordion">
+                    {% if user.is_authenticated %}
+                        <div class="panel-group" id="accordion">
                         <div>
                             <span class="center-block">
                             <a class="accordion-toggle collapsed btn btn-default mb-xs mt-xs mr-xs btn btn-xs" data-toggle="collapse"
@@ -210,6 +211,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </section>
         </div>
