@@ -41,6 +41,10 @@ urlpatterns = [
 
     # /stats/asistencia_mes_datatables/
     path('asistencia_mes_datatables/<int:year>/<int:month>', views.asistencia_datatables_ajax, name='asistencia_mes_datatables'),
+
+    # /stats/misiongaleria-redirect/<int:mision_id>/<str:image>
+    path('misiongaleria-redirect/<int:mision_id>', views.RedirectMisionGaleria.as_view(), name='misiongaleria-redirect'),
+    path('misiongaleria-redirect/<int:mision_id>/<str:image>', views.RedirectMisionGaleria.as_view(), name='misiongaleria-redirect'),
 ]
 
 urlpatterns += (
@@ -114,6 +118,14 @@ urlpatterns += (
     path('asistencia/create/', views.AsistenciaCreateView.as_view(), name='asistencia_create'),
     path('asistencia/detail/<int:pk>/', views.AsistenciaDetailView.as_view(), name='asistencia_detail'),
     path('asistencia/update/<int:pk>/', views.AsistenciaUpdateView.as_view(), name='asistencia_update'),
+)
+
+urlpatterns += (
+    # urls for MisionGaleria
+    path('misiongaleria/', views.MisionGaleriaListView.as_view(), name='misiongaleria_list'),
+    path('misiongaleria/create/<int:mision_id>/', views.MisionGaleriaCreateView.as_view(), name='misiongaleria_create'),
+    path('misiongaleria/detail/<int:pk>/', views.MisionGaleriaDetailView.as_view(), name='misiongaleria_detail'),
+    path('misiongaleria/update/<int:pk>/', views.MisionGaleriaUpdateView.as_view(), name='misiongaleria_update'),
 )
 
 if settings.DEBUG:

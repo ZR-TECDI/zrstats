@@ -9,6 +9,7 @@
 
 {% block head_extra %}
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'stats/loading-bar/loading-bar.min.css' %}"/>
     <style>
         .body {
             background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
@@ -48,6 +49,12 @@
             font-size: 150%;
             font-weight: 100;
 
+        }
+
+        .imagenUnidad {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
         }
     </style>
 {% endblock %}
@@ -151,7 +158,6 @@
             <section class="panel panel-default">
                 <header class="panel-heading">
                     <div class="panel-actions">
-                        <a href="#" class="fa fa-upload text-primary"></a>
                         <a href="#" class="fa fa-caret-down"></a>
                         <a href="#" class="fa fa-times"></a>
 
@@ -160,15 +166,49 @@
 
                 </header>
                 <div class="panel-body">
-                    <div class="popup-gallery">
-                        {% for i in "x"|rjust:"12" %}
-                            <a class="pull-left mb-xs mr-xs"
-                               href="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png" title="Project 1">
-                                <div class="img-responsive">
-                                    <img src="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png" width="105">
-                                </div>
+
+                    <div>
+                        <div class="popup-gallery">
+                            {% for i in "x"|rjust:"12" %}
+                                <a class="pull-left mb-xs mr-xs"
+                                   href="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png"
+                                   title="Project 1">
+                                    <div class="img-responsive">
+                                        <img src="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png"
+                                             width="105">
+                                    </div>
+                                </a>
+                            {% endfor %}
+                            {% for img in imagenes_galeria %}
+                                <a class="pull-left mb-xs mr-xs"
+                                   href="{{ img.imagen_url }}"
+                                   title="Project 1">
+                                    <div class="img-responsive">
+                                        <img src="{{ img.imagen_url }}"
+                                             width="105">
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <hr class="solid short" style="width: 100%">
+                    <div class="panel-group" id="accordion">
+                        <div>
+                            <span class="center-block">
+                            <a class="accordion-toggle collapsed btn btn-default mb-xs mt-xs mr-xs btn btn-xs" data-toggle="collapse"
+                               data-parent="#accordion" href="#collapse2" aria-expanded="false">
+                                Subir Imagen
                             </a>
-                        {% endfor %}
+                            </span>
+                            <div id="collapse2" class="accordion-body collapse" aria-expanded="false"
+                                 style="height: 0px;">
+                                <div class="panel-body">
+                                    <form id="imgur">
+                                        <input type="file" class="imgur" accept="image/*" data-max-size="5000"/>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -189,9 +229,12 @@
                 <div class="panel-body">
                     {% for unidad in unidades %}
                         <div class="col-lg-2">
-                            <table class="table">
+                            <table class="table table-condensed">
                                 <thead>
-                                <th>{{ unidad.nombre }}</th>
+                                <th>
+                                    <img class="imagenUnidad" src="{{ unidad.imagen.url }}">
+                                    {{ unidad.nombre }}
+                                </th>
                                 </thead>
                                 <tbody>
                                 {% for a in mision.asistencia_set.all.order_by %}
@@ -221,5 +264,68 @@
 {% endblock %}
 
 {% block extra_scripts %}
+    <script src="{% static 'stats/loading-bar/loading-bar.min.js' %}"></script>
     <script src="{% static 'stats/octopus/assets/javascripts/ui-elements/examples.lightbox.js' %}"></script>
+
+    <script>
+        $("document").ready(function () {
+
+            $('input[type=file]').on("change", function () {
+
+                var $files = $(this).get(0).files;
+
+                if ($files.length) {
+
+                    // Reject big files
+                    if ($files[0].size > $(this).data("max-size") * 1024) {
+                        console.log("Please select a smaller file");
+                        return false;
+                    }
+
+                    // Replace ctrlq with your own API key
+                    var apiUrl = 'https://api.imgur.com/3/image';
+                    var apiKey = 'c04e04b4df929f4';
+
+                    var formData = new FormData();
+                    formData.append("image", $files[0]);
+
+                    var settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": apiUrl,
+                        "method": "POST",
+                        "datatype": "json",
+                        "headers": {
+                            "Authorization": "Client-ID " + apiKey
+                        },
+                        "processData": false,
+                        "contentType": false,
+                        "data": formData,
+                        beforeSend: function (xhr) {
+                            console.log("Uploading | 上传中");
+                            document.getElementById("imgur").innerHTML = 'Subiendo...';
+                        },
+                        success: function (res) {
+                            console.log(res.data.link);
+                            //$('body').append('<img src="' + res.data.link + '" />');
+                            var lastPart = res.data.link.split("/").pop();
+
+                        },
+                        error: function () {
+                            alert("Failed | 上传失败");
+                            document.getElementById("imgur").innerHTML = 'Error al subir imagen.';
+                        }
+                    }
+                    $.ajax(settings).done(function (response) {
+                        console.log("Done | 成功");
+                        document.getElementById("imgur").innerHTML = 'Finalizado!';
+                        var lastPart = response.data.link.split("/").pop();
+                        window.location.href = '{% url 'stats:misiongaleria-redirect' mision.id %}/'+lastPart;
+                    });
+                }
+            });
+        });
+    </script>
+
+
 {% endblock %}

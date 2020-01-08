@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Miembro, Clase, Asistencia, Nacionalidad, Rango, Unidad, Rol, Mision
+from .models import Miembro, Clase, Asistencia, Nacionalidad, Rango, Unidad, Rol, Mision, MisionGaleria
 
 admin.site.register(Miembro)
 admin.site.register(Clase)
@@ -9,4 +9,5 @@ admin.site.register(Rango)
 admin.site.register(Unidad)
 admin.site.register(Rol)
 admin.site.register(Mision)
+admin.site.register(MisionGaleria)
 

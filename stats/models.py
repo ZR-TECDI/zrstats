@@ -488,3 +488,8 @@ class Asistencia(models.Model):
     def get_update_url(self):
         return reverse('stats:asistencia_update', args=(self.pk,))
 
+
+class MisionGaleria(models.Model):
+    mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
+    imagen_url = models.URLField(null=False, verbose_name='URL', blank=False)
+

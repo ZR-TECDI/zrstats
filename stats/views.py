@@ -2,12 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
 from .logics import procesar_resultado
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana, MisionGaleria
 from .logics import services
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.views.generic.base import RedirectView
 from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, \
-    AsistenciaForm, CampanaForm, MisionReporteForm
+    AsistenciaForm, CampanaForm, MisionReporteForm, MisionGaleriaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -40,6 +40,15 @@ class TestPage(ListView):
         from django.core.management import call_command
         # call_command('datos_iniciales')
         return context
+
+
+# Vista para crear un MisionGaleria luego de subir imagen a Imgur
+class RedirectMisionGaleria(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        mision = Mision.objects.get(id=self.kwargs['mision_id'])
+        url = "https://i.imgur.com/" + self.kwargs['image']
+        MisionGaleria.objects.create(mision=mision, imagen_url=url)
+        return reverse('stats:mision_detail', kwargs={'pk': self.kwargs['mision_id']})
 
 
 # Vista para redireccionar al user a su propio perfil
@@ -422,6 +431,7 @@ class MisionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['imagenes_galeria'] = MisionGaleria.objects.filter(mision__id=self.kwargs['pk'])
         context['unidades'] = Unidad.objects.all().order_by('nombre')
         context['hide_left_bar'] = True
         context['fondo'] = random.randint(1, 11)
@@ -460,6 +470,29 @@ class AsistenciaUpdateView(UpdateView):
     template_name = 'stats/crud/asistencia_form.html'
     model = Asistencia
     form_class = AsistenciaForm
+
+
+class MisionGaleriaCreateView(CreateView):
+    template_name = 'stats/crud/misiongaleria_form.html'
+    model = MisionGaleria
+    form_class = MisionGaleriaForm
+
+
+class MisionGaleriaDetailView(DetailView):
+    template_name = 'stats/crud/misiongaleria_detail.html'
+    model = MisionGaleria
+
+
+class MisionGaleriaUpdateView(UpdateView):
+    template_name = 'stats/crud/misiongaleria_form.html'
+    model = MisionGaleria
+    form_class = MisionGaleriaForm
+
+
+class MisionGaleriaListView(ListView):
+    template_name = 'stats/crud/misiongaleria_list.html'
+    model = MisionGaleria
+
 
 # ESTAS FUNCIONES COMENTADAS LAS GUARDO SOLO COMO REFERENCIA/DOCUMENTACION
 
