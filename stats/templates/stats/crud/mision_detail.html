@@ -172,7 +172,7 @@
                             {% for i in "x"|rjust:"12" %}
                                 <a class="pull-left mb-xs mr-xs"
                                    href="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png"
-                                   title="Project 1">
+                                   title="Foto de Ejemplo">
                                     <div class="img-responsive">
                                         <img src="{% static 'stats/img/fondos/bg_' %}{{ forloop.counter }}.png"
                                              width="105">
@@ -182,7 +182,7 @@
                             {% for img in imagenes_galeria %}
                                 <a class="pull-left mb-xs mr-xs"
                                    href="{{ img.imagen_url }}"
-                                   title="Project 1">
+                                   title="Foto por {{ img.miembro }}">
                                     <div class="img-responsive">
                                         <img src="{{ img.imagen_url }}"
                                              width="105">
@@ -322,7 +322,7 @@
                         console.log("Done | 成功");
                         document.getElementById("imgur").innerHTML = 'Finalizado!';
                         var lastPart = response.data.link.split("/").pop();
-                        window.location.href = '{% url 'stats:misiongaleria-redirect' mision.id %}/'+lastPart;
+                        window.location.href = '{% url 'stats:misiongaleria-redirect' mision.id user.id %}/'+lastPart;
                     });
                 }
             });

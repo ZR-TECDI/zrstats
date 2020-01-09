@@ -46,8 +46,9 @@ class TestPage(ListView):
 class RedirectMisionGaleria(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         mision = Mision.objects.get(id=self.kwargs['mision_id'])
+        miembro = Miembro.objects.get(id=self.kwargs['miembro_id'])
         url = "https://i.imgur.com/" + self.kwargs['image']
-        MisionGaleria.objects.create(mision=mision, imagen_url=url)
+        MisionGaleria.objects.create(mision=mision, imagen_url=url, miembro=miembro)
         return reverse('stats:mision_detail', kwargs={'pk': self.kwargs['mision_id']})
 
 

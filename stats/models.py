@@ -284,10 +284,6 @@ class Miembro(models.Model):
                 asistidas += 1
         return asistidas
 
-
-
-
-
     # Estas dos funciones crean automáticamente el Miembro cuando un nuevo User se registra
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -491,5 +487,11 @@ class Asistencia(models.Model):
 
 class MisionGaleria(models.Model):
     mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
+    miembro = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, null=True)
     imagen_url = models.URLField(null=False, verbose_name='URL', blank=False)
 
+
+class Wallpaper(models.Model):
+    imagen = models.ImageField(upload_to='wallpaper_img/', blank=True, null=True, verbose_name="Imagen")
+    miembro = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, null=True)
+    activo = models.BooleanField(verbose_name="Activo", blank=False, null=False, default=True)
