@@ -9,7 +9,6 @@
 
 {% block head_extra %}
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'stats/loading-bar/loading-bar.min.css' %}"/>
     <style>
         .body {
             background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
@@ -55,6 +54,70 @@
             width: 32px;
             height: 32px;
             margin-right: 10px;
+        }
+
+        .lds-ellipsis {
+            display: inline-block;
+            position: relative;
+            width: 10px;
+            height: 10px;
+        }
+
+        .lds-ellipsis div {
+            position: absolute;
+            top: 5px;
+            width: 5px;
+            height: 5px;
+            border-radius: 10%;
+            background: #fff;
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .lds-ellipsis div:nth-child(1) {
+            left: 8px;
+            animation: lds-ellipsis1 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(2) {
+            left: 8px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(3) {
+            left: 32px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(4) {
+            left: 56px;
+            animation: lds-ellipsis3 0.6s infinite;
+        }
+
+        @keyframes lds-ellipsis1 {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes lds-ellipsis3 {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(0);
+            }
+        }
+
+        @keyframes lds-ellipsis2 {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(24px, 0);
+            }
         }
     </style>
 {% endblock %}
@@ -194,23 +257,24 @@
                     <hr class="solid short" style="width: 100%">
                     {% if user.is_authenticated %}
                         <div class="panel-group" id="accordion">
-                        <div>
+                            <div>
                             <span class="center-block">
-                            <a class="accordion-toggle collapsed btn btn-default mb-xs mt-xs mr-xs btn btn-xs" data-toggle="collapse"
+                            <a class="accordion-toggle collapsed btn btn-default mb-xs mt-xs mr-xs btn btn-xs"
+                               data-toggle="collapse"
                                data-parent="#accordion" href="#collapse2" aria-expanded="false">
                                 Subir Imagen
                             </a>
                             </span>
-                            <div id="collapse2" class="accordion-body collapse" aria-expanded="false"
-                                 style="height: 0px;">
-                                <div class="panel-body">
-                                    <form id="imgur">
-                                        <input type="file" class="imgur" accept="image/*" data-max-size="5000"/>
-                                    </form>
+                                <div id="collapse2" class="accordion-body collapse" aria-expanded="false"
+                                     style="height: 0px;">
+                                    <div class="panel-body">
+                                        <form id="imgur">
+                                            <input type="file" class="imgur" accept="image/*" data-max-size="5000"/>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endif %}
                 </div>
             </section>
@@ -266,7 +330,6 @@
 {% endblock %}
 
 {% block extra_scripts %}
-    <script src="{% static 'stats/loading-bar/loading-bar.min.js' %}"></script>
     <script src="{% static 'stats/octopus/assets/javascripts/ui-elements/examples.lightbox.js' %}"></script>
 
     <script>
@@ -305,7 +368,7 @@
                         "data": formData,
                         beforeSend: function (xhr) {
                             console.log("Uploading | 上传中");
-                            document.getElementById("imgur").innerHTML = 'Subiendo...';
+                            document.getElementById("imgur").innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
                         },
                         success: function (res) {
                             console.log(res.data.link);
@@ -322,7 +385,7 @@
                         console.log("Done | 成功");
                         document.getElementById("imgur").innerHTML = 'Finalizado!';
                         var lastPart = response.data.link.split("/").pop();
-                        window.location.href = '{% url 'stats:misiongaleria-redirect' mision.id user.id %}/'+lastPart;
+                        window.location.href = '{% url 'stats:misiongaleria-redirect' mision.id user.id %}/' + lastPart;
                     });
                 }
             });
