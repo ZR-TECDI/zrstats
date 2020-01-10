@@ -2,30 +2,31 @@
 {% load static %}
 
 {% block head_extra %}
-<!-- DATATABLES -->
-<link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
-<link rel="stylesheet" href="{% static 'stats/datatables/Buttons-1.5.6/css/buttons.bootstrap.css'%}"/>
-<style>
-.dt-button{
-    display: inline-block;
-    min-width: 10px;
-    padding: 3px 7px;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 1;
-    vertical-align: baseline;
-    white-space: nowrap;
-    text-align: center;
-    background-color: #ebebeb;
-    border-color: #e3e3e3;
-    border-radius: 10px;
-    box-sizing: border-box;
-    text-decoration: none;
-}
-#datatable-tabletools_filter label {
-    float: left;
-}
-</style>
+    <!-- DATATABLES -->
+    <link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/datatables/Buttons-1.5.6/css/buttons.bootstrap.css' %}"/>
+    <style>
+        .dt-button {
+            display: inline-block;
+            min-width: 10px;
+            padding: 3px 7px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1;
+            vertical-align: baseline;
+            white-space: nowrap;
+            text-align: center;
+            background-color: #ebebeb;
+            border-color: #e3e3e3;
+            border-radius: 10px;
+            box-sizing: border-box;
+            text-decoration: none;
+        }
+
+        #datatable-tabletools_filter label {
+            float: left;
+        }
+    </style>
 {% endblock %}
 
 {% block head_title %}
@@ -33,137 +34,266 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>Misiones</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>Misiones</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Misiones de {{ fecha_mes|date:"F" }}
+    Misiones de {{ fecha_mes|date:"F Y" }}
 {% endblock %}
 
 
 {% block content %}
-<section class="panel">
-    <header class="panel-heading">
-    <h2 class="panel-title">Tabla de Asistencia Mensual [{{ fecha_mes|date:"F Y" }}]
-        <ul class="tipo_mision pull-right text-muted" id="filtro_tipo_mision">Filtrar:
-            <li class="badge alert-default">Todo</li>
-            <li class="badge alert-danger">Misión Oficial</li>
-            <li class="badge alert-info">Curso</li>
-            <li class="badge alert-success">Impro</li>
-            <li class="badge alert-warning">Otros</li>
+    <div class="row">
+    <div class="col-lg-8">
+        <span>Filtrar por Unidad</span>
+        <ul class="unidad" id="filtro_unidad">
+            <a href="#" class="all"><li class="btn btn-default">Todas</li></a>
+            {% for unidad in unidades %}
+                <a href="#"><li class="btn btn-default">{{ unidad.abreviatura }}</li></a>
+            {% endfor %}
         </ul>
-    </h2>
-
-    </header>
-    <div class="panel-body">
-        <table class="table table-condensed table-bordered" id="datatable-tabletools" style="width:100%;">
-            <thead>
-            <th style="width: 4%">Miembro</th>
-            {% for mision in misiones_mes %}
-                {% if mision.tipo == "CAMPANA" or mision.tipo == "ENTRENAMIENTO" or mision.tipo == "GALA"  %}
-                    <th class="text-center alert-danger" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
-                    </th>
-                {% elif  mision.tipo == "IMPROVISADA"%}
-                    <th class="text-center alert-success" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
-                    </th>
-                {% elif  mision.tipo == "CURSO"%}
-                    <th class="text-center alert-info" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
-                    </th>
-                {% else  %}
-                    <th class="text-center alert-warning" data-toggle="tooltip" data-placement="top" data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
-                       <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d"}}</a>
-                    </th>
-                {% endif %}
-            {% endfor %}
-            </thead>
-            {% for m in asistencia %}
-                <tr>
-                    <td><a href="{{ m.miembro.get_absolute_url }}">{{ m.miembro }}</a></td>
-                    {% for r in m.asistencia %}
-                        {% if r.asistencia == "FALTA" %}
-                           <td class="danger text-center">
-                               <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                                   <span class="input-group-addon btn-danger">F</span>
-                               </a>
-                           </td>
-                        {% elif r.asistencia == "ASISTE" %}
-                            <td class="success text-center">
-                                <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                                   <span class="input-group-addon btn-success">A</span>
-                               </a>
-                            </td>
-                        {% elif r.asistencia == "TARDE" %}
-                            <td class="warning text-center">
-                                <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
-                                   <span class="input-group-addon btn-warning">T</span>
-                               </a>
-                            </td>
-                        {% else %}
-                            <td>{{ r.asistencia }}</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </table>
     </div>
+    <div class="col-lg-4">
+        <span>Filtrar por Estado</span>
+        <ul class="estado" id="filtro_estado">
+            <a href="#" class="all"><li class="btn btn-default">Todos</li></a>
+            <a href="#"><li class="btn btn-default">Activo</li></a>
+            <a href="#"><li class="btn btn-default">Reserva</li></a>
+            <a href="#"><li class="btn btn-default">Licencia</li></a>
+            <a href="#"><li class="btn btn-default">No Miembro</li></a>
+        </ul>
+    </div>
+</div>
 
-</section>
+    <div class="row">
+        <div class="col-lg-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <div class="btn-group btn-group-justified">
+                                <a href="{% url 'stats:asistencia-mes' fecha_mes_anterior.year fecha_mes_anterior.month %}"
+                                   class="btn btn-primary" role="button"><i
+                                        class="fa fa-angle-double-left"></i> {{ fecha_mes_anterior|date:"F Y" }}</a>
+                                <div class="btn btn-default" role="button">[ {{ fecha_mes|date:"F Y" }} ]</div>
+                                <a href="{% url 'stats:asistencia-mes' fecha_mes_posterior.year fecha_mes_posterior.month %}"
+                                   class="btn btn-primary" role="button">{{ fecha_mes_posterior|date:"F Y" }} <i
+                                        class="fa fa-angle-double-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+                    <div class="row">
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 pull-right">
+                            <ul class="tipo_mision text-muted" id="filtro_tipo_mision">Referencia:
+                                <li class="badge alert-default">Todo</li>
+                                <li class="badge alert-danger">Misión Oficial</li>
+                                <li class="badge alert-info">Curso</li>
+                                <li class="badge alert-success">Impro</li>
+                                <li class="badge alert-warning">Otros</li>
+                            </ul>
+                        </div>
+                    </div>
 
+                </header>
+                <div class="panel-body">
+                    <table class="table table-condensed table-bordered" id="datatable-default" style="width:100%;">
+                        <thead>
+                        <th style="width: 4%">Miembro</th>
+                        <th>Unidad</th>
+                        <th>Estado</th>
+                        {% for mision in misiones_mes %}
+                            {% if mision.tipo == "CAMPANA" or mision.tipo == "ENTRENAMIENTO" or mision.tipo == "GALA" %}
+                                <th class="text-center alert-danger" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                                    <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d" }}</a>
+                                </th>
+                            {% elif  mision.tipo == "IMPROVISADA" %}
+                                <th class="text-center alert-success" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                                    <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d" }}</a>
+                                </th>
+                            {% elif  mision.tipo == "CURSO" %}
+                                <th class="text-center alert-info" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                                    <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d" }}</a>
+                                </th>
+                            {% else %}
+                                <th class="text-center alert-warning" data-toggle="tooltip" data-placement="top"
+                                    data-original-title="{{ mision }} ({{ mision.fecha_finalizada|date:"l" }})">
+                                    <a href="{% url 'stats:mision_detail' mision.id %}">{{ mision.fecha_finalizada|date:"D d" }}</a>
+                                </th>
+                            {% endif %}
+                        {% endfor %}
+                        </thead>
+
+                        {% for m in asistencia %}
+                            <tr>
+                                <td><a href="{{ m.miembro.get_absolute_url }}">{{ m.miembro }}</a></td>
+                                <td style="width:1%" class="text-xs text-muted">{{ m.miembro.unidad.abreviatura }}</td>
+                                <td style="width:1%" class="text-xs text-muted">{{ m.miembro.estado }}</td>
+                                {% for r in m.asistencia %}
+                                    {% if r.asistencia == "FALTA" %}
+                                        <td class="danger text-center">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="input-group-addon btn-danger">F</span>
+                                            </a>
+                                        </td>
+                                    {% elif r.asistencia == "ASISTE" %}
+                                        <td class="success text-center">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="input-group-addon btn-success">A</span>
+                                            </a>
+                                        </td>
+                                    {% elif r.asistencia == "TARDE" %}
+                                        <td class="info text-center">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="input-group-addon btn-info">T</span>
+                                            </a>
+                                        </td>
+                                    {% elif r.asistencia == "JUSTIFICADA" %}
+                                        <td class="warning text-center">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="input-group-addon btn-warning">J</span>
+                                            </a>
+                                        </td>
+                                    {% elif r.asistencia == "RESERVA" %}
+                                        <td class="text-center" style="background-color: lightgrey">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="text-muted">R</span>
+                                            </a>
+                                        </td>
+                                    {% elif r.asistencia == "LICENCIA" %}
+                                        <td class="text-center">
+                                            <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                                <span class="text-muted">L</span>
+                                            </a>
+                                        </td>
+                                    {% else %}
+                                        <td>{{ r.asistencia }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+
+                    </table>
+                </div>
+
+            </section>
+        </div>
+    </div>
 {% endblock %}
 {% block extra_scripts %}
 
-<!-- DATATABLES -->
-<script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
-<script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.jqueryui.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js'%}"></script>
-<script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js'%}"></script>
+    <!-- DATATABLES -->
+    <script src="{% static 'stats/datatables/datatables.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.jqueryui.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js' %}"></script>
 
-<script>
-(function( $ ) {
+    <script>
+        $(document).ready(function () {
+            var table = $('#datatable-default').DataTable({
+                "order": [[1, "asc"]],
+                ordering: false,
+                scrollX: true,
+                pageLength: 50,
+                dom: "<'row' <'col-sm-4'l> <'#botones'<'col-sm-4'B>> <'col-sm-4'<'#busqueda'f>> >" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    {extend: 'colvis', text: 'Mostrar/Ocultar Columnas'},
+                    'copy', 'excel', 'pdf',
+                ],
+            });
 
-	'use strict';
-
-	var datatableInit = function() {
-		var $table = $('#datatable-tabletools');
-
-		$table.dataTable({
-            ordering: false,
-            scrollX: true,
-            pageLength: 50,
-            dom:   "<'row' <'col-sm-4'l> <'#botones'<'col-sm-4'B>> <'col-sm-4'<'#busqueda'f>> >" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            buttons: [
-                { extend: 'colvis', text: 'Mostrar/Ocultar Columnas'},
-                'copy', 'excel', 'pdf',
-            ],
-		});
-
-	};
-
-	$(function() {
-		datatableInit();
-		$('#botones');
-		$('#busqueda').addClass('pull-right');
-	});
+            $('#botones');
 
 
-}).apply( this, [ jQuery ]);
+            $('ul.unidad').on('click', 'a', function () {
+                table
+                    .columns(1)
+                    .search($(this).text())
+                    .draw();
+            });
+
+            $('ul.unidad').on('click', 'a.all', function () {
+                table
+                    .search('')
+                    .columns(1)
+                    .search('')
+                    .draw();
+            });
+
+            $('ul.estado').on( 'click', 'a', function () {
+            table
+                .columns(2)
+                .search( $(this).text())
+                .draw();
+            });
+
+            $('ul.estado').on('click', 'a.all', function() {
+              table
+                .search('')
+                .columns(2)
+                .search('')
+                .draw();
+            });
 
 
+        });
 
-</script>
+        /* COLOREO LOS BOTONES DEL FILTRO UNIDAD */
+        var ul_unidad = document.getElementById("filtro_unidad");
+        var listItems_unidad = ul_unidad.getElementsByTagName("li");
+        for (li of listItems_unidad) {
+            li.addEventListener('click', function () {
+                for (i of listItems_unidad) {
+                    if (i.classList.contains('btn-primary')) {
+                        i.classList.remove('btn-primary');
+                        i.classList.add('btn-default')
+                    }
+                }
+                if (this.classList.contains('btn-primary')) {
+                    this.classList.remove("btn-default");
+                } else {
+                    this.classList.add("btn-primary");
+                }
+            })
+        }
+
+         /* COLOREO LOS BOTONES DEL FILTRO ESTADO */
+        var ul_estado = document.getElementById("filtro_estado");
+        var listItems_estado = ul_estado.getElementsByTagName("li");
+        for(li of listItems_estado){
+          li.addEventListener('click', function(){
+            for(i of listItems_estado){
+                if(i.classList.contains('btn-primary')){
+                    i.classList.remove('btn-primary');
+                    i.classList.add('btn-default')
+                }
+            }
+            if(this.classList.contains('btn-primary')){
+              this.classList.remove("btn-default");
+            } else {
+              this.classList.add("btn-primary");
+            }
+          })
+        }
+    </script>
 {% endblock %}

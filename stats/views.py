@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils import timezone
 import calendar
 from django.core.paginator import Paginator
@@ -216,6 +216,12 @@ class AsistenciaMes(ListView):
         misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
                                              fecha_finalizada__month=month).order_by('fecha_finalizada', 'id')
 
+
+        # Hago calculos de Datetime para obtener mes actual, mes anterior y mes siguiente
+        fecha_mes = datetime(year, month, 1)  # Fecha de la URL
+        ultimo_dia_del_mes_actual = fecha_mes.replace(day=28) + timedelta(days=4)
+        ultimo_dia_del_mes_actual = ultimo_dia_del_mes_actual - timedelta(days=ultimo_dia_del_mes_actual.day)
+
         lista_asistencia = []
         for m in miembros:
             asist_miem = services.asistencia_miembro(m, month, year)
@@ -223,7 +229,11 @@ class AsistenciaMes(ListView):
 
         context['asistencia'] = lista_asistencia
         context['misiones_mes'] = misiones_mes
+        context['unidades'] = Unidad.objects.all()
         context['fecha_mes'] = datetime(year, month, 1)
+        context['fecha_mes_anterior'] = fecha_mes - timedelta(days=1)
+        context['fecha_mes_posterior'] = ultimo_dia_del_mes_actual + timedelta(days=1)
+        context['fecha_mes_actual'] = datetime.today()
         return context
 
 
@@ -390,6 +400,7 @@ class MiembroListView(ListView):
         paises = Nacionalidad.objects.raw(
             'SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
         context['paises'] = paises
+        context['unidades'] = Unidad.objects.all()
         return context
 
 

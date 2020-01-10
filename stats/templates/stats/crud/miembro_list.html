@@ -56,12 +56,9 @@
         <span>Filtrar por Unidad</span>
         <ul class="unidad" id="filtro_unidad">
             <a href="#" class="all"><li class="btn btn-default">Todas</li></a>
-            <a href="#"><li class="btn btn-default">Alto Mando</li></a>
-            <a href="#"><li class="btn btn-default">Caballería</li></a>
-            <a href="#"><li class="btn btn-default">Espectro</li></a>
-            <a href="#"><li class="btn btn-default">Fuerza Aérea</li></a>
-            <a href="#"><li class="btn btn-default">Inf. de Marines</li></a>
-            <a href="#"><li class="btn btn-default">Paracaidistas</li></a>
+            {% for unidad in unidades %}
+                <a href="#"><li class="btn btn-default">{{ unidad.abreviatura }}</li></a>
+            {% endfor %}
         </ul>
     </div>
     <div class="col-lg-6">
@@ -123,7 +120,7 @@
                         <td><a href="{{object.get_absolute_url}}">{{ object.nombre}}</a></td>
                         <td>{{object.rango.rango}}</td>
                         <td><span class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span> {{ object.nacionalidad.pais }}</td>
-                        <td><a href="{{ object.unidad.get_absolute_url }}">{{ object.unidad.nombre}}</a></td>
+                        <td><a href="{{ object.unidad.get_absolute_url }}">{{ object.unidad.abreviatura}}</a></td>
                         <td>{{ object.peloton }}</td>
                         <td>{{ object.escuadra }}</td>
                         <td>{{ object.rol }}</td>

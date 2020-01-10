@@ -68,7 +68,7 @@
                 <li>
                     <a href="{% url 'stats:calendario' %}">
                         <i class="fa fa-calendar-o" aria-hidden="true"></i>
-                        <span>Cal.</span>
+                        <span>Calendario</span>
                     </a>
                 </li>
                 <li>
@@ -77,6 +77,8 @@
                         <span> Misión</span>
                     </a>
                 </li>
+                <!-- Comento CRUDS , Demo y Test Page -->
+                <!--
                 <li>
                     <a href="https://colorlib.com/polygon/octopus/index.html">
                         <i class="fa fa-steam" aria-hidden="true"></i>
@@ -106,6 +108,7 @@
                         <li><a href="{% url 'stats:unidad_list' %}">Unidad</a></li>
                     </ul>
                 </li>
+                -->
             </ul>
             {% if user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
@@ -197,12 +200,7 @@
                                     <span>Home</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="https://colorlib.com/polygon/octopus/index.html">
-                                    <i class="fa fa-globe" aria-hidden="true"></i>
-                                    <span>Template Demo Page</span>
-                                </a>
-                            </li>
+
                             <li>
                                 <a href="{% url 'stats:crear-mision' %}">
                                     <i class="fa fa-plus" aria-hidden="true"></i>
@@ -215,10 +213,17 @@
                                     <span>Calendario</span>
                                 </a>
                             </li>
+                            <!--
                             <li>
                                 <a href="{% url 'stats:test-page' %}">
                                     <i class="fa fa-wheelchair" aria-hidden="true"></i>
                                     <span>Test Page</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://colorlib.com/polygon/octopus/index.html">
+                                    <i class="fa fa-globe" aria-hidden="true"></i>
+                                    <span>Template Demo Page</span>
                                 </a>
                             </li>
                             <li class="nav-parent">
@@ -256,6 +261,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            -->
                         </ul>
                     </nav>
 
@@ -269,117 +275,46 @@
 
 
 
-        {% if hide_title_bar %}
-            {% if hide_left_bar %}
-                <section role="main" class="content-body" style="left: 0; margin-left: 0">
-            {% else %}
-                <section role="main" class="content-body">
-            {% endif %}
+    {% if hide_title_bar %}
+        {% if hide_left_bar %}
+            <section role="main" class="content-body" style="left: 0; margin-left: 0">
         {% else %}
-            {% if hide_left_bar %}
+            <section role="main" class="content-body">
+        {% endif %}
+    {% else %}
+        {% if hide_left_bar %}
             <section role="main" class="content-body" style="left: 0; margin-left: 0">
             <header class="page-header" style="left: 0">
-            {% else %}
+        {% else %}
             <section role="main" class="content-body">
             <header class="page-header">
-            {% endif %}
-                <h2 class="zrPageHeaders">{% block titulo_pagina %}HOME{% endblock %}</h2>
-
-                <div class="right-wrapper pull-right">
-                    {% block breadcrumbs %}
-                        <ol class="breadcrumbs">
-                            <li>
-                                <a href="{% url 'stats:index' %}">
-                                    <i class="fa fa-home"></i>
-                                </a>
-                            </li>
-                            <li><span>Inicio</span></li>
-                        </ol>
-                    {% endblock %}
-                    <a class="sidebar-right-toggle" data-open="sidebar-right"><i class="fa fa-chevron-left"></i></a>
-                </div>
-            </header>
         {% endif %}
+    <h2 class="zrPageHeaders">{% block titulo_pagina %}HOME{% endblock %}</h2>
 
-
-        <!-- start: page -->
-        {% block content %}
-            Hey, no deberías ver esto!
+    <div class="right-wrapper pull-right" style="margin-right: 10px">
+        {% block breadcrumbs %}
+            <ol class="breadcrumbs">
+                <li>
+                    <a href="{% url 'stats:index' %}">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+                <li><span>Inicio</span></li>
+            </ol>
         {% endblock %}
-        <!-- end: page -->
+    </div>
+    </header>
+    {% endif %}
+
+
+    <!-- start: page -->
+    {% block content %}
+        Hey, no deberías ver esto!
+    {% endblock %}
+    <!-- end: page -->
 
     </section>
     </div>
-
-    {% block sidebar_right %}
-        <aside id="sidebar-right" class="sidebar-right">
-            <div class="nano">
-                <div class="nano-content">
-                    <a href="#" class="mobile-close visible-xs">
-                        Collapse <i class="fa fa-chevron-right"></i>
-                    </a>
-
-                    <div class="sidebar-right-wrapper">
-
-                        <div class="sidebar-widget widget-calendar">
-                            <h6>Upcoming Tasks</h6>
-                            <div data-plugin-datepicker data-plugin-skin="dark"></div>
-
-                            <ul>
-                                <li>
-                                    <time datetime="2014-04-19T00:00+00:00">04/19/2014</time>
-                                    <span>Company Meeting</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="sidebar-widget widget-friends">
-                            <h6>Friends</h6>
-                            <ul>
-                                <li class="status-online">
-                                    <figure class="profile-picture">
-                                        <img src="" alt="">
-                                    </figure>
-                                    <div class="profile-info">
-                                        <span class="name">Joseph Doe Junior</span>
-                                        <span class="title">Hey, how are you?</span>
-                                    </div>
-                                </li>
-                                <li class="status-online">
-                                    <figure class="profile-picture">
-                                        <img src="" alt="">
-                                    </figure>
-                                    <div class="profile-info">
-                                        <span class="name">Joseph Doe Junior</span>
-                                        <span class="title">Hey, how are you?</span>
-                                    </div>
-                                </li>
-                                <li class="status-offline">
-                                    <figure class="profile-picture">
-                                        <img src="" alt="">
-                                    </figure>
-                                    <div class="profile-info">
-                                        <span class="name">Joseph Doe Junior</span>
-                                        <span class="title">Hey, how are you?</span>
-                                    </div>
-                                </li>
-                                <li class="status-offline">
-                                    <figure class="profile-picture">
-                                        <img src="" alt="">
-                                    </figure>
-                                    <div class="profile-info">
-                                        <span class="name">Joseph Doe Junior</span>
-                                        <span class="title">Hey, how are you?</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </aside>
-    {% endblock %}
 </section>
 <!-- JQUERY -->
 <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>-->

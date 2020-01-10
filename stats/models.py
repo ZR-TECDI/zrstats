@@ -495,3 +495,8 @@ class Wallpaper(models.Model):
     imagen = models.ImageField(upload_to='wallpaper_img/', blank=True, null=True, verbose_name="Imagen")
     miembro = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, null=True)
     activo = models.BooleanField(verbose_name="Activo", blank=False, null=False, default=True)
+
+
+class Notificacion(models.Model):
+    mensaje = models.CharField(max_length=140, verbose_name="Mensaje", blank=True, null=True)
+    fecha = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha")

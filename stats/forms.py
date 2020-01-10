@@ -142,7 +142,7 @@ class MiembroForm(forms.ModelForm):
 class AsistenciaForm(forms.ModelForm):
     class Meta:
         model = Asistencia
-        fields = ['fecha', 'tiempo_de_sesion', 'requiere_atencion', 'mision', 'miembro']
+        fields = [ 'asistencia', 'tiempo_de_sesion', 'requiere_atencion']
 
 
 class MisionGaleriaForm(forms.ModelForm):
