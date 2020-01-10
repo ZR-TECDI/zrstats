@@ -237,11 +237,6 @@ class AsistenciaMes(ListView):
         return context
 
 
-class AsistenciaMiembro(ListView):
-    template_name = 'stats/asistencia_miembro.html'
-    model = Miembro
-
-
 def asistencia_datatables_ajax(request, year, month):
     miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
     misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
