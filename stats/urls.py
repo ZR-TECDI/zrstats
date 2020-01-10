@@ -42,6 +42,7 @@ urlpatterns = [
     # /stats/asistencia_mes_datatables/
     path('asistencia_mes_datatables/<int:year>/<int:month>', views.asistencia_datatables_ajax, name='asistencia_mes_datatables'),
 
+
     # /stats/misiongaleria-redirect/<int:mision_id>/<int:miembro_id>/<str:image>
     path('misiongaleria-redirect/<int:mision_id>/<int:miembro_id>', views.RedirectMisionGaleria.as_view(), name='misiongaleria-redirect'),
     path('misiongaleria-redirect/<int:mision_id>/<int:miembro_id>/<str:image>', views.RedirectMisionGaleria.as_view(), name='misiongaleria-redirect'),
