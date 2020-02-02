@@ -307,7 +307,7 @@ class DatoMision():
 
 if __name__ == "__main__":
     """local test"""
-    reporte = RPT("D:/github/corp-0/zrstats/stats/logics/arma3server_x64_2020-01-21_15-56-09.rpt")
+    reporte = RPT("stats/logics/reporte_prueba.rpt")
 
     from pprint import pprint
 
