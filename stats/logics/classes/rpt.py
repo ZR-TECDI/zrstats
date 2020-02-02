@@ -295,13 +295,13 @@ class DatoMision():
                 self.autor = valor
             elif clave == Cons.DESC_MISION.value:
                 self.desc = valor
-            elif clave == Cons.MAPA_MISION:
+            elif clave == Cons.MAPA_MISION.value:
                 self.mapa = valor
-            elif clave == Cons.ES_OFICIAL:
+            elif clave == Cons.ES_OFICIAL.value:
                 self.oficial = bool(valor)
-            elif clave == Cons.TIPO_MISION:
+            elif clave == Cons.TIPO_MISION.value:
                 self.tipo = valor
-            elif clave == Cons.NOMBRE_CAMPA:
+            elif clave == Cons.NOMBRE_CAMPA.value:
                 self.nombre_campa = valor
 
 
