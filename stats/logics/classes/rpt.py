@@ -23,12 +23,21 @@ class Cons(Enum):
     CONECTADO = "conectado"
     DESCONECTADO = "desconectado"
 
+    NOMBRE_MISION = "NOMBRE_MISION"
+    DESC_MISION = "DESC_MISION"
+    AUTOR_MISION = "AUTOR_MISION"
+    TIPO_MISION = "TIPO_MISION"
+    NOMBRE_CAMPA = "NOMBRE_CAMPA"
+    ES_OFICIAL = "ES_OFICIAL"
+    MAPA_MISION = "MAPA_MISION"
+
 
 class RPT():
     fecha = None
     data_raw = None
     data_mision = None
     data_asistencia = []
+    data_mision = []
     data_estadistica = []
 
     sesiones_asistencia = dict()
@@ -43,7 +52,6 @@ class RPT():
         "mapa":"",
         "oficial":False,
         "tipo":"",
-        "campana":None,
         "nombre_campa":"",
         "fecha": "",
         "asistencias":[],
@@ -61,7 +69,7 @@ class RPT():
         self.sesiones_asistencia = dict()
 
         self.leer_rpt_asistencia()
-        self.calcular_asistencia()
+        self.leer_rpt_mision()
 
     def abrir_archivo(self, archivo):
         """Abre un archivo y devuelve su contenido"""
@@ -89,12 +97,12 @@ class RPT():
             asistencia = asistencia.split(" ") # ejemplo [2020/01/21,19:37:54,"ZRASISTENCIA:,SgtM.Tano,conectado]
             asistencia.pop(2) #elimina elemento "ZRASISTENCIA" de la lista
 
-            fecha = asistencia[0]
+            fecha = asistencia[0].strip(",")
             hora = asistencia[1]
             jugador = asistencia[2]
             evento = (asistencia[3])
 
-            asistencia[0] = fecha.strip(",")
+            asistencia[0] = fecha
             asistencia[1] = self.ajuste_horario(hora, self.ajuste)
 
             asistencias.append(asistencia)
@@ -104,20 +112,31 @@ class RPT():
                 jugador = evento[2]
                 self.sesiones_asistencia[jugador].append([evento[0], evento[1], (evento[3]).replace('"', "")])
 
+                if evento == asistencias[-1]:
+                    self.fecha = fecha
+
             #Eliminando eventos del jugador __SERVER__
             self.sesiones_asistencia.pop("__SERVER__", None)
 
-    def calcular_asistencia(self):
-        """Toma los eventos de conexión y desconexión y calcula la asistencia del jugador."""
         for jugador, eventos in self.sesiones_asistencia.items():
             asistencia = Asistencia(jugador, eventos)
             self.data_asistencia.append(asistencia.dicc())
 
-    def leer_rpt_estadistica(self):
-        return None
+        self.data_final["asistencias"] = self.data_asistencia
 
-    def generar_data_final(self):
-        return None
+    def leer_rpt_mision(self):
+        # Busca en el rpt todas las referencias a ZRASISTENCIA
+        busqueda = re.findall('^.*"ZRSTATS.*$', self.data_raw, re.M)
+
+        datos_mision = DatoMision(busqueda)
+        self.data_final["mision"] = datos_mision.mision
+        self.data_final["autor"] = datos_mision.autor
+        self.data_final["desc"] = datos_mision.desc
+        self.data_final["mapa"] = datos_mision.mapa
+        self.data_final["oficial"] = datos_mision.oficial
+        self.data_final["tipo"] = datos_mision.tipo
+        self.data_final["nombre_campa"] = datos_mision.nombre_campa
+        self.data_final["fecha"] = self.fecha
 
     def ajuste_horario(self, hora, ajuste:str):
         """Ajusta la hora del reporte para coincidir con la hora de Venezuela.
@@ -142,22 +161,12 @@ class RPT():
 
         return hora_venez
 
-    def setear_fecha_mision(self):
-        ultima_desconexion = self.sesiones_asistencia[-1]
-        hora = ultima_desconexion[1]
-        if hora.startswith("0"):
-            ultima_desconexion = self.sesiones_asistencia[-2]
-
-        self.fecha = ultima_desconexion[0]
-
 class Asistencia():
     """Clase que manipula y procesa la información parseada desde el RPT y
     genera el diccionario con información de asistencia
     :params
         jugador:str -- Nombre del jugador en formato rango.nombre
         eventos:list -- Lista de listas con cada evento de conexión y desconexión
-
-        retorna diccionario de jugador
     """
 
     hora_ingreso = timedelta(hours=21, minutes=0, seconds=0)
@@ -252,10 +261,54 @@ class Asistencia():
 
         return diccionario_jugador
 
+class DatoMision():
+    """Clase que manipula y procesa la información parseada desde el RPT y
+    devuelve datos de misión.
+    :params
+        busqueda:list -- lista con el resultado de buscar ZRSTATS
+    """
+    mision = str()
+    autor = str()
+    desc = str()
+    mapa = None
+    oficial = False
+    tipo = "OTRO"
+    nombre_campa = None
+    busqueda = list()
+
+    def __init__(self, busqueda:list):
+        self.busqueda = busqueda
+
+        self.parsear_claves()
+
+    def parsear_claves(self):
+        for linea in self.busqueda:
+            linea = linea.split(" ")
+            clave = linea[3]
+            valor = linea[4:]
+            valor = " ".join(valor)
+            valor = valor.strip('"')
+
+            if clave == Cons.NOMBRE_MISION.value:
+                self.mision = valor
+            elif clave == Cons.AUTOR_MISION.value:
+                self.autor = valor
+            elif clave == Cons.DESC_MISION.value:
+                self.desc = valor
+            elif clave == Cons.MAPA_MISION:
+                self.mapa = valor
+            elif clave == Cons.ES_OFICIAL:
+                self.oficial = bool(valor)
+            elif clave == Cons.TIPO_MISION:
+                self.tipo = valor
+            elif clave == Cons.NOMBRE_CAMPA:
+                self.nombre_campa = valor
+
+
 if __name__ == "__main__":
     """local test"""
     reporte = RPT("D:/github/corp-0/zrstats/stats/logics/arma3server_x64_2020-01-21_15-56-09.rpt")
 
     from pprint import pprint
 
-    pprint(reporte.data_asistencia)
+    pprint(reporte.data_final)
