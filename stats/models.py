@@ -374,7 +374,7 @@ class Mision(models.Model):
     descripcion = models.TextField(verbose_name="Descripción (pública)", blank=True, null=True)
     notas_privadas = models.TextField(verbose_name="Notas (Privadas)", blank=True, null=True)
     notas_editor = models.TextField(verbose_name="Apuntes para los editores", blank=True, null=True)
-    imagen = models.ImageField(upload_to='mision_logo/', blank=True, null=True, verbose_name="Imagen")
+    imagen = models.ImageField(upload_to='mision_logo/', blank=True, null=True, verbose_name="Imagen", default="defaults/mision_default.png")
     briefing = models.FileField(upload_to='briefings/', blank=True, null=True, verbose_name="Briefing")
     #  Choices = ('Lo que se guarda', 'Lo que se muestra')
     MAPA_MISION_CHOICES = (
