@@ -27,8 +27,7 @@ def crear_unidades():
         'echo': ['Espectro', 'ECHO', 'http://www.zrarmy.com/images/SPECTRO.png'],
         'cab': ['Caballería', 'CAB', 'http://www.zrarmy.com/images/BLINDADOS.png'],
         'fazr': ['Fuerza Aérea', 'FAZR', 'http://www.zrarmy.com/images/FAZR.png'],
-        'asp': ['Aspirantes', 'ASP', 'http://www.zrarmy.com/images/INFANTERIA.png'],
-        'zr': ['ZR', 'ZR', 'http://www.zrarmy.com/images/ZonaRoja_Logo_New_TRANS.png']
+        'asp': ['Aspirantes', 'ASP', 'http://www.zrarmy.com/images/INFANTERIA.png']
     }
 
     print('Creando Unidades...')
