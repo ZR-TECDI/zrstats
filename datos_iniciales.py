@@ -22,11 +22,13 @@ def borra_todo():
 def crear_unidades():
     unidades_dict = {
         'altm': ['Alto Mando', 'ALTM', 'http://www.zrarmy.com/images/Estrella_Dorada2.png'],
-        'infm': ['Inf. de Marines', 'IMZR', 'http://www.zrarmy.com/images/INFANTERIA.png'],
+        'infm': ['Inf. de Marina', 'IMZR', 'http://www.zrarmy.com/images/INFANTERIA.png'],
         'paraca': ['Paracaidistas', 'PAR', 'http://www.zrarmy.com/images/PARACAIDISTAS.png'],
         'echo': ['Espectro', 'ECHO', 'http://www.zrarmy.com/images/SPECTRO.png'],
         'cab': ['Caballería', 'CAB', 'http://www.zrarmy.com/images/BLINDADOS.png'],
         'fazr': ['Fuerza Aérea', 'FAZR', 'http://www.zrarmy.com/images/FAZR.png'],
+        'asp': ['Aspirantes', 'ASP', 'http://www.zrarmy.com/images/INFANTERIA.png'],
+        'zr': ['ZR', 'ZR', 'http://www.zrarmy.com/images/ZonaRoja_Logo_New_TRANS.png']
     }
 
     print('Creando Unidades...')
@@ -56,7 +58,8 @@ def crear_rango():
         'dis': ['Distinguido', 'Dis', 9],
         'inf': ['Infante', 'Inf', 10],
         'rct': ['Recluta', 'Rct', 11],
-        'asp': ['Aspirante', 'Asp', 12]
+        'asp': ['Aspirante', 'Asp', 12],
+        'zr': ['ZR', 'ZR', 13]
     }
 
     print('Creando rangos...')
