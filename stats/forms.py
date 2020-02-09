@@ -1,5 +1,5 @@
 from django import forms
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, Campana
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, Campana, MisionGaleria
 from django_select2.forms import HeavySelect2MultipleWidget, HeavySelect2Widget, ModelSelect2MultipleWidget, \
     ModelSelect2TagWidget, ModelSelect2Widget, Select2MultipleWidget, Select2Widget
 from bootstrap_datepicker_plus import DatePickerInput
@@ -142,5 +142,11 @@ class MiembroForm(forms.ModelForm):
 class AsistenciaForm(forms.ModelForm):
     class Meta:
         model = Asistencia
-        fields = ['fecha', 'tiempo_de_sesion', 'requiere_atencion', 'mision', 'miembro']
+        fields = [ 'asistencia', 'tiempo_de_sesion', 'requiere_atencion']
+
+
+class MisionGaleriaForm(forms.ModelForm):
+    class Meta:
+        model = MisionGaleria
+        fields = ['mision', 'imagen_url']
 

@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block head_title %}
-    Asistencia
+    Asistencia de {{ object.miembro }} en {{ object.mision.nombre }}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -19,11 +19,11 @@
 {% endblock %}
 
 {% block titulo_pagina %}
-    Asistencia
+    Asistencia de {{ object.miembro }} en {{ object.mision.nombre }}
 {% endblock %}
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:asistencia_list' %}">Asistencia Listing</a></p>
+<p><a class="btn btn-default" href="{% url 'stats:asistencia_detail' object.id %}">Volver</a></p>
     <div class="row">
         <div class="col-lg-2">
             <form method="post">

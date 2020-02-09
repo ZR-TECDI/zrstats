@@ -1,44 +1,318 @@
 {% extends "stats/base.html" %}
 {% load static %}
+{% load template_utils %}
 
 {% block head_title %}
-    Miembro
+    Miembro {{ object.nombre }}
 {% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>CRUDs</span></li>
-    <li><span>Miembro</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>CRUDs</span></li>
+        <li><a href="{% url 'stats:miembro_list' %}"><span>Miembros</span></a></li>
+        <li><span class="text-muted">{{ object }}</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Miembro
+    Miembro {{ object }}
 {% endblock %}
 
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:miembro_list' %}">Miembro Listing</a></p>
-<table class="table">
-<tr><td>user</td><td>{{ object.user }}</td></tr>
-<tr><td>email</td><td>{{ object.email }}</td></tr>
-<tr><td>rango</td><td>{{ object.rango }}</td></tr>
-<tr><td>nombre</td><td>{{ object.nombre }}</td></tr>
-<tr><td>clase1</td><td>{{ object.clase1 }}</td></tr>
-<tr><td>clase2</td><td>{{ object.clase2 }}</td></tr>
-<tr><td>nacionalidad</td><td>{{ object.nacionalidad }}</td></tr>
-<tr><td>estado</td><td>{{ object.estado }}</td></tr>
-<tr><td>unidad</td><td>{{ object.unidad }}</td></tr>
-<tr><td>peloton</td><td>{{ object.peloton }}</td></tr>
-<tr><td>escuadra</td><td>{{ object.escuadra }}</td></tr>
-<tr><td>rol</td><td>{{ object.rol }}</td></tr>
-<tr><td>avatar</td><td>{{ object.avatar }}</td></tr>
-</table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Miembro</a>
+    <p><a class="btn btn-default" href="{% url 'stats:miembro_list' %}">Listar Miembros</a>
 
+    <div class="row">
+        <div class="col-lg-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Cuenta</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table mb-none">
+                            <thead>
+                            <th></th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Usuario</td>
+                                <td>{{ object.user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>{{ object.user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td>Activo</td>
+                                <td>{{ object.user.is_active|boolean_icon }}</td>
+                            </tr>
+                            <tr>
+                                <td>Es Staff</td>
+                                <td>{{ object.user.is_staff|boolean_icon }}</td>
+                            </tr>
+                            <tr>
+                                <td>Es Superusuario</td>
+                                <td>{{ object.user.is_superuser|boolean_icon }}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de Alta</td>
+                                <td>{{ object.user.date_joined }}</td>
+                            </tr>
+                            <tr>
+                                <td>Último Ingreso</td>
+                                <td>{{ object.user.last_login }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    <div class="col-lg-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Info. Elemento</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table mb-none">
+                            <thead>
+                            <th></th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Nombre</td>
+                                <td>{{ object.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rango</td>
+                                <td>{{ object.rango.rango }}</td>
+                            </tr>
+                            <tr>
+                                <td>Unidad</td>
+                                <td>{{ object.unidad.nombre }}</td>
+                            </tr>
+                            <tr>
+                                <td>Rol</td>
+                                <td>{{ object.rol }}</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 1</td>
+                                <td>{{ object.clase1 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Clase 2</td>
+                                <td>{{ object.clase2 }}</td>
+                            </tr>
+                            <tr>
+                                <td>Pelotón</td>
+                                <td>{{ object.peloton }}</td>
+                            </tr>
+                            <tr>
+                                <td>Escuadra</td>
+                                <td>{{ object.escuadra }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Asistencia de {{ object }}</h2>
+                </header>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped mb-none" id="datatable-default"
+                           style="width: 100%">
+                        <thead>
+                        <tr>
+                            <th>Misión</th>
+                            <th>Fecha</th>
+                            <th>Asistencia</th>
+                            <th>Requiere Atención</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for a in object.asistencia_set.all %}
+                            <tr>
+                                <td>{{ a.mision.nombre }}</td>
+                                <td>{{ a.fecha }}</td>
+                                {% if a.asistencia == "FALTA" %}
+                                    <td class="danger text-center">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="input-group-addon btn-danger">FALTA</span>
+                                        </a>
+                                    </td>
+                                {% elif a.asistencia == "ASISTE" %}
+                                    <td class="success text-center">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="input-group-addon btn-success">ASISTE</span>
+                                        </a>
+                                    </td>
+                                {% elif a.asistencia == "TARDE" %}
+                                    <td class="info text-center">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="input-group-addon btn-info">TARDE</span>
+                                        </a>
+                                    </td>
+                                {% elif a.asistencia == "JUSTIFICADA" %}
+                                    <td class="warning text-center">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="input-group-addon btn-warning">JUSTIFICADA</span>
+                                        </a>
+                                    </td>
+                                {% elif a.asistencia == "RESERVA" %}
+                                    <td class="text-center" style="background-color: lightgrey">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="text-muted">RESERVA</span>
+                                        </a>
+                                    </td>
+                                {% elif a.asistencia == "LICENCIA" %}
+                                    <td class="text-center">
+                                        <a href="{{ r.get_absolute_url }}" style="text-decoration:none">
+                                            <span class="text-muted">LICENCIA</span>
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    <td>{{ a.asistencia }}</td>
+                                {% endif %}
+                                <td class="text-center"> {{ a.requiere_atencion|boolean_icon }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-6">
+            <section class="panel">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                        <a href="#" class="fa fa-times"></a>
+                    </div>
+                    <h2 class="panel-title">Info. Perfil</h2>
+                </header>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table mb-none">
+                            <thead>
+                            <th></th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Nacionalidad</td>
+                                <td>{{ object.nacionalidad.abreviatura|flag_icon }} {{ object.nacionalidad }}</td>
+                            </tr>
+                            <tr>
+                                <td>Region</td>
+                                <td>{{ object.region|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mensaje de Perfil</td>
+                                <td>{{ object.mensaje_perfil|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Facebook</td>
+                                <td>{{ object.redes_facebook|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Instagram</td>
+                                <td>{{ object.redes_instagram|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Steam</td>
+                                <td>{{ object.redes_steam|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Twitch</td>
+                                <td>{{ object.redes_twitch|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Whatsapp</td>
+                                <td>{{ object.redes_whatsapp|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>YouTube</td>
+                                <td>{{ object.redes_youtube|default_if_none:"N/A" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Avatar</td>
+                                {% if object.avatar %}
+                                    <td><img src="{{ object.avatar.url }}"></td>
+                                {% else %}
+                                    <td><img src="{% static 'stats/img/unnamed_soldier.png' %}"></td>
+                                {% endif %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <a class="btn btn-primary" href="{{ object.get_update_url }}">Edit Miembro</a>
+
+{% endblock %}
+
+{% block extra_scripts %}
+
+    <!-- DATATABLES -->
+    <script src="{% static 'stats/datatables/datatables.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.jqueryui.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'stats/datatables/Buttons-1.5.6/js/buttons.bootstrap.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            var table = $('#datatable-default').DataTable({
+                "order": [[1, "asc"]],
+                ordering: false,
+                scrollX: true,
+                pageLength: 10,
+                dom: "<'row' <'col-sm-4'l> <'#botones'<'col-sm-4'B>> <'col-sm-4'<'#busqueda'f>> >" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    {extend: 'colvis', text: 'Columnas'},
+                    'copy', 'excel', 'pdf',
+                ],
+            });
+
+            $('#botones');
+            $('#busqueda').addClass('pull-right');
+        });
+
+    </script>
 {% endblock %}

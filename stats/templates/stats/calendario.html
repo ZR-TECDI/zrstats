@@ -5,10 +5,6 @@
     <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/core/main.css' %}" />
     <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/daygrid/main.css' %}" />
     <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/bootstrap/main.css' %}" />
-
-
-
-
 {% endblock %}
 
 {% block head_title %}
@@ -107,6 +103,7 @@
         var calendarEl = document.getElementById('calendar');
 
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            height: 'auto',
             plugins: [ 'dayGrid','bootstrap' ],
             defaultView: 'dayGridMonth',
             locale: 'esLocale',

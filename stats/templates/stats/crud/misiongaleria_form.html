@@ -1,0 +1,89 @@
+{% extends "stats/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}
+    Galería
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>CRUDs</span></li>
+        <li><span>Galería</span></li>
+    </ol>
+{% endblock %}
+
+{% block titulo_pagina %}
+    Galería
+{% endblock %}
+
+{% block content %}
+    <p><a class="btn btn-default" href="{% url 'stats:misiongaleria_list' %}">Galería</a></p>
+    <div class="row">
+        <div class="col-lg-2">
+            <form id="imgur">
+                <input type="file" class="imgur" accept="image/*" data-max-size="5000"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    $("document").ready(function () {
+
+        $('input[type=file]').on("change", function () {
+
+            var $files = $(this).get(0).files;
+
+            if ($files.length) {
+
+                // Reject big files
+                if ($files[0].size > $(this).data("max-size") * 1024) {
+                    console.log("Please select a smaller file");
+                    return false;
+                }
+
+                // Replace ctrlq with your own API key
+                var apiUrl = 'https://api.imgur.com/3/image';
+                var apiKey = 'c04e04b4df929f4';
+
+                var formData = new FormData();
+                formData.append("image", $files[0]);
+
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": apiUrl,
+                    "method": "POST",
+                    "datatype": "json",
+                    "headers": {
+                        "Authorization": "Client-ID " + apiKey
+                    },
+                    "processData": false,
+                    "contentType": false,
+                    "data": formData,
+                    beforeSend: function (xhr) {
+                        console.log("Uploading | 上传中");
+                    },
+                    success: function (res) {
+                        console.log(res.data.link);
+                        $('body').append('<img src="' + res.data.link + '" />');
+                    },
+                    error: function () {
+                        alert("Failed | 上传失败");
+                    }
+                }
+                $.ajax(settings).done(function (response) {
+                    console.log("Done | 成功");
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

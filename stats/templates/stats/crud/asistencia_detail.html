@@ -1,33 +1,94 @@
 {% extends "stats/base.html" %}
 {% load static %}
+{% load template_utils %}
 
 {% block head_title %}
-    Asistencia
+    Asistencia de {{ object.miembro }} en {{ object.mision.nombre }}
 {% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>CRUDs</span></li>
-    <li><span>Asistencia</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>CRUDs</span></li>
+        <li><span>Asistencia</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Asistencia
+    Asistencia de {{ object.miembro }} en {{ object.mision.nombre }} ({{ object.mision.fecha_finalizada }})
 {% endblock %}
 
 {% block content %}
-<p><a class="btn btn-default" href="{% url 'stats:asistencia_list' %}">Asistencia Listing</a></p>
-<table class="table">
-    <tr><td>fecha</td><td>{{ object.fecha }}</td></tr>
-    <tr><td>tiempo_de_sesion</td><td>{{ object.tiempo_de_sesion }}</td></tr>
-    <tr><td>requiere_atencion</td><td>{{ object.requiere_atencion }}</td></tr>
-</table>
-<a class="btn btn-primary" href="{{object.get_update_url}}">Edit Asistencia</a>
+    <p><a class="btn btn-default" href="{% url 'stats:asistencia-mes' object.fecha.year object.fecha.month %}">Volver</a></p>
+    <div class="row">
+        <div class="col-lg-4">
+            <table class="table">
+                <tr>
+                    <td>Miembro</td>
+                    <td><b>{{ object.miembro }}</b></td>
+                </tr>
+                <tr>
+                    <td>Fecha</td>
+                    <td><b>{{ object.fecha }}</b></td>
+                </tr>
+                <tr>
+                    <td>Asistencia</td>
+                    {% if object.asistencia == "FALTA" %}
+                        <td class="danger text-center">
+                            <span class="input-group-addon btn-danger">FALTA</span>
+                        </td>
+                    {% elif object.asistencia == "ASISTE" %}
+                        <td class="success text-center">
+                            <span class="input-group-addon btn-success">ASISTE</span>
+                        </td>
+                    {% elif object.asistencia == "TARDE" %}
+                        <td class="info text-center">
+                            <span class="input-group-addon btn-info">TARDE</span>
+                        </td>
+                    {% elif object.asistencia == "JUSTIFICADA" %}
+                        <td class="warning text-center">
+                            <span class="input-group-addon btn-warning">JUSTIFICADA</span>
+                        </td>
+                    {% elif object.asistencia == "RESERVA" %}
+                        <td class="text-center" style="background-color: lightgrey">
+                            <span class="text-muted">RESERVA</span>
+                        </td>
+                    {% elif object.asistencia == "LICENCIA" %}
+                        <td class="text-center">
+                            <span class="text-muted">LICENCIA</span>
+                        </td>
+                    {% else %}
+                        <td>{{ object.asistencia }}</td>
+                    {% endif %}
+
+                </tr>
+                <tr>
+                    <td>Misión</td>
+                    <td><b>{{ object.mision.nombre }}</b></td>
+                </tr>
+                <tr>
+                    <td>Misión Tipo</td>
+                    <td><b>{{ object.mision.tipo }}</b></td>
+                </tr>
+                <tr>
+                    <td>Campaña</td>
+                    <td><b>{{ object.mision.campana.nombre }}</b></td>
+                </tr>
+                <tr>
+                    <td>Tiempo de Sesión</td>
+                    <td><b>{{ object.tiempo_de_sesion }}</b></td>
+                </tr>
+                <tr>
+                    <td>Requiere Atención</td>
+                    <td><b>{{ object.requiere_atencion|boolean_icon }}</b></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a class="btn btn-primary" href="{{ object.get_update_url }}">Editar Asistencia</a>
 
 {% endblock %}

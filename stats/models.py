@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django.urls import reverse
 from django.db.models.signals import post_save, post_init
+from datetime import date, datetime, time, timedelta
+from django.db.models import Q
 
 
 class Clase(models.Model):
@@ -36,6 +38,7 @@ class Rango(models.Model):
     rango = models.CharField(max_length=20, verbose_name="Rango", blank=False, null=False)
     abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
     orden = models.IntegerField(verbose_name="Orden", blank=False, null=False, default=0)
+    imagen = models.ImageField(upload_to='rango_img/', blank=True, null=True, verbose_name="Imagen")
     objects = RangoManager()
 
     def __str__(self):
@@ -97,6 +100,7 @@ class Rol(models.Model):
 class Unidad(models.Model):
     nombre = models.CharField(max_length=20, verbose_name="Unidad", blank=False, null=False)
     abreviatura = models.CharField(max_length=10, verbose_name="Abrev.", blank=False, null=False)
+    imagen = models.ImageField(upload_to='unidad_img/', blank=True, null=True, verbose_name="Imagen")
 
     def __str__(self):
         return self.nombre
@@ -168,6 +172,14 @@ class Miembro(models.Model):
                                blank=True, null=True, related_name='clase2')
     nacionalidad = models.ForeignKey(Nacionalidad, verbose_name="Nacionalidad", on_delete=models.DO_NOTHING,
                                      blank=True, null=True)
+    region = models.CharField(max_length=20, verbose_name="Región", blank=True, null=True)
+    mensaje_perfil = models.CharField(max_length=280, verbose_name="Mensaje de Perfil", blank=True, null=True)
+    redes_facebook = models.CharField(max_length=140, verbose_name="Perfil de Facebook", blank=True, null=True)
+    redes_steam = models.CharField(max_length=140, verbose_name="Usuario de Steam", blank=True, null=True)
+    redes_twitch = models.CharField(max_length=140, verbose_name="Canal de Twitch", blank=True, null=True)
+    redes_youtube = models.CharField(max_length=140, verbose_name="Canal de YouTube", blank=True, null=True)
+    redes_instagram = models.CharField(max_length=140, verbose_name="Usuario de Instagram", blank=True, null=True)
+    redes_whatsapp = models.CharField(max_length=140, verbose_name="Numero de WhatsApp", blank=True, null=True)
     # Choices = ('Lo que se guarda', 'Lo que se muestra')
     ESTADO_CHOICES = (
         ('ACTIVO', 'Activo'),
@@ -197,15 +209,80 @@ class Miembro(models.Model):
             else:
                 return self.rango.abreviatura+'.'+self.nombre
 
-    def cantidad_asistencias(self):
-        return self.asistencia_set.filter(asistencia__icontains='asiste').count()
+    def get_todas_las_asistencias(self):
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE)
 
-    def cantidad_faltas(self):
-        return self.asistencia_set.filter(asistencia__icontains='falta').count()
+    def get_todas_las_faltas(self):
+        faltas = self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_FALTA)
+        faltas_oficiales = faltas.exclude(mision__tipo=Mision.TIPO_IMPROVISADA)
+        faltas_oficiales = faltas_oficiales.exclude(mision__tipo=Mision.TIPO_OTRO)
+        faltas_oficiales = faltas_oficiales.exclude(mision__oficial=False)
+        return faltas_oficiales
+
+    def get_asistencia_tipo_campana(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_CAMPANA)
+
+    def get_asistencia_tipo_curso(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_CURSO)
+
+    def get_asistencia_tipo_entrenamiento(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_ENTRENAMIENTO)
+
+    def get_asistencia_tipo_cooperativa(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_COOPERATIVA)
+
+    def get_asistencia_tipo_gala(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_GALA)
+
+    def get_asistencia_tipo_improvisada(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_IMPROVISADA)
+
+    def get_asistencia_tipo_otro(self):
+        return self.get_todas_las_asistencias().filter(mision__tipo=Mision.TIPO_OTRO)
+
+    def get_todas_las_asistencias_oficiales(self):
+        # Devuelvo todas las asistencias que NO son IMPRO ni OTRO
+        solo_oficiales = self.get_todas_las_asistencias().exclude(mision__tipo=Mision.TIPO_IMPROVISADA)
+        solo_oficiales = solo_oficiales.exclude(mision__tipo=Mision.TIPO_OTRO)
+        solo_oficiales = solo_oficiales.exclude(mision__tipo=Mision.TIPO_CURSO)
+        solo_oficiales = solo_oficiales.exclude(mision__oficial=False)
+        return solo_oficiales
+
+    def get_asistencia_del_mes(self, month, year):
+        return self.asistencia_set.filter(asistencia__icontains=Asistencia.ASIST_ASISTE, mision__fecha_finalizada__month=month,
+                                   mision__fecha_finalizada__year=year)
+
+    def horas_de_servicio(self):
+        asistencias = self.asistencia_set.all()
+        duracion = timedelta(hours=0, minutes=0, seconds=0)
+        for a in asistencias:
+            duracion += a.tiempo_de_sesion
+
+        seconds = duracion.total_seconds()
+        hours = seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
+        return '{}'.format(int(hours))
 
     def porcentaje_asistencia(self):
         cantidad_misiones = Mision.objects.all().count()
         cantidad_asistencias = self.asistencia_set.count()
+
+    def campanas_asistidas(self):
+        return Campana.objects.filter(Q(mision__asistencia__asistencia=Asistencia.ASIST_ASISTE)
+                                      | Q(mision__asistencia__asistencia=Asistencia.ASIST_TARDE),
+                                      mision__asistencia__miembro=self).distinct()
+
+    def asistencia_en_campana(self, id_campana):
+        campana = Campana.objects.get(id=id_campana)
+        misiones = campana.mision_set.all()
+        total = misiones.count()
+        asistidas = 0
+        for mision in misiones:
+            asistencia = mision.asistencia_set.get(miembro=self)
+            if asistencia.asistencia in [Asistencia.ASIST_ASISTE, Asistencia.ASIST_TARDE]:
+                asistidas += 1
+        return asistidas
 
     # Estas dos funciones crean automáticamente el Miembro cuando un nuevo User se registra
     @receiver(post_save, sender=User)
@@ -369,7 +446,7 @@ class Mision(models.Model):
 
 class Asistencia(models.Model):
     mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
-    miembro = models.ForeignKey(Miembro, verbose_name="Miembro", on_delete=models.DO_NOTHING, null=False)
+    miembro = models.ForeignKey(Miembro, verbose_name="Miembro", on_delete=models.CASCADE, null=False)
     fecha = models.DateField(blank=False, null=False, default=now)
     ASISTENCIA_CHOICES = (
         ('ASISTE', 'Asiste'),
@@ -407,3 +484,19 @@ class Asistencia(models.Model):
     def get_update_url(self):
         return reverse('stats:asistencia_update', args=(self.pk,))
 
+
+class MisionGaleria(models.Model):
+    mision = models.ForeignKey(Mision, verbose_name="Mision", on_delete=models.CASCADE, null=False)
+    miembro = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, null=True)
+    imagen_url = models.URLField(null=False, verbose_name='URL', blank=False)
+
+
+class Wallpaper(models.Model):
+    imagen = models.ImageField(upload_to='wallpaper_img/', blank=True, null=True, verbose_name="Imagen")
+    miembro = models.ForeignKey(Miembro, verbose_name="Autor", on_delete=models.CASCADE, null=True)
+    activo = models.BooleanField(verbose_name="Activo", blank=False, null=False, default=True)
+
+
+class Notificacion(models.Model):
+    mensaje = models.CharField(max_length=140, verbose_name="Mensaje", blank=True, null=True)
+    fecha = models.DateField(blank=False, null=False, default=now, verbose_name="Fecha")

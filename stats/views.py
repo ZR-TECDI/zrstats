@@ -2,44 +2,139 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .forms import UploadReporteForm
 from .logics import procesar_resultado
-from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana
+from .models import Clase, Rango, Nacionalidad, Rol, Unidad, Miembro, Mision, Asistencia, User, Campana, MisionGaleria
 from .logics import services
 from django.views.generic import DetailView, ListView, UpdateView, CreateView, DeleteView
 from django.views.generic.base import RedirectView
 from .forms import ClaseForm, RangoForm, NacionalidadForm, RolForm, UnidadForm, MiembroForm, MisionForm, \
-    AsistenciaForm, CampanaForm, MisionReporteForm
+    AsistenciaForm, CampanaForm, MisionReporteForm, MisionGaleriaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.http import JsonResponse
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.utils import timezone
 import calendar
+from django.core.paginator import Paginator
+import random
 
 
 def index_view(request):
-    return render(request, 'stats/index.html', {})
+    context = {}
+    context['fondo'] = random.randint(1, 11)
+    context['hide_title_bar'] = True
+    context['hide_left_bar'] = True
+    context['navbartop_sin_header'] = True
+    context['margin_cero_inner_wrapper'] = True
+    context['mision_list'] = services.genera_calendario()
+
+    return render(request, 'stats/index.html', context)
 
 
 class TestPage(ListView):
     template_name = 'stats/test_page.html'
     model = Miembro
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from django.core.management import call_command
+        # call_command('datos_iniciales')
+        return context
+
+
+# Vista para crear un MisionGaleria luego de subir imagen a Imgur
+class RedirectMisionGaleria(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        mision = Mision.objects.get(id=self.kwargs['mision_id'])
+        miembro = Miembro.objects.get(id=self.kwargs['miembro_id'])
+        url = "https://i.imgur.com/" + self.kwargs['image']
+        MisionGaleria.objects.create(mision=mision, imagen_url=url, miembro=miembro)
+        return reverse('stats:mision_detail', kwargs={'pk': self.kwargs['mision_id']})
+
 
 # Vista para redireccionar al user a su propio perfil
 class RedirectToProfile(RedirectView):
-
     def get_redirect_url(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             user_id = self.request.user.id
-            return reverse('stats:profile', kwargs={'pk': user_id})
+            miembro = Miembro.objects.get(user_id=user_id)
+            return reverse('stats:profile', kwargs={'pk': miembro.id})
         else:
             reverse('stats:index')
 
 
 # Vista para renderizar el perfil de alguien
-class ProfileView(LoginRequiredMixin, DetailView):
+class MyProfileView(LoginRequiredMixin, DetailView):
     template_name = 'stats/profile.html'
     model = User
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = User.objects.get(id=self.kwargs['pk'])
+        miembro = user.miembro
+        context['hide_left_bar'] = True
+        return context
+
+
+class PublicProfileView(DetailView):
+    template_name = 'stats/profile.html'
+    model = Miembro
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        miembro = Miembro.objects.get(id=self.kwargs['pk'])
+        hoy = timezone.now()
+        asistencia_mensual = []
+        for i in range(12):
+            mes = None
+            mes = miembro.get_asistencia_del_mes(i + 1, 2019)
+            if mes.count() > 0:
+                asistencia_mensual.append(mes)
+        context['asistencia_mensual'] = asistencia_mensual
+        context['hide_left_bar'] = True
+        context['fondo'] = random.randint(1, 11)
+
+        campanas_asistidas = miembro.campanas_asistidas()
+        campanas = []
+        for camp in campanas_asistidas:
+            camp_tupla = {}
+            camp_tupla['campana'] = camp
+            camp_tupla['asistencias'] = miembro.asistencia_en_campana(camp.id)
+            camp_tupla['porcentaje'] = services.calcula_porcentaje(miembro.asistencia_en_campana(camp.id),
+                                                                   camp.mision_set.count())
+            campanas.append(camp_tupla)
+
+        context['campanas_asistidas'] = campanas
+        context['total_campana'] = Mision.objects.filter(tipo=Mision.TIPO_CAMPANA).count()
+        context['total_improvisada'] = Mision.objects.filter(tipo=Mision.TIPO_IMPROVISADA).count()
+        context['total_gala'] = Mision.objects.filter(tipo=Mision.TIPO_GALA).count()
+        context['total_entrenamiento'] = Mision.objects.filter(tipo=Mision.TIPO_ENTRENAMIENTO).count()
+        context['total_otro'] = Mision.objects.filter(tipo=Mision.TIPO_OTRO).count()
+        context['total_curso'] = Mision.objects.filter(tipo=Mision.TIPO_CURSO).count()
+        context['total_cooperativa'] = Mision.objects.filter(tipo=Mision.TIPO_COOPERATIVA).count()
+
+        context['porc_campana'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_campana().count(),
+                                                              context['total_campana'])
+
+        context['porc_improvisada'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_improvisada().count(),
+                                                                  context['total_improvisada'])
+
+        context['porc_gala'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_gala().count(),
+                                                           context['total_gala'])
+
+        context['porc_entrenamiento'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_entrenamiento(),
+                                                                    context['total_entrenamiento'])
+
+        context['porc_otro'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_otro().count(),
+                                                           context['total_otro'])
+
+        context['porc_curso'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_curso().count(),
+                                                            context['total_curso'])
+
+        context['porc_cooperativa'] = services.calcula_porcentaje(miembro.get_asistencia_tipo_cooperativa().count(),
+                                                                  context['total_cooperativa'])
+
+        return context
 
 
 # Vista para el formulario de crear misiones
@@ -105,28 +200,7 @@ class CalendarView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        misiones = Mision.objects.all()
-
-        mision_list = []
-        for mision in misiones:
-            m = {}
-            m['title'] = mision.nombre
-            m['start'] = mision.fecha_finalizada
-            m['end'] = mision.fecha_finalizada
-            m['allDay'] = True
-            m['url'] = mision.get_absolute_url()
-            if mision.tipo == Mision.TIPO_CAMPANA or mision.tipo == Mision.TIPO_ENTRENAMIENTO or \
-                    mision.tipo == Mision.TIPO_GALA:
-                m['className'] = "fc-event-danger"
-            if mision.tipo == Mision.TIPO_IMPROVISADA:
-                m['className'] = "fc-event-success"
-            if mision.tipo == Mision.TIPO_CURSO:
-                m['className'] = "fc-event-info"
-            if mision.tipo == Mision.TIPO_OTRO or mision.tipo == Mision.TIPO_COOPERATIVA:
-                m['className'] = "fc-event-warning"
-            mision_list.append(m)
-
-        context['mision_list'] = mision_list
+        context['mision_list'] = services.genera_calendario()
         return context
 
 
@@ -142,6 +216,12 @@ class AsistenciaMes(ListView):
         misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
                                              fecha_finalizada__month=month).order_by('fecha_finalizada', 'id')
 
+
+        # Hago calculos de Datetime para obtener mes actual, mes anterior y mes siguiente
+        fecha_mes = datetime(year, month, 1)  # Fecha de la URL
+        ultimo_dia_del_mes_actual = fecha_mes.replace(day=28) + timedelta(days=4)
+        ultimo_dia_del_mes_actual = ultimo_dia_del_mes_actual - timedelta(days=ultimo_dia_del_mes_actual.day)
+
         lista_asistencia = []
         for m in miembros:
             asist_miem = services.asistencia_miembro(m, month, year)
@@ -149,8 +229,30 @@ class AsistenciaMes(ListView):
 
         context['asistencia'] = lista_asistencia
         context['misiones_mes'] = misiones_mes
+        context['unidades'] = Unidad.objects.all()
         context['fecha_mes'] = datetime(year, month, 1)
+        context['fecha_mes_anterior'] = fecha_mes - timedelta(days=1)
+        context['fecha_mes_posterior'] = ultimo_dia_del_mes_actual + timedelta(days=1)
+        context['fecha_mes_actual'] = datetime.today()
         return context
+
+
+def asistencia_datatables_ajax(request, year, month):
+    miembros = Miembro.objects.all().order_by('rango__orden', 'nombre')
+    misiones_mes = Mision.objects.filter(oficial=True, fecha_finalizada__year=year,
+                                         fecha_finalizada__month=month).order_by('fecha_finalizada', 'id')
+
+    lista_asistencia = []
+    for m in miembros:
+        asist_miem = services.asistencia_miembro(m, month, year)
+        lista_asistencia.append(asist_miem)
+
+    paginator = Paginator(lista_asistencia, request.GET.get('page_length', 25))  # Show 25 contacts per page
+
+    page = request.GET.get('page')  # Add option in ajax or somewhere
+    all_asistencia_list = paginator.get_page(page)  # Return objects list you can make json from this or list
+
+    return JsonResponse(all_asistencia_list, safe=False)
 
 
 # ======================================================================================================================
@@ -295,8 +397,10 @@ class MiembroListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        paises = Nacionalidad.objects.raw('SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
+        paises = Nacionalidad.objects.raw(
+            'SELECT * FROM stats_nacionalidad JOIN stats_miembro on stats_miembro.nacionalidad_id = stats_nacionalidad.id GROUP BY pais')
         context['paises'] = paises
+        context['unidades'] = Unidad.objects.all()
         return context
 
 
@@ -310,10 +414,15 @@ class MiembroDetailView(DetailView):
     template_name = 'stats/crud/miembro_detail.html'
     model = Miembro
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['fecha'] = datetime.today()
+        return context
+
 
 class MiembroUpdateView(UpdateView):
     template_name = 'stats/crud/miembro_form.html'
-    model = Unidad
+    model = Miembro
     form_class = MiembroForm
 
 
@@ -339,7 +448,10 @@ class MisionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['imagenes_galeria'] = MisionGaleria.objects.filter(mision__id=self.kwargs['pk'])
         context['unidades'] = Unidad.objects.all().order_by('nombre')
+        context['hide_left_bar'] = True
+        context['fondo'] = random.randint(1, 11)
         return context
 
 
@@ -377,6 +489,28 @@ class AsistenciaUpdateView(UpdateView):
     form_class = AsistenciaForm
 
 
+class MisionGaleriaCreateView(CreateView):
+    template_name = 'stats/crud/misiongaleria_form.html'
+    model = MisionGaleria
+    form_class = MisionGaleriaForm
+
+
+class MisionGaleriaDetailView(DetailView):
+    template_name = 'stats/crud/misiongaleria_detail.html'
+    model = MisionGaleria
+
+
+class MisionGaleriaUpdateView(UpdateView):
+    template_name = 'stats/crud/misiongaleria_form.html'
+    model = MisionGaleria
+    form_class = MisionGaleriaForm
+
+
+class MisionGaleriaListView(ListView):
+    template_name = 'stats/crud/misiongaleria_list.html'
+    model = MisionGaleria
+
+
 # ESTAS FUNCIONES COMENTADAS LAS GUARDO SOLO COMO REFERENCIA/DOCUMENTACION
 
 # def upload_file(request):
@@ -401,4 +535,3 @@ class AsistenciaUpdateView(UpdateView):
 #         context['miembros'] = Miembro.objects.all()
 #         context['reportes'] = Mision.objects.all()
 #         return context
-

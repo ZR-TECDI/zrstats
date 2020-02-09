@@ -19,7 +19,6 @@ DB_PASS= os.environ['DB_PASS']
 DB_HOST= os.environ['DB_HOST']
 DJANGO_SECRET= os.environ['DJANGO_SECRET']
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -138,12 +137,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = '/root/public/static'
 
 MEDIA_URL = '/upload/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'upload')
+MEDIA_ROOT = '/root/public/media'
 
-LOGIN_REDIRECT_URL = 'stats:redirect_to_profile'
+LOGIN_REDIRECT_URL = 'stats:index'
 LOGOUT_REDIRECT_URL = 'stats:index'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

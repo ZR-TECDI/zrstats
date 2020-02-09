@@ -1,3 +1,4 @@
 paramiko==2.6.0
 spur==0.3.21
+requests
 

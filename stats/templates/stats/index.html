@@ -1,13 +1,410 @@
 {% extends 'stats/base.html' %}
 {% load static %}
 
-
 {% block page_title %}INDEX{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap/css/bootstrap.css' %}"/>
+
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/font-awesome/css/font-awesome.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/magnific-popup/magnific-popup.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/vendor/bootstrap-datepicker/css/datepicker3.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/theme.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/octopus/assets/stylesheets/skins/default.css' %}"/>
+
+    <!-- Flag Icon CSS -->
+    <link rel="stylesheet" href="{% static 'stats/flag-icon-css/css/flag-icon.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
+    <style>
+        .body {
+            background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .navbar {
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .panel {
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .panel-default .panel-heading {
+            background: whitesmoke;
+            border-bottom: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .panel-default .panel-body {
+            background: #0000007e;
+            color: ghostwhite;
+        }
+
+        .panel-default .panel-subtitle {
+            color: #1d2127;
+            font-size: 100%;
+            font-weight: 100;
+            margin-top: 4px;
+        }
+
+        .panel-default .panel-title {
+            color: #1d2127;
+            font-family: Orbitron, sans-serif;
+            font-size: 150%;
+            font-weight: 100;
+            letter-spacing: 1px;
+
+        }
+
+        .carousel-inner > .item > img,
+        .carousel-inner > .item > a > img {
+            width: 20%;
+            height: 20%;
+            margin: 10%;
+            margin-left: 40%;
+
+        }
+
+        ol.carousel-indicators {
+            position: absolute;
+            bottom: 0;
+            margin: 0;
+            left: 0;
+            right: 0;
+            width: auto;
+        }
+
+        ol.carousel-indicators li,
+        ol.carousel-indicators li.active {
+            float: left;
+            width: 33%;
+            height: 5px;
+            margin: 0;
+            border-radius: 0;
+            border: 0;
+            background: transparent;
+        }
+
+        ol.carousel-indicators li.active {
+            background: red;
+        }
+
+        .carousel-control.left, .carousel-control.right {
+            background-image: none !important;
+            filter: none !important;
+        }
+
+        .panel-default .panel-subtitle-image {
+            color: #1d2127;
+            font-size: 150%;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .imagenUnidad {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/core/main.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/daygrid/main.css' %}"/>
+    <link rel="stylesheet" href="{% static 'stats/fullcalendar/packages/bootstrap/main.css' %}"/>
+{% endblock %}
 
 
 {% block content %}
-    CONTENIDO
+
+    <div class="row">
+        <div class="col-md-3">
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        {% if user.is_authenticated %}
+                            <img class="imagenUnidad"
+                                 src="{{ user.miembro.unidad.imagen.url }}">
+                        {% endif %}
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'stats:redirect_to_profile' %}" style="text-decoration: none">
+                            <h2 class="panel-title">
+                                {{ user.miembro.rango.abreviatura }}. {{ user.miembro.nombre }}
+                            </h2>
+                            <p class="panel-subtitle">
+                                {{ user.miembro.unidad }}
+                            </p>
+                        </a>
+                    {% else %}
+                        <h2 class="panel-title">Regístrate</h2>
+                        <p class="panel-subtitle">¡Forma parte de Zona Roja Army!</p>
+                    {% endif %}
+                </header>
+                <div class="panel-body" style="padding: 0;">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'stats:redirect_to_profile' %}">
+                            <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%"
+                                 height="100%">
+                        </a>
+                    {% else %}
+                        <img src="{% static 'stats/img/default_soldier.png' %}" alt="zrProfilePicture" width="100%"
+                             height="100%">
+                    {% endif %}
+                    <br>
+                </div>
+            </section>
+
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-8">
+                    <section class="panel panel-default">
+                        <div class="panel-body" style="padding: 0">
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox" style="min-height: 37em">
+
+
+                                    <!-- CALENDARIO -->
+                                    <div class="item active">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Calendario</h2>
+                                            <p class="panel-subtitle">Navega el calendario para ver las últimas y
+                                                próximas actividades</p>
+                                        </header>
+                                        <div class="panel-body">
+                                            <div id="calendar" style="width: 90%;" class="center-block"></div>
+                                            <p class="center-block"
+                                               style="width:90%;padding: 5px;justify-content: space-between;display: flex">
+                                            <span>
+                                                <span class="text-danger"><i class="fa fa-square"></i></span>
+                                                <span>Misión Oficial (Martes y Jueves)</span>
+                                            </span>
+                                                <span>
+                                                <span class="text-primary"><i class="fa fa-square"></i></span>
+                                                <span>Curso</span>
+                                            </span>
+                                                <span>
+                                                <span class="text-success"><i class="fa fa-square"></i></span>
+                                                <span>Improvisada</span>
+                                            </span>
+                                                <span>
+                                                <span class="text-warning"><i class="fa fa-square"></i></span>
+                                                <span>Otros</span>
+                                            </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- NOTICIAS -->
+                                    <div class="item">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Noticias</h2>
+                                            <p class="panel-subtitle">Entérate de las últimas novedades del clan.</p>
+                                        </header>
+                                        <div class="panel-body" style="min-height: 515px">
+                                            <div style="width: 90%;" class="center-block">
+                                                <p class="center-block"
+                                                   style="width:90%;padding: 5px;justify-content: space-between;display: flex">
+                                                <span>
+                                                    <span class="text-danger"><i class="fa fa-square"></i></span>
+                                                    <span>Anuncios Oficiales</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-primary"><i class="fa fa-square"></i></span>
+                                                    <span>Noticias</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-success"><i class="fa fa-square"></i></span>
+                                                    <span>Reportajes</span>
+                                                </span>
+                                                    <span>
+                                                    <span class="text-warning"><i class="fa fa-square"></i></span>
+                                                    <span>Otros</span>
+                                                </span>
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table mb-none">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Noticias</th>
+                                                            <th></th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>Lista de Mods actualizada! (Versión 6)</td>
+                                                            <td><span class="label label-danger">Anuncio</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Entrevista al Sgto. 1° Arcanoy</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Encuesta: ¿Cuál es tu camuflaje preferido?</td>
+                                                            <td><span class="label label-warning">Otros</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>El Capitán Marino y el roleplay</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Tutorial de Edición (Parte 2)</td>
+                                                            <td><span class="label label-warning">Otros</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Comienza la campaña "Extinción"</td>
+                                                            <td><span class="label label-danger">Anuncio</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Crónica: Misión Final de "Caballero Templario"</td>
+                                                            <td><span class="label label-success">Reportaje</span></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- CAMPAÑA ACTUAL -->
+                                    <div class="item">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-times"></a>
+                                            </div>
+                                            <h2 class="panel-title">Campaña Actual</h2>
+                                            <p class="panel-subtitle">Información sobre la campaña en curso</p>
+                                        </header>
+                                        <div class="panel-body" style="min-height: 515px">
+                                            <div style="width: 90%;" class="center-block">
+                                                <p class="text-lg">Campaña: <b>Extinción</b></p>
+                                                <p>Autor: <b>Sgto1. Arcanoy</b></p>
+                                                <img src="{% static 'stats/img/campa_default.png' %}"
+                                                     width="100%"
+                                                     height="100%">
+                                                <p><i>Lorem ipsum dolor sit amet consectetur adipiscing elit rhoncus
+                                                    dapibus,
+                                                    conubia hac imperdiet luctus molestie volutpat nascetur maecenas,
+                                                    morbi
+                                                    magnis class dis semper tristique sem ornare. Turpis tempor placerat
+                                                    gravida suscipit a, eros tortor sed parturient feugiat lobortis, eu
+                                                    vivamus habitant magna. Faucibus magna tempor platea mus ut leo
+                                                    tortor
+                                                    auctor parturient fames sem ornare, libero purus ad in eleifend
+                                                    duis.</i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"
+                                   style="width: 5%">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"
+                                   style="width: 5%">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section><!-- FIN PANEL CAROUSEL -->
+                </div><!-- fin col -->
+
+
+                <div class="col-md-4">
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Perfil Destacado</h2>
+                            <p class="panel-subtitle">Cbo1. Chama - Espectro</p>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body" style="padding: 0">
+                                <img src="{% static 'stats/img/default_destacado.png' %}" width="100%" height="100%">
+                                <p>
+                                <div class="btn-group" style="width: 100%; text-align: center">
+                                    <span class="center-block">
+                                        <a class="btn btn-dark" href="{% url 'stats:profile' 118 %}"> <i
+                                                class="fa fa-user"></i> Ver Perfil</a>
+                                    </span>
+                                </div>
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 
 {% block extra_scripts %}
+    <script src="{% static 'stats/fullcalendar/packages/core/main.js' %}"></script>
+    <script src="{% static 'stats/fullcalendar/packages/daygrid/main.js' %}"></script>
+    <script src="{% static 'stats/fullcalendar/packages/bootstrap/main.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                height: 'auto',
+                plugins: ['dayGrid', 'bootstrap'],
+                defaultView: 'dayGridMonth',
+                locale: 'esLocale',
+                themeSystem: 'bootstrap',
+                header: {
+                    left: 'prev,next today',
+                    right: 'title',
+                },
+                events:
+                    [
+                        {% for m in mision_list %}
+                            {
+                                title: "{{ m.title }}",
+                                start: '{{ m.start|date:"Y-m-d" }}',
+                                allDay: {{ m.allDay|lower }},
+                                url: '{{ m.url }}',
+                                className: '{{ m.className }}',
+                            },
+                        {% endfor %}
+                    ]
+            });
+
+            calendar.render();
+        });
+    </script>
+    <script>
+        $('.carousel').carousel({
+            interval: 60000,
+            pause: 'hover',
+        })
+    </script>
 {% endblock %}

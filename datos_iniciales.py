@@ -5,20 +5,28 @@ from collections import defaultdict
 import os
 import random
 import datetime
+from urllib.request import urlopen
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
+from zrstats import settings
+from django.contrib.staticfiles.templatetags.staticfiles import static
 
-lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase, User, Asistencia, Mision, Campana]
-for item in lista:
-    item.objects.all().delete()
+
+def borra_todo():
+    lista = [Miembro, Rango, Unidad, Rol, Nacionalidad, Clase, User, Asistencia, Mision, Campana]
+    # lista = [Miembro, User, Asistencia, Mision, Campana]
+    for item in lista:
+        item.objects.all().delete()
 
 
 def crear_unidades():
     unidades_dict = {
-        'altm': ['Alto Mando', 'ALTM'],
-        'infm': ['Inf. de Marines', 'IMZR'],
-        'paraca': ['Paracaidistas', 'PAR'],
-        'echo': ['Espectro', 'ECHO'],
-        'cab': ['Caballería', 'CAB'],
-        'fazr': ['Fuerza Aérea', 'FAZR'],
+        'altm': ['Alto Mando', 'ALTM', 'http://www.zrarmy.com/images/Estrella_Dorada2.png'],
+        'infm': ['Inf. de Marines', 'IMZR', 'http://www.zrarmy.com/images/INFANTERIA.png'],
+        'paraca': ['Paracaidistas', 'PAR', 'http://www.zrarmy.com/images/PARACAIDISTAS.png'],
+        'echo': ['Espectro', 'ECHO', 'http://www.zrarmy.com/images/SPECTRO.png'],
+        'cab': ['Caballería', 'CAB', 'http://www.zrarmy.com/images/BLINDADOS.png'],
+        'fazr': ['Fuerza Aérea', 'FAZR', 'http://www.zrarmy.com/images/FAZR.png'],
     }
 
     print('Creando Unidades...')
@@ -27,6 +35,10 @@ def crear_unidades():
         var = Unidad.objects.create()
         var.nombre = array[0]
         var.abreviatura = array[1]
+        img_temp = NamedTemporaryFile()
+        img_temp.write(urlopen(array[2]).read())
+        img_temp.flush()
+        var.imagen.save(array[1] + ".png", File(img_temp))
         var.save()
 
 
@@ -91,6 +103,7 @@ def crear_clase():
         'mc': ['Médico de combate', 'MC'],
         'od': ['Operador de dron', 'OD'],
         'ro': ['Radio operador', 'RO'],
+        'ts': ['Tirador Selecto', 'TS'],
         'te': ['Tirador de escuadra', 'TE']
     }
 
@@ -526,21 +539,219 @@ def generar_misiones():
     print("FINALIZADO AGREAGAR MISIONES Y ASISTENCIAS")
 
 
-def main():
-    crear_unidades()
-    crear_rango()
-    crear_rol()
-    crear_clase()
-    crear_naciones()
-    agregar_miembros()
-    generar_misiones()
-    # Le pongo permisos al usuario admin
-    user = User.objects.get(username="Admin")
-    user.is_staff = True
-    user.is_superuser = True
-    user.save()
-    print("FINALIZADO DATOS INICIALES")
+def procesa_xsl():
+    print("Procesando planillas de asistencia")
+    crea_misiones_xls()  # Crea las misiones del año
+
+    from openpyxl import load_workbook
+    import datetime
+
+    workbook = load_workbook(filename="Asistencia_ZR_2019.xlsx", data_only=True)
+    year = 2019
+    mes = 0
+    lista_valores = ['A', 'F', 'J', 'L', 'R', 'O', 'T', 'NP', None]
+    for sheet in workbook.worksheets:
+        if sheet.title == "Abril":
+            mes = 4
+        elif sheet.title == "Agosto":
+            mes = 8
+        elif sheet.title == "Diciembre":
+            mes = 12
+        elif sheet.title == "Enero":
+            mes = 1
+        elif sheet.title == "Febrero":
+            mes = 2
+        elif sheet.title == "Julio":
+            mes = 7
+        elif sheet.title == "Junio":
+            mes = 6
+        elif sheet.title == "Marzo":
+            mes = 3
+        elif sheet.title == "Mayo":
+            mes = 5
+        elif sheet.title == "Noviembre":
+            mes = 11
+        elif sheet.title == "Octubre":
+            mes = 10
+        elif sheet.title == "Septiembre":
+            mes = 9
+        max_row = sheet.max_row
+        max_col = sheet.max_column
+        for i in range(2, max_row + 1):  # itera rows, empiezo del 2do porque el 1ro tiene los titulos de columna
+            for j in range(1, max_col + 1):  # itera columnas
+                cell = sheet.cell(row=i, column=j)  # obtiene cell
+                valorcell = str(cell.value).strip() if cell.value is not None else cell.value
+                if j == 1:
+                    x_rango = valorcell
+                    x_rango = str(x_rango).strip('.')
+                elif j == 2:
+                    x_nombre = valorcell
+                elif j == 3:
+                    x_c1 = valorcell
+                elif j == 4:
+                    x_c2 = valorcell
+                elif j == 5:
+                    x_pais = valorcell
+                elif j == 6:
+                    x_estado = valorcell
+                elif j == 7:
+                    x_escuadra = valorcell
+                elif j == 8:
+                    x_rol = valorcell
+                if j == 9:
+                    crea_miembro_if_not_exists(x_rango, x_nombre, x_c1, x_c2, x_pais, x_estado, x_escuadra, x_rol)
+
+                if j > 8:  # aca comienzan las asistencias
+                    day = int(sheet.cell(row=1, column=j).value)
+                    fecha = datetime.datetime(day=day, month=mes, year=year)
+                    mision = Mision.objects.get(fecha_finalizada=fecha)
+                    miembro = Miembro.objects.get(nombre__iexact=x_nombre)
+
+                    x_asistencia = valorcell
+                    if x_asistencia is None:
+                        x_asistencia = Asistencia.ASIST_FALTA
+                    elif x_asistencia == 'A':
+                        x_asistencia = Asistencia.ASIST_ASISTE
+                    elif x_asistencia == 'R':
+                        x_asistencia = Asistencia.ASIST_RESERVA
+                    elif x_asistencia == 'T':
+                        x_asistencia = Asistencia.ASIST_TARDE
+                    elif x_asistencia == 'J':
+                        x_asistencia = Asistencia.ASIST_JUSTIFICADA
+                    elif x_asistencia == 'L':
+                        x_asistencia = Asistencia.ASIST_LICENCIA
+                    elif x_asistencia == 'F':
+                        x_asistencia = Asistencia.ASIST_FALTA
+                    elif x_asistencia == 'O':
+                        x_asistencia = Asistencia.ASIST_ASISTE
+                    elif x_asistencia == 'NP':
+                        x_asistencia = Asistencia.ASIST_FALTA
+                    else:
+                        x_asistencia = Asistencia.ASIST_FALTA
+
+                    # TIEMPO DE SESION APROXIMADO
+                    if x_asistencia == Asistencia.ASIST_ASISTE:
+                        delta = datetime.timedelta(hours=2)
+                    elif x_asistencia == Asistencia.ASIST_TARDE:
+                        delta = datetime.timedelta(hours=1)
+                    else:
+                        delta = datetime.timedelta(hours=0)
+
+                    a = Asistencia.objects.create(mision=mision, miembro=miembro, fecha=mision.fecha_finalizada,
+                                                  asistencia=x_asistencia, tiempo_de_sesion=delta)
 
 
-if __name__ == '__main__':
-    main()
+def crea_misiones_xls():
+    from openpyxl import load_workbook
+    import datetime
+
+    workbook = load_workbook(filename="Asistencia_ZR_2019.xlsx", data_only=True)
+    year = 2019
+    mes = 0
+    lista_fechas_mision = []
+    for sheet in workbook.worksheets:
+        if sheet.title == "Abril":
+            mes = 4
+        elif sheet.title == "Agosto":
+            mes = 8
+        elif sheet.title == "Diciembre":
+            mes = 12
+        elif sheet.title == "Enero":
+            mes = 1
+        elif sheet.title == "Febrero":
+            mes = 2
+        elif sheet.title == "Julio":
+            mes = 7
+        elif sheet.title == "Junio":
+            mes = 6
+        elif sheet.title == "Marzo":
+            mes = 3
+        elif sheet.title == "Mayo":
+            mes = 5
+        elif sheet.title == "Noviembre":
+            mes = 11
+        elif sheet.title == "Octubre":
+            mes = 10
+        elif sheet.title == "Septiembre":
+            mes = 9
+
+        # Creo una campaña Mensual
+        camp = Campana.objects.create(nombre="Camp. " + sheet.title, tipo=Campana.TIPO_CAMPANA,
+                                      estado=Campana.ESTADO_FINALIZADA, descripcion=str(mes))
+
+        # RECORRO LOS DIAS DE CADA MES (columnas entre "K" y la primera columna con signo "%")
+        max_col = sheet.max_column
+        # TODO AJUSTAR ACÁ EL RANGO DONDE ESTAN COLUMNAS DE LOS DIAS
+        for col in sheet.iter_cols(min_col=9, max_col=max_col, min_row=1, max_row=1):
+            for cell in col:
+                day = int(cell.value)
+                dt = datetime.date(year, mes, day)
+                lista_fechas_mision.append(dt)
+
+    for mision_fecha in lista_fechas_mision:
+        mision = Mision()
+        mision.nombre = "Mision (" + str(mision_fecha) + ")"
+        mision.fecha_finalizada = mision_fecha
+        mision.fecha_creacion = mision_fecha
+        if mision_fecha.weekday() in [1, 3]:  # SI ES MARTES O JUEVES ES OFICIAL
+            mision.tipo = Mision.TIPO_CAMPANA
+            # Asigno campaña a mision
+            mes = mision_fecha.month
+            campana = Campana.objects.get(descripcion=mes)
+            mision.campana = campana
+        else:
+            mision.tipo = Mision.TIPO_IMPROVISADA
+        mision.estado = Mision.ESTADO_FINALIZADA
+        mision.descripcion = "Misión Oficial del día " + str(mision_fecha)
+        mision.save()
+
+
+def crea_miembro_if_not_exists(rango, nombre, c1, c2, pais, estado, escuadra, rol):
+    try:
+        miembro = Miembro.objects.get(nombre__iexact=nombre)
+    except Miembro.DoesNotExist:
+        user = User.objects.create_user(username=nombre, email=nombre + "@zrarmy.com",
+                                        password=nombre.lower())
+        miembro = Miembro.objects.get(user=user)
+
+    miembro.nombre = nombre
+    miembro.rango = Rango.objects.get(abreviatura=rango)
+    if c1 is None:
+        miembro.clase1 = Clase.objects.get(abreviatura__iexact='FL')
+    else:
+        miembro.clase1 = Clase.objects.get(abreviatura__iexact=c1)
+    if c2 is None:
+        miembro.clase2 = Clase.objects.get(abreviatura__iexact='FL')
+    else:
+        miembro.clase2 = Clase.objects.get(abreviatura__iexact=c2)
+
+    if pais is None:
+        pais = "ZW"
+    miembro.nacionalidad = Nacionalidad.objects.get(abreviatura=pais.upper())
+
+    if estado == 'A':
+        miembro.estado = Miembro.ESTADO_ACTIVO
+    else:
+        miembro.estado = Miembro.ESTADO_RESERVA
+    if escuadra == "1° P - 2°M":
+        miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
+        miembro.peloton = 2
+    elif escuadra == "1° PP - 1°Pa":
+        miembro.unidad = Unidad.objects.get(abreviatura="PAR")
+        miembro.peloton = 1
+    elif escuadra == "ALTM":
+        miembro.unidad = Unidad.objects.get(abreviatura="ALTM")
+        miembro.peloton = 1
+    elif escuadra == "Caballeria":
+        miembro.unidad = Unidad.objects.get(abreviatura="CAB")
+        miembro.peloton = 1
+    elif escuadra == "Espectro":
+        miembro.unidad = Unidad.objects.get(abreviatura="ECHO")
+        miembro.peloton = 1
+    elif escuadra == "FAZR":
+        miembro.unidad = Unidad.objects.get(abreviatura="FAZR")
+        miembro.peloton = 1
+    else:
+        miembro.unidad = Unidad.objects.get(abreviatura="IMZR")
+        miembro.peloton = 1
+    miembro.save()

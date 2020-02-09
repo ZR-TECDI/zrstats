@@ -2,62 +2,151 @@
 {% load static %}
 
 
-{% block page_title %}Perfil de {{ user.miembro.nombre }}{% endblock %}
+{% block head_title %}Perfil de {{ object.nombre }}{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Orbitron"/>
+    <style>
+        .body {
+            background: url('{% static 'stats/img/fondos' %}/bg_{{ fondo }}.png') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .panel {
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        .panel-default .panel-heading {
+            background: whitesmoke;
+            border-bottom: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .panel-default .panel-body {
+            background: #0000007e;
+            color: ghostwhite;
+        }
+
+        .panel-default .panel-subtitle {
+            color: #1d2127;
+            font-size: 100%;
+            font-weight: 700;
+        }
+
+        .panel-default .panel-title {
+            color: #1d2127;
+            font-family: Orbitron, sans-serif;
+            letter-spacing: 1px;
+            font-size: 150%;
+            font-weight: 100;
+
+        }
+
+        /********************************************/
+        /*          LINEA DE TIEMPO                 */
+        /********************************************/
+        .timeline.timeline-simple .tm-body .tm-title {
+            border: 1px solid darkred;
+        }
+
+        .timeline .tm-items > li .tm-box {
+            background: #0000007e;
+            border-color: rgba(139, 0, 0, 0.51);
+        }
+
+        .timeline .tm-items > li .tm-box:after {
+            border-width: 0px;
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li .tm-box:before {
+            left: -17px;
+            border: solid transparent;
+            border-right-color: rgba(139, 0, 0, 0.51);
+            border-width: 8px;
+            margin-top: -8px;
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li:before {
+            left: 29px;
+            background: rgba(139, 0, 0, 1);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0), 0 0 0 6px rgba(139, 0, 0, 0);
+        }
+
+        .timeline.timeline-simple .tm-body .tm-items > li:before {
+            border-radius: 0;
+        }
+
+        .timeline .tm-body:after {
+            width: 1px;
+            background: -webkit-linear-gradient(
+                    top, rgba(80, 80, 80, 1) 0%, #fff 8%, #fff 92%, rgba(80, 80, 80, 0) 100%);
+        }
+
+
+    </style>
+{% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumbs">
-    <li>
-        <a href="{% url 'stats:index' %}">
-            <i class="fa fa-home"></i>
-        </a>
-    </li>
-    <li><span>Perfil de {{ user.miembro }}</span></li>
-</ol>
+    <ol class="breadcrumbs">
+        <li>
+            <a href="{% url 'stats:index' %}">
+                <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li><span>Perfil de {{ object.nombre }}</span></li>
+    </ol>
 {% endblock %}
 
 {% block titulo_pagina %}
-    Perfil de {{ user.miembro.nombre }}
+    Perfil de {{ object.nombre }}
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        <div class="col-md-4 col-lg-3">
-
-            <section class="panel">
+        <div class="col-lg-3">
+            <!-- Panel Datos -->
+            <section class="panel panel-default">
                 <div class="panel-body">
                     <div class="thumb-info mb-md">
-                        {% if user.avatar is not None %}
-                            <img src="{{ user.miembro.avatar.url }}" class="rounded img-responsive" alt="{{ user.username }} ">
+                        {% if object.avatar %}
+                            <img src="{{ object.avatar.url }}" class="rounded img-responsive"
+                                 alt="{{ object.objectname }} ">
                         {% else %}
-                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%" class="rounded img-responsive" alt="{{ user.username }}  ">
+                            <img src="{% static 'stats/img/unnamed_soldier.png' %}" width="100%"
+                                 class="rounded img-responsive" alt="{{ object.objectname }}  ">
                         {% endif %}
                         <div class="thumb-info-title">
-                            <span class="thumb-info-inner">{{ user.miembro }} </span>
-                            <span class="thumb-info-type">{{ user.miembro.unidad }}</span>
+                            <span class="thumb-info-inner">{{ object }}</span>
+                            <span class="thumb-info-type">{{ object.unidad }}</span>
                         </div>
                     </div>
 
-                    <div class="widget-toggle-expand mb-md">
+                    <div class="widget-toggle-expand mb-md" style="white-space: nowrap;">
 
                         <ul class="simple-bullet-list mb-md">
-                            {% if user.miembro.estado == "Activo" %}
+                            {% if object.estado == "Activo" %}
                                 <li class="green">
-                                    <span class="title">Activo</span>
+                                    <span>Activo</span>
                                     <span class="description truncate">Asiste regularmente</span>
                                 </li>
-                            {% elif user.miembro.estado == "Reserva" %}
+                            {% elif object.estado == "Reserva" %}
                                 <li class="red">
-                                    <span class="title">Reserva</span>
+                                    <span>Reserva</span>
                                     <span class="description truncate">No asiste indefinidamente</span>
                                 </li>
-                            {% elif user.miembro.estado == "Licencia" %}
+                            {% elif object.estado == "Licencia" %}
                                 <li class="red">
-                                    <span class="title">Licencia</span>
+                                    <span>Licencia</span>
                                     <span class="description truncate">No asiste temporalmente</span>
                                 </li>
-                            {% elif user.miembro.estado == "No Miembro" %}
+                            {% elif object.estado == "No Miembro" %}
                                 <li class="red">
-                                    <span class="title">No Miembro</span>
+                                    <span>No Miembro</span>
                                     <span class="description truncate">Miembro dado de baja</span>
                                 </li>
                             {% endif %}
@@ -68,251 +157,415 @@
                         </div>
                         <div>
                             <div class="progress progress-indicator light">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 60%;">
+                                    60%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-header">
+                            <h6>Progreso de Rango</h6>
+                        </div>
+                        <div>
+                            <div class="progress progress-indicator light">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                                     aria-valuemax="100" style="width: 60%;">
                                     60%
                                 </div>
                             </div>
                         </div>
                         <div>
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensedhover">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-sitemap"></i> Rango</td>
-                                    <td><strong>Cabo</strong></td>
-                                </tr>
-                            </table>
-                            <table class="table table-condensed table-hover">
-                                <tr>
+                                    <td><strong>{{ object.rango.rango }}</strong></td>
                                     <td style="width: 20%" class="text-muted"> Unidad</td>
-                                    <td><strong>Espectro</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Rol</td>
-                                    <td><strong>ALPHA</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Pelotón</td>
-                                    <td><strong>1</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Escuadra</td>
-                                    <td><strong>1</strong></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 20%" class="text-muted"> Equipo</td>
-                                    <td><strong>Alpha</strong></td>
+                                    <td><strong>{{ object.unidad.nombre }}</strong></td>
                                 </tr>
                             </table>
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td style="width: 10%" class="text-muted"> Rol</td>
+                                    <td><strong>{{ object.rol }}</strong></td>
+                                    <td style="width: 10%" class="text-muted"> Pelotón</td>
+                                    <td><strong>{{ object.peloton }}</strong></td>
+                                    <td style="width: 10%" class="text-muted"> Escuadra</td>
+                                    <td><strong>{{ object.escuadra }}</strong></td>
+                                </tr>
+                            </table>
+                            <table class="table table-condensed">
                                 <tr>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 1</td>
-                                    <td><strong>Tirador de Escuadra</strong></td>
-                                </tr>
-                                <tr>
+                                    <td><strong>{{ object.clase1 }}</strong></td>
                                     <td style="width: 20%" class="text-muted"><i class="fa fa-wrench"></i> Clase 2</td>
-                                    <td><strong>Granadero</strong></td>
+                                    <td><strong>{{ object.clase2 }}</strong></td>
                                 </tr>
                             </table>
 
                             <table class="table table-condensed">
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-map-marker"></i> Región</td>
-                                    <td><strong>Bariloche, Río Negro</strong></td>
+                                    <td style="width: 20%" class="text-muted"><i class="fa fa-globe"></i> País</td>
+                                    <td><strong>{{ object.nacionalidad.pais }} <span
+                                            class="flag-icon flag-icon-{{ object.nacionalidad.abreviatura|lower }}"></span></strong>
+                                    </td>
+
                                 </tr>
                                 <tr>
-                                    <td style="width: 20%" class="text-muted"><i class="fa fa-globe"></i> País</td>
-                                    <td><strong>Argentina <span class="flag-icon flag-icon-ar"></span></strong></td>
+                                    <td style="width: 20%; border: 0;" class="text-muted"><i
+                                            class="fa fa-map-marker"></i> Región
+                                    </td>
+                                    <td style="border: 0"><strong>{{ object.region |default_if_none:'' }}</strong></td>
                                 </tr>
+
                             </table>
                         </div>
                     </div>
-
                     <hr class="dotted short">
-
                     <h6 class="text-muted">Mensaje</h6>
-                    <p>Este es un mensaje personal editable BLA BLA BLA para darle onda al perfil...
-                    asasdasdasd sdfsdf edfgdfg dfgdfg
-                    dsff rgfgfg...</p>
-
+                    <p>{{ object.mensaje_perfil|default_if_none:'' }}</p>
                     <hr class="dotted short">
-
                     <div class="social-icons-list">
-                        <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
-                        <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
-                        <a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
+                        {% if object.redes_facebook %}
+                            <a rel="tooltip" data-placement="bottom" target="_blank"
+                               href="http://www.facebook.com/{{ object.redes_facebook }}"
+                               data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                        {% endif %}
+                        {% if object.redes_twitch %}
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.twitter.com/{{ object.redes_twitch }}" data-original-title="Twitch"><i
+                                    class="fa fa-twitch"></i><span>Twitch</span></a>
+                        {% endif %}
+                        {% if object.redes_instagram %}
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.instagram.com/{{ object.redes_instagram }}"
+                               data-original-title="Instagram"><i class="fa fa-instagram"></i><span>Instagram</span></a>
+                        {% endif %}
+                        {% if object.redes_youtube %}
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_youtube }}" data-original-title="Youtube"><i
+                                    class="fa fa-youtube"></i><span>YouTube</span></a>
+                        {% endif %}
+                        {% if object.redes_steam %}
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_steam }}" data-original-title="Steam"><i
+                                    class="fa fa-steam"></i><span>Steam</span></a>
+                        {% endif %}
+                        {% if object.redes_whatsapp %}
+                            <a rel="tooltip" data-placement="bottom"
+                               href="http://www.youtube.com/{{ object.redes_whatsapp }}" data-original-title="WhatsApp"><i
+                                    class="fa fa-whatsapp"></i><span>WhatsApp</span></a>
+                        {% endif %}
                     </div>
-
                 </div>
             </section>
 
-
-
-
-        </div>
-        <div class="col-md-8 col-lg-6">
-
-            <div class="tabs">
-                <ul class="nav nav-tabs tabs-primary">
-                    <li class="active">
-                        <a href="#overview" data-toggle="tab">Overview</a>
-                    </li>
-                    <li>
-                        <a href="#edit" data-toggle="tab">Edit</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="overview" class="tab-pane active">
-                        <h4 class="mb-xlg">Linea de Tiempo</h4>
-
-                        <div class="timeline timeline-simple mt-xlg mb-md">
-                            <div class="tm-body">
-                                <div class="tm-title">
-                                    <h3 class="h5 text-uppercase">Noviembre 2018</h3>
-                                </div>
-                                <ol class="tm-items">
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Misión Oficial]</a> el día 02/11/19</p>
-                                            <p>
-                                                Campaña <a>"Tormenta del Desierto"</a></span>
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Gala de Ascensos Octubre 2019]</a> el día 28/10/19</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="tm-box">
-                                            <p class="text-muted mb-none">Asistencia a <a>[Improvisada]</a> el día 27/10/19</p>
-                                            <p>
-                                                Organizada por <a>Alf. Jaz</a>
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ol>
-                            </div>
+            <!-- Estadísticas -->
+            <section class="panel panel-default">
+                <header class="panel-heading">
+                    <div class="panel-actions">
+                        <a href="#" class="fa fa-caret-down"></a>
+                    </div>
+                    <h2 class="panel-title">Asistencias</h2>
+                </header>
+                <div class="panel-body" style="padding: 0">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed mb-none">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Tipo</th>
+                                    <th>Cantidad</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>Misiones de Campaña</td>
+                                    <td>{{ porc_campana }}% ({{ object.get_asistencia_tipo_campana.count }} de {{ total_campana }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Entrenamientos</td>
+                                    <td>{{ porc_entrenamiento }}% ({{ object.get_asistencia_tipo_entrenamiento.count }} de {{ total_entrenamiento }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Cursos</td>
+                                    <td>{{ porc_curso }}% ({{ object.get_asistencia_tipo_curso.count }} de {{ total_curso }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Galas</td>
+                                    <td>{{ porc_gala }}% ({{ object.get_asistencia_tipo_gala.count }} de {{ total_gala }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Cooperativas</td>
+                                    <td>{{ porc_cooperativa }}% ({{ object.get_asistencia_tipo_cooperativa.count }} de {{ total_cooperativa }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Improvisadas</td>
+                                    <td>{{ porc_improvisada }}% ({{ object.get_asistencia_tipo_improvisada.count }} de {{ total_improvisada }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Otros</td>
+                                    <td>{{ porc_otro }}% ({{ object.get_asistencia_tipo_otro.count }} de {{ total_otro }})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Asistencias Totales</td>
+                                    <td>{{ object.get_todas_las_asistencias.count }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Faltas Oficiales</td>
+                                    <td>{{ object.get_todas_las_faltas.count }}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td>Horas de Servicio</td>
+                                    <td>{{ object.horas_de_servicio }} Hs</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div id="edit" class="tab-pane">
+                </div>
+            </section>
+        </div>
 
-                        <form class="form-horizontal" method="get">
-                            <h4 class="mb-xlg">Personal Information</h4>
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileFirstName">First Name</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileFirstName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileLastName">Last Name</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileLastName">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileAddress">Address</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileAddress">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileCompany">Company</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileCompany">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <hr class="dotted tall">
-                            <h4 class="mb-xlg">About Yourself</h4>
-                            <fieldset>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileBio">Biographical Info</label>
-                                    <div class="col-md-8">
-                                        <textarea class="form-control" rows="3" id="profileBio"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-xs-3 control-label mt-xs pt-none">Public</label>
-                                    <div class="col-md-8">
-                                        <div class="checkbox-custom checkbox-default checkbox-inline mt-xs">
-                                            <input type="checkbox" checked="" id="profilePublic">
-                                            <label for="profilePublic"></label>
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    <!-- Linea de tiempo -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Línea de Tiempo</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="panel-group" id="accordionDanger">
+                                    {% for mes in asistencia_mensual %}
+                                        <div class="panel panel-accordion panel-accordion-dark">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle collapsed" data-toggle="collapse"
+                                                       data-parent="#accordionDanger"
+                                                       href="#collapseDanger{{ forloop.counter }}"
+                                                       aria-expanded="false">
+                                                        {{ mes.first.mision.fecha_finalizada | date:'F Y' }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapseDanger{{ forloop.counter }}"
+                                                 class="accordion-body collapse"
+                                                 aria-expanded="false"
+                                                 style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <div class="timeline timeline-simple mt-xlg mb-md">
+                                                        <div class="tm-body">
+                                                            <ol class="tm-items">
+                                                                {% for asistencia in mes %}
+                                                                    <li>
+                                                                        <div class="tm-box">
+                                                                            <p class="mb-none">Asistencia a <a
+                                                                                    href="{{ asistencia.mision.get_absolute_url }}">[{{ asistencia.mision }}]</a>
+                                                                                el día {{ asistencia.fecha }}</p>
+                                                                            {% if asistencia.mision.campana %}
+                                                                                <p>
+                                                                                    Campaña <a
+                                                                                        href="{{ asistencia.mision.campana.get_absolute_url }}">{{ asistencia.mision.campana }}</a>
+                                                                                </p>
+                                                                            {% else %}
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <hr class="dotted tall">
-                            <h4 class="mb-xlg">Change Password</h4>
-                            <fieldset class="mb-xl">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileNewPassword">New Password</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileNewPassword">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label" for="profileNewPasswordRepeat">Repeat New Password</label>
-                                    <div class="col-md-8">
-                                        <input type="text" class="form-control" id="profileNewPasswordRepeat">
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="col-md-9 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                        <button type="reset" class="btn btn-default">Reset</button>
-                                    </div>
+                                    {% endfor %}
                                 </div>
                             </div>
+                        </div>
+                    </section>
 
-                        </form>
 
-                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <!-- Carrera Militar -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Carrera</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Fecha</th>
+                                            <th>Evento</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>03/06/2019</td>
+                                            <td>Ascenso a Rango de Cabo</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-tag"></i></td>
+                                            <td>12/04/2019</td>
+                                            <td>Obtención de clase TE</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>06/02/2019</td>
+                                            <td>Ascenso a Rango de Distinguido</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>08/12/2018</td>
+                                            <td>Asignación a Unidad ECHO</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-tag"></i></td>
+                                            <td>12/10/2018</td>
+                                            <td>Obtención de clase GL</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>03/09/2018</td>
+                                            <td>Ascenso a Rango de Infante</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>25/07/2018</td>
+                                            <td>Asignación a Unidad PARACA</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-arrows-h"></i></td>
+                                            <td>08/07/2018</td>
+                                            <td>Asignación a Unidad IMZR</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-star"></i></td>
+                                            <td>05/07/2018</td>
+                                            <td>Ascenso a Rango de Recluta</td>
+                                        </tr>
+                                        <tr>
+                                            <td><i class="fa fa-graduation-cap"></i></td>
+                                            <td>03/06/2018</td>
+                                            <td>Ingreso al Programa Aspirante</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Campañas -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Participación en Campañas</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed mb-none">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Campaña</th>
+                                            <th>Asistencia</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for campana in campanas_asistidas %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ campana.campana.nombre }}</td>
+                                                {% if campana.porcentaje <= 50 %}
+                                                    <td class="text-danger">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% elif campana.porcentaje <= 70 %}
+                                                    <td class="text-warning">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% else %}
+                                                    <td class="text-success">{{ campana.porcentaje }}%
+                                                        ({{ campana.asistencias }}
+                                                        de {{ campana.campana.mision_set.count }})
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Condecoraciones -->
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            <div class="panel-actions">
+                                <a href="#" class="fa fa-caret-down"></a>
+                            </div>
+                            <h2 class="panel-title">Condecoraciones</h2>
+                        </header>
+                        <div class="panel-body" style="padding: 0">
+                            <div class="panel-body">
+                                <ul class="simple-bullet-list mb-xlg">
+                                    <li class="red">
+                                        <span>Cinta del Mérito Académico</span>
+                                        <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
+                                    </li>
+                                    <li class="green">
+                                        <span>Cinta Acto Distinguido 1era. Clase</span>
+                                        <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
+                                    </li>
+                                    <li class="blue">
+                                        <span>Barra Mérito en Conducta 3era. Clase</span>
+                                        <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
+                                    </li>
+                                    <li class="orange">
+                                        <span>Cinta Campaña</span>
+                                        <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-lg-3">
-
-            <h4 class="mb-md">Estadísticas</h4>
-            <ul class="simple-card-list mb-xlg">
-                <li class="primary">
-                    <h3>236</h3>
-                    <p>Asistencias totales</p>
-                </li>
-                <li class="primary">
-                    <h3>12</h3>
-                    <p>Faltas totales</p>
-                </li>
-                <li class="primary">
-                    <h3>513</h3>
-                    <p>Horas acumuladas</p>
-                </li>
-            </ul>
-
-            <h4 class="mb-md">Condecoraciones</h4>
-            <ul class="simple-bullet-list mb-xlg">
-                <li class="red">
-                    <span class="title">Cinta del Mérito Académico</span>
-                    <span class="description truncate">Aprobación de examen de Infante con más de 45</span>
-                </li>
-                <li class="green">
-                    <span class="title">Cinta Acto Distinguido 1era. Clase</span>
-                    <span class="description truncate">Destacados actos heróicos durante la campaña "Tormenta del Desierto"</span>
-                </li>
-                <li class="blue">
-                    <span class="title">Barra Mérito en Conducta 3era. Clase</span>
-                    <span class="description truncate">Por conducta, disciplina, obediencia y trato intachable.</span>
-                </li>
-                <li class="orange">
-                    <span class="title">Cinta Campaña</span>
-                    <span class="description truncate">Por tener 100% de asistencia en la campaña "Tormenta del Desierto".</span>
-                </li>
-            </ul>
 
 
-        </div>
     </div>
+
 {% endblock %}

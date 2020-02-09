@@ -1,6 +1,11 @@
 {% extends "stats/base.html" %}
 {% load static %}
 
+{% block head_extra %}
+<!-- DATATABLES -->
+<link rel="stylesheet" href="{% static 'stats/datatables/datatables.min.css'%}"/>
+{% endblock %}
+
 {% block head_title %}
     Misión
 {% endblock %}
@@ -109,6 +114,10 @@
 {% endblock %}
 
 {% block extra_scripts %}
+
+<!-- DATATABLES -->
+<script src="{% static 'stats/datatables/datatables.min.js'%}"></script>
+<script src="{% static 'stats/datatables/dataTables.bootstrap.min.js'%}"></script>
 
 <script>
         $(document).ready( function () {
