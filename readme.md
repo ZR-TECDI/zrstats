@@ -31,6 +31,10 @@ miembros de Zona Roja con conocimientos afines están invitados a participar.
             <p style="text-align: center;"><img src="https://github.com/cyberpunx.png?size=80" alt="" width="80" height="80" /></p>
             <p style="text-align: center;"><a title="Enlace a github" href="https://github.com/cyberpunx" target="_blank" rel="noopener">Strix</a></p>
             </td>
+            <td style="width: 110px;">
+            <p style="text-align: center;"><img src="https://github.com/fmothe.png?size=80" alt="" width="80" height="80" /></p>
+            <p style="text-align: center;"><a title="Enlace a github" href="https://github.com/fmothe" target="_blank" rel="noopener">Mothe</a></p>
+            </td>
         </tr>
     </tbody>
 </table>
